@@ -40,7 +40,7 @@
       </Label>
       <ImageView fitHeight="145.0" fitWidth="350.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/hotelbook.jpg" />
+            <Image url="@../../image/hotelbook.jpg" />
          </image>
       </ImageView>
       <Label fx:id="logintf" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="530.0" layoutY="155.0" prefWidth="150.0" text="invalid username or password" textFill="RED" visible="false">
