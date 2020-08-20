@@ -11,7 +11,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MenuController">
    <children>
       <Label layoutX="36.0" layoutY="51.0" prefHeight="40.0" prefWidth="100.0" text="Reservation ID">
@@ -50,29 +49,29 @@
       <Line endX="456.0" endY="-1.52587890625E-5" layoutX="135.0" layoutY="133.0" startX="-100.0" />
       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="181.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/Adult%20Icon.png" />
+            <Image url="@../../image/Adult%20Icon.png" />
          </image>
       </ImageView>
       <Line endX="456.0" layoutX="134.0" layoutY="173.0" startX="-100.0" />
       <Line endX="84.20001220703125" endY="-51.5" layoutX="232.0" layoutY="144.0" startX="84.20004272460938" startY="70.49998474121094" />
       <ImageView fitHeight="22.0" fitWidth="25.0" layoutX="245.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/Kid%20Icon.png" />
+            <Image url="@../../image/Kid%20Icon.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="36.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/calendar1.png" />
+            <Image url="@../../image/calendar1.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="36.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/profile.png" />
+            <Image url="@../../image/profile.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="36.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Downloads/room.png" />
+            <Image url="@../../image/room.png" />
          </image>
       </ImageView>
       <TextField fx:id="Text_ResID" layoutX="141.0" layoutY="59.0" prefHeight="25.0" prefWidth="173.0" />
