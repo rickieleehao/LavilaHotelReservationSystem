@@ -28,5 +28,7 @@ JavaFx installation steps must ready to run these code.
 - Select the Main.java that you run and go to "Arguments"
 - paste the comment below under the ``VM arguments``
 [--module-path "C:\Program Files\Java\javafx-sdk-14.0.2.1\lib" --add-modules javafx.controls,javafx.fxml]
-		^^^^follow your JAVA file path^^^
+
+``"C:\Program Files\Java\javafx-sdk-14.0.2.1\lib"``	
+	^follow your JAVA file path^
 - click Apply and Run
