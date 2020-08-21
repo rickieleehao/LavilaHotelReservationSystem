@@ -25,6 +25,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+		//PrintWriter outputFile = new PrintWriter("StudentData.txt");
 		launch(args);
 	}
 }
