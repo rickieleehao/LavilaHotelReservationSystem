@@ -1,5 +1,6 @@
 package application;
 
+//import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -9,84 +10,115 @@ import javafx.scene.control.TextField;
 public class MenuController {
 
 	@FXML
-	private ChoiceBox<?> List_Children;
+	private ChoiceBox<?> kidcb;
 
 	@FXML
-	private ChoiceBox<?> List_Adult;
+	private ChoiceBox<?> adultcb;
 
 	@FXML
-	private TextField Text_ResID;
+	private TextField idtf;
 
 	@FXML
-	private DatePicker Date_In;
+	private DatePicker checkindate;
 
 	@FXML
-	private DatePicker Date_Out;
+	private DatePicker checkoutdate;
 
 	@FXML
-	private TextField Text_RoomNumber;
+	private TextField rNumbercb;
 
 	@FXML
-	private Button Button_New;
+	private Button newbt;
 
 	@FXML
-	private Button Button_Search;
+	private Button searchbt;
 
 	@FXML
-	private TextField Text_IC;
+	private TextField ictf;
 
 	@FXML
-	private TextField Text_FName;
+	private TextField fnametf;
 
 	@FXML
-	private TextField Text_LName;
+	private TextField lnametf;
 
 	@FXML
-	private TextField Text_Add1;
+	private TextField add1tf;
 
 	@FXML
-	private TextField Text_Add2;
+	private TextField add2tf;
 
 	@FXML
-	private TextField Text_State;
+	private TextField statetf;
 
 	@FXML
-	private TextField Text_Postcode;
+	private TextField postcodetf;
 
 	@FXML
-	private TextField Text_RoomC;
+	private TextField roomCtf;
 
 	@FXML
-	private TextField Text_ServiceC;
+	private TextField serviceCtf;
 
 	@FXML
-	private TextField Text_OtherC;
+	private TextField otherCtf;
 
 	@FXML
-	private TextField Text_Discount;
+	private TextField discountCtf;
 
 	@FXML
-	private TextField Text_TotalC;
+	private TextField totalCtf;
 
 	@FXML
-	private ChoiceBox<?> List_Payment;
+	private ChoiceBox<?> paymentcb;
 
 	@FXML
-	private Button Button_Edit;
+	private Button editbt;
 
 	@FXML
-	private Button Button_CheckIn;
+	private Button checkinbt;
 
 	@FXML
-	private Button Button_CheckOut;
+	private Button checkoutbt;
 
 	@FXML
-	private TextField Text_Status;
+	private TextField statustf;
 
 	@FXML
-	private ChoiceBox<?> List_RoomT;
+	private ChoiceBox<?> rTypecb;
 
 	@FXML
-	private Button Button_RoomS;
+	private Button statusbt;
+
+//    @FXML
+//    void editRes(ActionEvent event) {
+//
+//    }
+
+//	@FXML
+//	void newRes(ActionEvent event) {
+//		// active textfield
+//		checkindate.setVisible(true);
+//		checkoutdate.setVisible(true);
+//		adultcb.setVisible(true);
+//		kidcb.setVisible(true);
+//		statustf.setVisible(true);
+//		rTypecb.setVisible(true);
+//		rNumbercb.setVisible(true);
+//
+//		ictf.setVisible(true);
+//		fnametf.setVisible(true);
+//		lnametf.setVisible(true);
+//		add1tf.setVisible(true);
+//		add2tf.setVisible(true);
+//		statetf.setVisible(true);
+//		postcodetf.setVisible(true);
+//
+//	}
+
+//    @FXML
+//    void searchRes(ActionEvent event) {
+//
+//    }
 
 }
