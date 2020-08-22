@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 public class MenuController {
 
 	@FXML
-	private ChoiceBox<?> kidcb;
+	private ChoiceBox<String> kidcb;
 
 	@FXML
 	private ChoiceBox<?> adultcb;
@@ -99,7 +99,15 @@ public class MenuController {
 
 	@FXML
 	private CheckBox lunchbt;
+	
+    @FXML
+    private Button cancelResbt;
 
+    
+    
+    
+    
+    
 //    @FXML
 //    void editRes(ActionEvent event) {
 //
