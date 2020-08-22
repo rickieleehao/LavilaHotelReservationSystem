@@ -32,7 +32,7 @@ public class LoginController {
 	private Label logintf;
 
 	@FXML
-	void login(ActionEvent event) throws IOException {
+	void login(ActionEvent event) throws IOException { //, (new Login) n
 		logintf.setVisible(true);
 		appclass.Login n = new Login();
 		n.initialAccount("login.txt");
@@ -72,4 +72,9 @@ public class LoginController {
 			usernametf.requestFocus();
 		}
 	}
+	
+//	private static void readFile() {
+//		appclass.Login n = new Login();
+//		n.initialAccount("login.txt");
+//	}
 }
