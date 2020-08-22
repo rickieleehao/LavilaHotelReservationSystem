@@ -1,9 +1,10 @@
 package application;
 
-//import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -25,7 +26,7 @@ public class MenuController {
 	private DatePicker checkoutdate;
 
 	@FXML
-	private TextField rNumbercb;
+	private TextField rNumbertf;
 
 	@FXML
 	private Button newbt;
@@ -85,10 +86,19 @@ public class MenuController {
 	private TextField statustf;
 
 	@FXML
-	private ChoiceBox<?> rTypecb;
+	private Button statusbt;
 
 	@FXML
-	private Button statusbt;
+	private ComboBox<?> rTypecb;
+
+	@FXML
+	private TextField bedtf;
+
+	@FXML
+	private CheckBox breakfastbt;
+
+	@FXML
+	private CheckBox lunchbt;
 
 //    @FXML
 //    void editRes(ActionEvent event) {

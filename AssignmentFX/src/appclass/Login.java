@@ -3,7 +3,7 @@ package appclass;
 import java.util.*;
 import java.io.*;
 
-public class Login {
+public class Login { //initial class
 
 	private String username;
 	private String password;
