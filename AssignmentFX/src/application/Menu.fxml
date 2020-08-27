@@ -16,7 +16,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="635.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MenuController">
    <children>
-      <Rectangle fill="#f6f9ff" height="600.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="635.0" />
+      <Rectangle fx:id="PMethodBox" fill="#f6f9ff" height="600.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="635.0" />
       <Label layoutX="36.0" layoutY="15.0" prefHeight="40.0" prefWidth="100.0" text="Reservation ID">
          <font>
             <Font size="15.0" />
@@ -48,8 +48,8 @@
          </font>
       </Label>
       <Line endX="456.0" layoutX="136.0" layoutY="55.0" startX="-100.0" strokeWidth="0.5" />
-      <ChoiceBox fx:id="kidcb" disable="true" layoutX="270.0" layoutY="106.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="30.0" />
-      <ChoiceBox fx:id="adultcb" disable="true" layoutX="206.0" layoutY="106.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="30.0" />
+      <ChoiceBox fx:id="ChildBox" layoutX="270.0" layoutY="106.0" minHeight="-Infinity" onMouseClicked="#childinitialize" prefHeight="25.0" prefWidth="30.0" />
+      <ChoiceBox fx:id="AdultBox" layoutX="206.0" layoutY="106.0" minHeight="-Infinity" onMouseClicked="#adultinitialize" prefHeight="25.0" prefWidth="30.0" />
       <Line endX="456.0" endY="-1.52587890625E-5" layoutX="135.0" layoutY="97.0" startX="-100.0" strokeWidth="0.5" />
       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="181.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -113,14 +113,13 @@
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="360.0" prefHeight="30.0" prefWidth="100.0" text="Other charges" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="326.0" layoutY="388.0" prefHeight="30.0" prefWidth="173.0" text="Discount (enter promo code)" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="300.0" prefHeight="30.0" prefWidth="100.0" text="Room charges" textAlignment="RIGHT" />
-      <TextField fx:id="roomCtf" disable="true" layoutX="509.0" layoutY="300.0" prefHeight="25.0" prefWidth="70.0" />
-      <TextField fx:id="serviceCtf" disable="true" layoutX="509.0" layoutY="330.0" prefHeight="25.0" prefWidth="70.0" />
-      <TextField fx:id="otherCtf" disable="true" layoutX="509.0" layoutY="360.0" prefHeight="25.0" prefWidth="70.0" />
-      <TextField fx:id="discountCtf" disable="true" layoutX="509.0" layoutY="390.0" prefHeight="25.0" prefWidth="70.0" promptText="Ex: PROMO" />
-      <TextField fx:id="totalCtf" disable="true" layoutX="509.0" layoutY="419.0" prefHeight="25.0" prefWidth="70.0" />
+      <TextField fx:id="roomCtf" disable="true" layoutX="509.0" layoutY="300.0" prefHeight="25.0" prefWidth="88.0" />
+      <TextField fx:id="serviceCtf" disable="true" layoutX="509.0" layoutY="330.0" prefHeight="25.0" prefWidth="88.0" />
+      <TextField fx:id="otherCtf" disable="true" layoutX="509.0" layoutY="360.0" prefHeight="25.0" prefWidth="88.0" />
+      <TextField fx:id="discountCtf" disable="true" layoutX="509.0" layoutY="390.0" prefHeight="25.0" prefWidth="88.0" promptText="Ex: PROMO" />
+      <TextField fx:id="totalCtf" disable="true" layoutX="509.0" layoutY="419.0" prefHeight="25.0" prefWidth="88.0" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="418.0" prefHeight="30.0" prefWidth="100.0" text="Total charges" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="450.0" prefHeight="30.0" prefWidth="100.0" text="Payment Method" textAlignment="RIGHT" />
-      <ChoiceBox fx:id="paymentcb" disable="true" layoutX="509.0" layoutY="451.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="70.0" />
       <Label layoutX="330.0" layoutY="98.0" prefHeight="40.0" prefWidth="100.0" text="Status">
          <font>
             <Font size="15.0" />
@@ -166,7 +165,8 @@
          </font>
       </Label>
       <Button fx:id="cancelResbt" disable="true" layoutX="272.0" layoutY="561.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="136.0" text="Cancel Reservation" />
-      <ChoiceBox fx:id="paymentcb1" disable="true" layoutX="148.0" layoutY="451.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="148.0" />
-      <ChoiceBox fx:id="paymentcb11" disable="true" layoutX="148.0" layoutY="480.0" minHeight="-Infinity" prefHeight="25.0" prefWidth="148.0" />
+      <ComboBox fx:id="StateBox" layoutX="147.0" layoutY="453.0" onAction="#postcodechoice" onMouseClicked="#stateinitialize" prefWidth="150.0" />
+      <ComboBox fx:id="PostcodeBox" layoutX="147.0" layoutY="483.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="PmethodBox" layoutX="510.0" layoutY="453.0" onMouseClicked="#pmethodinitialize" prefHeight="25.0" prefWidth="88.0" />
    </children>
 </Pane>
