@@ -1,5 +1,7 @@
 package application;
 
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -106,13 +108,26 @@ public class MenuController {
 
     @FXML
     void searchRes(ActionEvent event) {
-    	
+    	System.out.println("You clicked me~");
+    	String message = ictf.getText();
+    	Object memberList;
+		Object serachIc;
+		Object findIc = SearchIc(memberList,serachIc)
+    	if(findIc!=null)
+    	{
+    		JOptionPane.showMessageDialog(null, message);
+    	}
+    	else{
+    		JOptionPane.showInputDialog("Customer no found");
+    	}
     }
+
+	private Object SearchIc(Object memberList, Object serachIc) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
-    @FXML
-    void asdasd(ActionEvent event) {
-    	
-    }
+
     
     
     
