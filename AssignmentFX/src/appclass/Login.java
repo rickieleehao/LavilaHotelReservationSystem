@@ -28,7 +28,7 @@ public class Login {
 				this.password = x.next();
 			}
 		} catch (Exception e) {
-			System.out.println("initialAccount has error!");
+			System.out.println("initialAccount login.txt has error!");
 		}
 	}
 

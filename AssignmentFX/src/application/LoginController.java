@@ -34,8 +34,6 @@ public class LoginController {
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
-//		appclass.Login n = new Login();
-//		n.initialAccount("login.txt");
 
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
 			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
