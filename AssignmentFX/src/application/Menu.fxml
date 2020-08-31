@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.mvc.View?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -82,7 +83,6 @@
       <Line endX="456.0" layoutX="134.0" layoutY="180.0" startX="-100.0" strokeWidth="0.5" />
       <DatePicker fx:id="checkindate" disable="true" layoutX="153.0" layoutY="65.0" prefHeight="25.0" prefWidth="149.0" />
       <DatePicker fx:id="checkoutdate" disable="true" layoutX="430.0" layoutY="65.0" prefHeight="25.0" prefWidth="149.0" />
-      <TextField fx:id="rNumbertf" disable="true" layoutX="509.0" layoutY="147.0" prefHeight="25.0" prefWidth="70.0" />
       <Button fx:id="newbt" layoutX="373.0" layoutY="23.0" mnemonicParsing="false" text="New" />
       <Button fx:id="searchbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" text="Search" />
       <Label layoutX="36.0" layoutY="260.0" prefHeight="40.0" prefWidth="126.0" text="Guest Information">
@@ -142,7 +142,7 @@
             <Image url="@../../image/room.png" />
          </image>
       </ImageView>
-      <TextField fx:id="bedtf" disable="true" layoutX="509.0" layoutY="189.0" prefHeight="25.0" prefWidth="70.0" />
+      <TextField fx:id="bedtf" disable="true" layoutX="510.0" layoutY="189.0" prefHeight="25.0" prefWidth="70.0" />
       <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="38.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../image/breakfasticon.png" />
@@ -168,5 +168,7 @@
       <ComboBox fx:id="StateBox" layoutX="147.0" layoutY="453.0" onAction="#postcodechoice" onMouseClicked="#stateinitialize" prefWidth="150.0" />
       <ComboBox fx:id="PostcodeBox" layoutX="147.0" layoutY="483.0" prefWidth="150.0" />
       <ChoiceBox fx:id="PmethodBox" layoutX="510.0" layoutY="453.0" onMouseClicked="#pmethodinitialize" prefHeight="25.0" prefWidth="88.0" />
+      <ComboBox fx:id="rTypecb1" disable="true" layoutX="510.0" layoutY="147.0" prefHeight="25.0" prefWidth="70.0" promptText="1LDB" />
+      <View layoutX="177.0" layoutY="242.0" />
    </children>
 </Pane>

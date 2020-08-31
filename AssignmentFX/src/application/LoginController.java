@@ -32,14 +32,14 @@ public class LoginController {
 	private Label logintf;
 
 	@FXML
-	void login(ActionEvent event) throws IOException { //, (new Login) n
+	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
-		appclass.Login n = new Login();
-		n.initialAccount("login.txt");
+//		appclass.Login n = new Login();
+//		n.initialAccount("login.txt");
 
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
-			if (n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
-				Parent menuViewParent = FXMLLoader.load(getClass().getResource("Menu.fxml"));
+			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
+				Parent menuViewParent = FXMLLoader.load(getClass().getResource("MenuDraft.fxml"));
 				Scene menuViewScene = new Scene(menuViewParent);
 
 				Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -72,9 +72,9 @@ public class LoginController {
 			usernametf.requestFocus();
 		}
 	}
-	
-//	private static void readFile() {
-//		appclass.Login n = new Login();
-//		n.initialAccount("login.txt");
-//	}
+
+	public static void readFile() {
+		appclass.Login n = new Login();
+		n.initialAccount("login.txt");
+	}
 }

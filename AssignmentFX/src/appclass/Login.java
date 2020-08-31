@@ -3,7 +3,7 @@ package appclass;
 import java.util.*;
 import java.io.*;
 
-public class Login { //initial class
+public class Login { 
 
 	private String username;
 	private String password;
@@ -16,14 +16,8 @@ public class Login { //initial class
 	public String getPassword() {
 		return this.password;
 	}
-//	private void setUsername(String username) {
-//		this.username = username;
-//	}
-//
-//	private void setPassword(String password) {
-//		this.password = password;
-//	}
 
+	// retrieve username & password from .txt file
 	public void initialAccount(String filepath) {
 		try {
 			x = new Scanner(new File(filepath));
@@ -38,6 +32,7 @@ public class Login { //initial class
 		}
 	}
 
+	// validate input from user
 	public boolean validateLogin(String username, String password) {
 
 		try {
