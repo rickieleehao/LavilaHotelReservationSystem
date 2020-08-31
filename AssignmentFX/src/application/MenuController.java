@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -16,6 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
 
@@ -43,100 +48,26 @@ public class MenuController implements Initializable {
 			"Online Banking");
 
 	@FXML
-	private ChoiceBox<String> childBox;
+	private ChoiceBox<String> childBox, adultBox, pmethodBox;
 
 	@FXML
-	private ChoiceBox<String> adultBox;
+	private ComboBox<String> rTypecb, rNumbercb;
 
 	@FXML
-	private TextField idtf;
+	private TextField idtf, otherCtf, discountCtf;
 
 	@FXML
-	private DatePicker checkindate;
+	private DatePicker checkindate, checkoutdate;
 
 	@FXML
-	private DatePicker checkoutdate;
+	private Button newbt, searchbt, editbt, checkinbt, checkoutbt, statusbt, cancelResbt, addbt;
 
 	@FXML
-	private Button newbt;
+	private CheckBox breakfastbt, lunchbt;
 
 	@FXML
-	private Button searchbt;
-
-	@FXML
-	private TextField otherCtf;
-
-	@FXML
-	private TextField discountCtf;
-
-	@FXML
-	private Button editbt;
-
-	@FXML
-	private Button checkinbt;
-
-	@FXML
-	private Button checkoutbt;
-
-	@FXML
-	private Button statusbt;
-
-	@FXML
-	private ComboBox<String> rTypecb;
-
-	@FXML
-	private CheckBox breakfastbt;
-
-	@FXML
-	private CheckBox lunchbt;
-
-	@FXML
-	private Button cancelResbt;
-
-	@FXML
-	private ChoiceBox<String> pmethodBox;
-
-	@FXML
-	private ComboBox<String> rNumbercb;
-
-	@FXML
-	private Label statuslb;
-
-	@FXML
-	private Label bedlb;
-
-	@FXML
-	private Label roomClb;
-
-	@FXML
-	private Label serviceClb;
-
-	@FXML
-	private Label totalClb;
-
-	@FXML
-	private Button addbt;
-
-	@FXML
-	private Label iclb;
-
-	@FXML
-	private Label fnamelb;
-
-	@FXML
-	private Label lnamelb;
-
-	@FXML
-	private Label add1lb;
-
-	@FXML
-	private Label add2lb;
-
-	@FXML
-	private Label statelb;
-
-	@FXML
-	private Label postcodelb;
+	private Label statuslb, bedlb, roomClb, serviceClb, totalClb, iclb, fnamelb, lnamelb, add1lb, add2lb, statelb,
+			postcodelb;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -152,7 +83,7 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void newRes(ActionEvent event) {
-		// activate 
+		// activate
 		checkindate.setDisable(false);
 		checkoutdate.setDisable(false);
 		adultBox.setDisable(false);
@@ -172,16 +103,30 @@ public class MenuController implements Initializable {
 		add2lb.setDisable(false);
 		statelb.setDisable(false);
 		postcodelb.setDisable(false);
-		
+
 		roomClb.setDisable(false);
 		serviceClb.setDisable(false);
 		otherCtf.setDisable(false);
 		discountCtf.setDisable(false);
 		totalClb.setDisable(false);
 		pmethodBox.setDisable(false);
-		
+
 		statuslb.setText("Progress");
 
+	}
+
+	@FXML
+	void addGuest(ActionEvent event) throws IOException {
+
+		Parent root = FXMLLoader.load(getClass().getResource("Guest.fxml"));
+		
+		Scene scene = new Scene(root);
+		
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle("Hotel System - Guest Information");
+		stage.setResizable(false);
+		stage.show();
 	}
 
 //	@FXML

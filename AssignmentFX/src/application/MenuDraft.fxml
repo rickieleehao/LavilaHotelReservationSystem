@@ -161,7 +161,7 @@
       <Label fx:id="roomClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="301.0" prefHeight="25.0" prefWidth="80.0" />
       <Label fx:id="serviceClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="331.0" prefHeight="25.0" prefWidth="80.0" />
       <Label fx:id="totalClb" alignment="CENTER" disable="true" layoutX="509.0" layoutY="421.0" prefHeight="25.0" prefWidth="80.0" />
-      <Button fx:id="addbt" disable="true" layoutX="245.0" layoutY="268.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="51.0" text="Add" />
+      <Button fx:id="addbt" disable="true" layoutX="245.0" layoutY="268.0" mnemonicParsing="false" onAction="#addGuest" prefHeight="25.0" prefWidth="51.0" text="Add" />
       <Label fx:id="iclb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="301.0" prefHeight="25.0" prefWidth="149.0" />
       <Label fx:id="fnamelb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="331.0" prefHeight="25.0" prefWidth="149.0" />
       <Label fx:id="lnamelb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="361.0" prefHeight="25.0" prefWidth="149.0" />
