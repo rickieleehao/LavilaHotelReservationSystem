@@ -7,8 +7,7 @@ import java.util.Scanner;
 public class Guest {
 
 	private String icno, fname, lname, add1, add2, state, postcode;
-	private Scanner x;
-//	private ArrayList<Guest> guest;
+	private static Scanner x;
 
 	// constructor
 	public Guest(String icno, String fname, String lname, String add1, String add2, String state, String postcode) {
@@ -20,7 +19,17 @@ public class Guest {
 		this.state = state;
 		this.postcode = postcode;
 	}
-	
+
+	public Guest(String icno) {
+		this.icno = icno;
+		this.fname = null;
+		this.lname = null;
+		this.add1 = null;
+		this.add2 = null;
+		this.state = null;
+		this.postcode = null;
+	}
+
 	public String getIC() {
 		return icno;
 	}
@@ -50,50 +59,44 @@ public class Guest {
 	}
 
 	// method
-//	public static void initializeGuest(String filepath) {
-//		//ArrayList<Guest> guest = new ArrayList<Guest>();
-//		String icno, fname, lname, add1, add2, state, postcode;
-//
-//		try {
-//			x = new Scanner(new File(filepath));
-//			x.useDelimiter("[,\n]");
-//
-//			while (x.hasNext()) {
-//				icno = x.next();
-//				fname = x.next();
-//				lname = x.next();
-//				add1 = x.next();
-//				add2 = x.next();
-//				state = x.next();
-//				postcode = x.next();
-//
-//				guest.add(new Guest(icno, fname, lname, add1, add2, state, postcode));
-//			}
-//		} catch (Exception e) {
-//			System.out.println("create arrayGuest guest.txt has error!");
-//		}
-//		
-//		//return guest;
-//	}
+	public static ArrayList<Guest> initializeGuest(String filepath) {
+		ArrayList<Guest> guest = new ArrayList<Guest>();
+		String icno, fname, lname, add1, add2, state, postcode;
 
-	public void findIC(ArrayList<Guest> guest, String icno) {
+		try {
+			x = new Scanner(new File(filepath));
+			x.useDelimiter("[,\n]");
 
-		for (int i = 0; i < guest.size(); i++)
-			if (guest.get(i).icno == icno) {
+			while (x.hasNext()) {
+				icno = x.next();
+				fname = x.next();
+				lname = x.next();
+				add1 = x.next();
+				add2 = x.next();
+				state = x.next();
+				postcode = x.next();
+
+				guest.add(new Guest(icno, fname, lname, add1, add2, state, postcode));
+			}
+		} catch (Exception e) {
+			System.out.println("create arrayGuest guest.txt has error!");
+		}
+
+		return guest;
+	}
+
+	public void findIC(ArrayList<Guest> guest) {
+
+		for (int i = 0; i < guest.size(); i++) {
+			if (guest.get(i).icno.equalsIgnoreCase(this.icno)) {
 				this.fname = guest.get(i).fname;
 				this.lname = guest.get(i).lname;
 				this.add1 = guest.get(i).add1;
 				this.add2 = guest.get(i).add2;
 				this.state = guest.get(i).state;
 				this.postcode = guest.get(i).postcode;
-			} else {
-				this.fname = null;
-				this.lname = null;
-				this.add1 = null;
-				this.add2 = null;
-				this.state = null;
-				this.postcode = null;
 			}
+		}
 
 	}
 

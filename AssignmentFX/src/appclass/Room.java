@@ -1,52 +1,100 @@
 package appclass;
 
-public class Room {
-    private int roomID;
-    private String roomType;
-    private double price;
-    private int adultPaxLimit;
-    private int kidPaxLimit;
-    private int numberOfBeds;
-    private String description = "";
-    private boolean checkInOut = false;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-    public Room(int uRoomID, String uRoomType, double uPrice, int uAdultPaxLimit, int uKidPaxLimit) {
-        this.roomID = uRoomID;
-        this.roomType = uRoomType;
-        this.price = uPrice;
-        this.adultPaxLimit = uAdultPaxLimit;
-        this.kidPaxLimit = uKidPaxLimit;
-    }
+public abstract class Room {
+	private String roomType;
+	private String roomNumber;
+	private double price;
+	private int adultPaxLimit;
+	private int childPaxLimit;
+	private String numberOfBeds;
+	private String description;
+	private static Scanner x;
 
-    public void setDescription(String desc) {
-        this.description = desc;
-    }
+	// constructor
+	public Room(String roomNumber, String numberOfBeds) {
+		this.roomNumber = roomNumber;
+		this.numberOfBeds = numberOfBeds;
+	}
 
-    public int getRoomID() {
-        return roomID;
-    }
+	public static ArrayList<Room> initializeRoom(String filepath) {
+		ArrayList<Room> room = new ArrayList<Room>();
+		String roomType, roomNumber, numberOfBeds;
 
-    public String getRoomType() {
-        return roomType;
-    }
+		try {
+			x = new Scanner(new File(filepath));
+			x.useDelimiter("[,\n]");
 
-    public double getPrice() {
-        return price;
-    }
+			while (x.hasNext()) {
+				roomType = x.next();
+				roomNumber = x.next();
+				numberOfBeds = x.next();
 
-    public int getAdultPaxLimit() {
-        return adultPaxLimit;
-    }
+				if (roomType.equalsIgnoreCase("SuperiorSuite"))
+					room.add(new SuperiorSuite(roomNumber, numberOfBeds));
+				else if (roomType.equalsIgnoreCase("Deluxe"))
+					room.add(new Deluxe(roomNumber, numberOfBeds));
+				else if (roomType.equalsIgnoreCase("Studio"))
+					room.add(new Studio(roomNumber, numberOfBeds));
+				else
+					throw new Exception("roomType has error!");
+			}
+		} catch (Exception e) {
+			System.out.println("create arrayRoom room.txt has error!");
+		}
 
-    public int getKidPaxLimit() {
-        return kidPaxLimit;
-    }
+		return room;
+	}
 
-    public int getNumberOfBeds() {
-        return numberOfBeds;
-    }
+	// abstract method
+	public abstract double roomCharge();
 
-    public String getDescription() {
-        return description;
-    }
+	// accessor
+	public String getRoomNumber() {
+		return roomNumber;
+	}
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public int getAdultPaxLimit() {
+		return adultPaxLimit;
+	}
+
+	public int getChildPaxLimit() {
+		return childPaxLimit;
+	}
+
+	public String getNumberOfBeds() {
+		return numberOfBeds;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	// mutator
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public void setAdultPaxLimit(int pax) {
+		this.adultPaxLimit = pax;
+	}
+
+	public void setChildPaxLimit(int pax) {
+		this.childPaxLimit = pax;
+	}
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
 }

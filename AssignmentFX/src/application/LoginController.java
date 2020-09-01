@@ -40,9 +40,9 @@ public class LoginController {
 				Parent menuViewParent = FXMLLoader.load(getClass().getResource("MenuDraft.fxml"));
 				Scene menuViewScene = new Scene(menuViewParent);
 
-				Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-				window.setScene(menuViewScene);
-				window.show();
+				Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+				stage.setScene(menuViewScene);
+				stage.show();
 			} else
 				logintf.setText("invalid username or password");
 		} else
