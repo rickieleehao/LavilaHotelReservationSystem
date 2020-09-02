@@ -3,11 +3,11 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import appclass.Date;
 import appclass.Guest;
 import appclass.Reservation;
 import appclass.Room;
@@ -17,46 +17,41 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.converter.LocalDateStringConverter;
 
-public class MenuController implements Initializable {
+public class MenuController extends Date implements Initializable {
 
-	final private ObservableList<String> AdultList = FXCollections.observableArrayList("0", "1", "2", "3", "4");
-	final private ObservableList<String> ChildList = FXCollections.observableArrayList("0", "1", "2", "3", "4");
+	final static public String style = "-fx-opacity: 1";
+	final private double SERVICE_CHARGE = 0.1;
+
 	final private ObservableList<String> PMethodList = FXCollections.observableArrayList("Cash",
 			"Credit Card/Debit Card", "Online Banking");
-	final private ObservableList<String> RoomTypeList = FXCollections.observableArrayList("SuperiorSuite", "Deluxe", "Studio");
-	private ObservableList<String> RoomNumberList = FXCollections.observableArrayList();
-	
-	
 
-	private ArrayList<Guest> arrguest;
-	private ArrayList<Reservation> arrreservation;
-	private ArrayList<Room> arrroom;
+	private ObservableList<String> AdultList;
+	private ObservableList<String> ChildList;
+	private ObservableList<String> RoomTypeList;
+	private ObservableList<String> RoomNumberList;
 
-	public static final LocalDate LOCAL_DATE(String dateString) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-dd-MM");
-		LocalDate localDate = LocalDate.parse(dateString, formatter);
-		return localDate;
-	}
+	private ArrayList<Guest> arrGuest;
+	private ArrayList<Reservation> arrReservation;
+	private ArrayList<Room> arrRoom;
+	private Reservation reservation;
 
 	@FXML
-	private ChoiceBox<String> childBox, adultBox, pmethodBox;
-
-	@FXML
-	private ComboBox<String> rTypecb, rNumbercb;
+	private ComboBox<String> rTypeBox, rNumberBox, childBox, adultBox, pmethodBox;
 
 	@FXML
 	private TextField idtf, otherCtf, discountCtf;
@@ -65,7 +60,7 @@ public class MenuController implements Initializable {
 	private DatePicker checkindate, checkoutdate;
 
 	@FXML
-	private Button newbt, searchbt, editbt, checkinbt, checkoutbt, statusbt, cancelResbt, addbt;
+	private Button newbt, searchbt, editbt, checkinbt, checkoutbt, statusbt, cancelResbt, confirmResbt, addbt;
 
 	@FXML
 	private CheckBox breakfastbt, lunchbt;
@@ -74,75 +69,103 @@ public class MenuController implements Initializable {
 	private Label statuslb, bedlb, roomClb, serviceClb, totalClb;
 
 	@FXML
-	private Label iclb, fnamelb, lnamelb, add1lb, add2lb, statelb, postcodelb;
+	private Label iclb, fnamelb, lnamelb, add1lb, add2lb, statelb, postcodelb, resIDwarn;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.arrGuest = appclass.Guest.initializeGuest("guest.txt");
+		this.arrRoom = appclass.Room.initializeRoom("room.txt");
+		this.arrReservation = appclass.Reservation.initializeReservation("reservation.txt", arrRoom, arrGuest);
+
 		adultBox.setTooltip(new Tooltip("Select Adult Number"));
-		childBox.setTooltip(new Tooltip("Select Children Number"));
+		childBox.setTooltip(new Tooltip("Select Children Number")); // tooltip for other box
 		pmethodBox.setTooltip(new Tooltip("Select Payment Method"));
 
-		adultBox.setItems(AdultList);
-		childBox.setItems(ChildList);
 		pmethodBox.setItems(PMethodList);
-
-		this.arrguest = appclass.Guest.initializeGuest("guest.txt");
-		this.arrroom = appclass.Room.initializeRoom("room.txt");
-		this.arrreservation = appclass.Reservation.initializeReservation("reservation.txt", arrroom, arrguest);
-		
-		for (int i = 0; i < arrroom.size(); i++)
-			RoomNumberList.add(arrroom.get(i).getRoomNumber());
 	}
 
-	@FXML
+	// button
+	@FXML // searching for a reservation
 	void searchRes(ActionEvent event) {
-		Reservation reservation = new Reservation(idtf.getText());
-		reservation.searchReservation(arrreservation);
+		if (idtf.getText().isBlank()) {
+			resIDwarn.setText("enter a reservation ID");
+			editbt.setDisable(true);
+			setVisible(false);
+		} else {
+			resIDwarn.setText(null);
+			editbt.setDisable(false);
+			setVisible(true);
 
-		if (reservation.getGuest() != null) {
-			setDisable(true);
-			setEditable(false);
-			// reservation section
-			checkindate.setValue(LOCAL_DATE(reservation.getCheckinDate()));
-			checkoutdate.setValue(LOCAL_DATE(reservation.getCheckoutDate()));
-			adultBox.setValue(reservation.getAdultPax());
-			childBox.setValue(reservation.getChildPax());
-			statuslb.setText(reservation.getStatus());
-			rTypecb.setValue(reservation.getRoom().getRoomType());
-			rNumbercb.setValue(reservation.getRoomNumber());
-			bedlb.setText(reservation.getRoom().getNumberOfBeds());
+			reservation = new Reservation();
+			reservation.searchReservation(arrReservation, idtf.getText());
 
-			// guest information section
-			iclb.setText(reservation.getGuest().getIC());
-			fnamelb.setText(reservation.getGuest().getFName());
-			lnamelb.setText(reservation.getGuest().getLName());
-			add1lb.setText(reservation.getGuest().getAdd1());
-			add2lb.setText(reservation.getGuest().getAdd2());
-			statelb.setText(reservation.getGuest().getState());
-			postcodelb.setText(reservation.getGuest().getPostcode());
-			
+			if (reservation.getID() != null) {
 
+				// reservation section
+				checkindate.setValue(LOCAL_DATE(reservation.getCheckinDate()));
+				checkoutdate.setValue(LOCAL_DATE(reservation.getCheckoutDate()));
+				adultBox.setValue(reservation.getAdultPax());
+				childBox.setValue(reservation.getChildPax());
+				statuslb.setText(reservation.getStatus());
+				rTypeBox.setValue(reservation.getRoom().getRoomType());
+				rNumberBox.setValue(reservation.getRoomNumber());
+				bedlb.setText(reservation.getRoom().getNumberOfBeds());
+
+				// guest information section
+				iclb.setText(reservation.getGuest().getIC());
+				fnamelb.setText(reservation.getGuest().getFName());
+				lnamelb.setText(reservation.getGuest().getLName());
+				add1lb.setText(reservation.getGuest().getAdd1());
+				add2lb.setText(reservation.getGuest().getAdd2());
+				statelb.setText(reservation.getGuest().getState());
+				postcodelb.setText(reservation.getGuest().getPostcode());
+
+				setDisable(true);
+			} else {
+				resIDwarn.setText("invalid reservation ID");
+				editbt.setDisable(true);
+				setVisible(false);
+				
+				addbt.setDisable(false);
+			}
 		}
 
 	}
 
-	@FXML
+	@FXML // filling in new Reservation
 	void newRes(ActionEvent event) {
-		setDisable(false);
-		statuslb.setText("Progress");
+		setText();
+		setVisible(false);
+		confirmResbt.setVisible(true);
+		addbt.setDisable(false);
+		editbt.setDisable(true);
+		statuslb.setDisable(false);
+		checkindate.setDisable(false);
+
+		reservation = new Reservation();
+		reservation.newReservation(arrReservation); // generate a new Reservation ID
+
+		idtf.setText(reservation.getID());
+		statuslb.setText(reservation.getStatus());
 	}
 
-	@FXML
+	@FXML // edit a reservation record
+	void editRes(ActionEvent event) {
+
+	}
+
+	@FXML // open new stage and add Guest Information
 	void addGuest(ActionEvent event) throws IOException {
-		System.out.print(checkindate.getValue());
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Guest.fxml"));
 		Parent root = loader.load();
 
 		Scene scene = new Scene(root);
 		Stage stage = new Stage();
 		stage.setScene(scene);
+		stage.getIcons().add(new Image(Main.class.getResourceAsStream(Main.titleIcon)));
 		stage.setTitle("Hotel System - Guest Information");
 		stage.setResizable(false);
+		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.showAndWait();
 
 		// wait for Guest Information to return
@@ -156,9 +179,176 @@ public class MenuController implements Initializable {
 			add2lb.setText(guest.getAdd2());
 			statelb.setText(guest.getState());
 			postcodelb.setText(guest.getPostcode());
+			reservation.setGuest(guest);
 		}
 	}
 
+	@FXML
+	void checkindateField(ActionEvent event) {
+		if (checkindate.getValue() != null) {
+			reservation.setCheckindate(checkindate.getValue().toString());
+			checkoutdate.setDisable(false);
+		}
+	}
+
+	@FXML
+	void checkoutdateField(ActionEvent event) {
+		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
+			reservation.setCheckoutdate(checkoutdate.getValue().toString());
+			rTypeBox.setDisable(false);
+			setRoomTypeList();
+		}
+	}
+
+	@FXML
+	void rTypeField(ActionEvent event) {
+		if (rTypeBox.getValue() != null) {
+			rNumberBox.setDisable(false);
+			setRoomNumberList(rTypeBox.getValue());
+		}
+	}
+
+	@FXML
+	void rNumberField(ActionEvent event) {
+		if (rNumberBox.getValue() != null) {
+			reservation.setRoomNumber(rNumberBox.getValue());
+			reservation.setRoom(arrRoom);
+			setDisable(false);
+			getPaxBedPayment();
+			reservation.setNumberOfBeds(bedlb.getText());
+		}
+	}
+
+	@FXML
+	void paxField(ActionEvent event) {
+		if (adultBox.getValue() != null & childBox.getValue() != null) {
+			reservation.setAdultPax(adultBox.getValue());
+			reservation.setChildPax(childBox.getValue());
+		}
+	}
+
+	// private method
+
+	private void setRoomTypeList() {
+		RoomTypeList = FXCollections.observableArrayList();
+		ChronoLocalDate arrCheckin, arrCheckout;
+		ChronoLocalDate checkin = checkindate.getValue(), checkout = checkoutdate.getValue();
+
+		for (int i = 0; i < arrReservation.size(); i++) {
+			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process\r")) {
+				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
+				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
+				if (!(checkin.toEpochDay() >= arrCheckin.toEpochDay()
+						&& checkout.toEpochDay() <= arrCheckout.toEpochDay()))
+					if (!RoomTypeList.contains(arrReservation.get(i).getRoom().getRoomType()))
+						RoomTypeList.add(arrReservation.get(i).getRoom().getRoomType());
+			}
+		}
+
+		rTypeBox.setItems(RoomTypeList);
+	}
+
+	private void setRoomNumberList(String rType) {
+		RoomNumberList = FXCollections.observableArrayList();
+
+		ChronoLocalDate arrCheckin, arrCheckout;
+		ChronoLocalDate checkin = checkindate.getValue(), checkout = checkoutdate.getValue();
+		ArrayList<String> tempNumber = new ArrayList<String>();
+
+		for (int i = 0; i < arrReservation.size(); i++) { // find not available roomNumber
+			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process\r")) {
+				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
+				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
+				if ((checkin.toEpochDay() >= arrCheckin.toEpochDay()
+						&& checkout.toEpochDay() <= arrCheckout.toEpochDay()))
+					if (arrReservation.get(i).getRoom().getRoomType().equalsIgnoreCase(rType))
+						tempNumber.add(arrReservation.get(i).getRoomNumber());
+			}
+		}
+
+		for (int i = 0; i < arrRoom.size(); i++) { // show available roomNumber of the selected roomType
+			if (arrRoom.get(i).getRoomType().equalsIgnoreCase(rType))
+				if (tempNumber.size() != 0) {
+					for (int x = 0; x < tempNumber.size(); x++)
+						if (!arrRoom.get(i).getRoomNumber().equalsIgnoreCase(tempNumber.get(x)))
+							RoomNumberList.add(arrRoom.get(i).getRoomNumber());
+				} else
+					RoomNumberList.add(arrRoom.get(i).getRoomNumber());
+		}
+
+		rNumberBox.setItems(RoomNumberList);
+	}
+
+	private void getPaxBedPayment() {
+		int adultLimit = 0, childLimit = 0;
+		AdultList = FXCollections.observableArrayList();
+		ChildList = FXCollections.observableArrayList();
+
+		for (int i = 0; i < arrRoom.size(); i++)
+			if (arrRoom.get(i).getRoomNumber().equalsIgnoreCase(reservation.getRoomNumber())) {
+				adultLimit = arrRoom.get(i).getAdultPaxLimit();
+				childLimit = arrRoom.get(i).getChildPaxLimit();
+				bedlb.setText(arrRoom.get(i).getNumberOfBeds());
+				break;
+			}
+
+		for (int i = 1; i <= adultLimit; i++) {
+			AdultList.add(Integer.toString(i));
+		}
+
+		for (int i = 0; i <= childLimit; i++) {
+			ChildList.add(Integer.toString(i));
+		}
+
+		adultBox.setItems(AdultList);
+		childBox.setItems(ChildList);
+
+		double roomCharge = reservation.getRoom().getSessionCharge(checkindate.getValue().getMonth());
+		double stay_day = (LOCAL_DATE(reservation.getCheckoutDate())).toEpochDay()
+				- (LOCAL_DATE(reservation.getCheckinDate())).toEpochDay();
+		double total = roomCharge*stay_day;
+		roomClb.setText(Double.toString(total));
+		serviceClb.setText("10%");
+		totalClb.setText(Double.toString(total+SERVICE_CHARGE));
+	}
+
+	private void setText() {
+		// reservation section
+		resIDwarn.setText(null);
+		checkindate.setValue(null);
+		checkoutdate.setValue(null);
+		rTypeBox.setValue(null);
+		rNumberBox.setValue(null);
+		adultBox.setValue(null);
+		childBox.setValue(null);
+		bedlb.setText(null);
+		statuslb.setText(null);
+
+		// guest information section
+		iclb.setText(null);
+		fnamelb.setText(null);
+		lnamelb.setText(null);
+		add1lb.setText(null);
+		add2lb.setText(null);
+		statelb.setText(null);
+		postcodelb.setText(null);
+		
+		// payment section
+		roomClb.setText(null);
+		serviceClb.setText(null);
+		otherCtf.setText(null);
+		discountCtf.setText(null);
+		totalClb.setText(null);
+		pmethodBox.setValue(null);
+
+	}
+
+	private void setVisible(boolean b) {
+		checkinbt.setVisible(b);
+		checkoutbt.setVisible(b);
+		cancelResbt.setVisible(b);
+	}
+	
 	private void setDisable(boolean b) {
 		// reservation section
 		checkindate.setDisable(b);
@@ -166,56 +356,64 @@ public class MenuController implements Initializable {
 		adultBox.setDisable(b);
 		childBox.setDisable(b);
 		statuslb.setDisable(b);
-		rTypecb.setDisable(b);
-		rNumbercb.setDisable(b);
+		rTypeBox.setDisable(b);
+		rNumberBox.setDisable(b);
 		breakfastbt.setDisable(b);
 		lunchbt.setDisable(b);
 		bedlb.setDisable(b);
+
+		checkindate.setStyle(style);
+		checkoutdate.setStyle(style);
+		adultBox.setStyle(style);
+		childBox.setStyle(style);
+		rTypeBox.setStyle(style);
+		rNumberBox.setStyle(style);
+
 		// guest information section
-		addbt.setDisable(b);
-		iclb.setDisable(b);
-		fnamelb.setDisable(b);
-		lnamelb.setDisable(b);
-		add1lb.setDisable(b);
-		add2lb.setDisable(b);
-		statelb.setDisable(b);
-		postcodelb.setDisable(b);
+		iclb.setDisable(!b);
+		fnamelb.setDisable(!b);
+		lnamelb.setDisable(!b);
+		add1lb.setDisable(!b);
+		add2lb.setDisable(!b);
+		statelb.setDisable(!b);
+		postcodelb.setDisable(!b);
+
 		// payment section
 		roomClb.setDisable(b);
 		serviceClb.setDisable(b);
-		otherCtf.setDisable(!b);
-		discountCtf.setDisable(!b);
+
 		totalClb.setDisable(b);
-		pmethodBox.setDisable(!b);
+		if (statuslb.getText() != "Complete") {
+			pmethodBox.setDisable(!b);
+			otherCtf.setDisable(!b);
+			discountCtf.setDisable(!b);
+		} else {
+			pmethodBox.setDisable(b);
+			otherCtf.setDisable(b);
+			discountCtf.setDisable(b);
+		}
 	}
 
-	private void setEditable(boolean b) {
-		// reservation section
-		checkindate.setEditable(b);
-		checkoutdate.setEditable(b);
-//		adultBox.setEditable(b);
-//		childBox.setEditable(b);
-//		statuslb.setEditable(b);
-		rTypecb.setEditable(b);
-		rNumbercb.setEditable(b);
-//		breakfastbt.setEditable(b);
-//		lunchbt.setEditable(b);
-//		bedlb.setEditable(b);
-		// guest information section
-//		addbt.setEditable(b);
-//		iclb.setEditable(b);
-//		fnamelb.setEditable(b);
-//		lnamelb.setEditable(b);
-//		add1lb.setEditable(b);
-//		add2lb.setEditable(b);
-//		statelb.setEditable(b);
-//		postcodelb.setEditable(b);
-		// payment section
-//		roomClb.setEditable(b);
-//		serviceClb.setEditable(b);
-		otherCtf.setEditable(b);
-		discountCtf.setEditable(b);
-//		totalClb.setEditable(b);
-//		pmethodBox.setEditable(b);
+	// KeyEvent
+	@FXML
+	void resIDtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB) {
+			searchbt.requestFocus();
+		} else if (event.getCode() == KeyCode.ENTER)
+			searchbt.fire();
+	}
+
+	@FXML
+	void searchtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB) {
+			newbt.requestFocus();
+		}
+	}
+
+	@FXML
+	void newtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB) {
+			idtf.requestFocus();
+		}
 	}
 }

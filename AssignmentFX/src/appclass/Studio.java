@@ -1,5 +1,7 @@
 package appclass;
 
+import java.time.Month;
+
 public class Studio extends Room {
 	private static double price = 200;
 	private static int adultPax = 2;
@@ -15,8 +17,12 @@ public class Studio extends Room {
 	}
 
 	@Override
-	public double roomCharge() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getSessionCharge(Month m) {
+		if (m.getValue() == 1 && m.getValue() ==2) 
+			return 1.2*price;
+		else if (m.getValue() == 11 && m.getValue() ==12) 
+			return 1.4*price;
+		else
+			return 1.0*price;
 	}
 }

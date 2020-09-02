@@ -2,9 +2,11 @@ package application;
 
 import appclass.Guest;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -12,7 +14,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -24,6 +29,15 @@ public class GuestController implements Initializable {
 			"Kuala Lumpur", "Malacca", "Negeri Sembilan", "Pahang", "Pulau Penang", "Perak", "Perlis", "Sabah",
 			"Sarawak", "Selangor", "Terengganu");
 
+	// instance variable
+	private Guest guest = null;
+	private boolean add;
+
+	// accessor
+	public Guest getGuest() {
+		return guest;
+	}
+
 	@FXML
 	private ChoiceBox<String> stateBox;
 
@@ -33,20 +47,8 @@ public class GuestController implements Initializable {
 	@FXML
 	private Button searchbt, addbt;
 
-	// instance variable
-	private Guest guest = null;
-
-	// accessor
-	public Guest getGuest() {
-		return guest;
-	}
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-//		if (!fnametf.getText().isBlank() && !lnametf.getText().isBlank() && !add1tf.getText().isBlank()
-//				&& !add2tf.getText().isBlank() && !stateBox.getValue().isBlank() && !postcodetf.getText().isBlank())
-//			addbt.setDisable(false);
-
 		stateBox.setTooltip(new Tooltip("Select a state"));
 		stateBox.setItems(StateList);
 
@@ -74,15 +76,15 @@ public class GuestController implements Initializable {
 //		}
 	}
 
+	// button
 	@FXML
 	void searchIC(ActionEvent event) {
-		guest = new Guest(ictf.getText());
-		ArrayList<appclass.Guest> arrGuest = appclass.Guest.initializeGuest("guest.txt");
+		guest = new Guest();
+		ArrayList<Guest> arrGuest = Guest.initializeGuest("guest.txt");
 
-		guest.findIC(arrGuest);
-		if (guest.getFName() != null) {
-			setDisable(false);
-			setEditable(false);
+		guest.findIC(arrGuest, ictf.getText());
+		if (guest.getIC() != null) {
+			setDisable(true);
 			fnametf.setText(guest.getFName());
 			lnametf.setText(guest.getLName());
 			add1tf.setText(guest.getAdd1());
@@ -91,34 +93,97 @@ public class GuestController implements Initializable {
 			postcodetf.setText(guest.getPostcode());
 
 			addbt.setDisable(false);
+			add = false;
 		} else {
-			setDisable(false);
-			setEditable(true);
+			if (addNewGuest()) {
+				setDisable(false);
+				addbt.setDisable(false);
+				add = true;
+			} else {
+				setDisable(true);
+				addbt.setDisable(true);
+				add = false;
+			}
 		}
-
 	}
 
 	@FXML
 	void addGuest(ActionEvent event) throws IOException {
-		Stage stage = (Stage) addbt.getScene().getWindow();
-		stage.close();
+		if (!validateFields()) {
+		} else {
+			Stage stage = (Stage) addbt.getScene().getWindow();
+			stage.close();
+		}
 	}
 
-	void setDisable(boolean b) {
+	// private method
+	private boolean validateFields() throws IOException {
+		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
+				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Missing guest information");
+			alert.setHeaderText(null);
+			alert.setContentText("Please enter guest information");
+			alert.showAndWait();
+			return false;
+		} else if (!(fnametf.getText().isEmpty() && lnametf.getText().isEmpty() && add1tf.getText().isEmpty()
+				&& add1tf.getText().isEmpty() && stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty())
+				&& add == true) {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("New guest information");
+			alert.setHeaderText(null);
+			alert.setContentText("Adding guest to database?");
+			Optional<ButtonType> action = alert.showAndWait();
+
+			if (action.get() == ButtonType.OK) {
+				guest = new Guest(ictf.getText(), fnametf.getText(), lnametf.getText(), add1tf.getText(),
+						add2tf.getText(), stateBox.getValue(), postcodetf.getText());
+				FileWriter output = new FileWriter("guest.txt", true);
+				output.write("\n" + ictf.getText() + "," + fnametf.getText() + "," + lnametf.getText() + ","
+						+ add1tf.getText() + "," + add2tf.getText() + "," + stateBox.getValue() + ","
+						+ postcodetf.getText());
+				Alert alert1 = new Alert(AlertType.WARNING);
+				alert1.setTitle("New guest information");
+				alert1.setHeaderText(null);
+				alert1.setContentText("Update successful");
+				alert1.showAndWait();
+				output.close();
+
+				return true;
+			} else
+				return false;
+		}
+
+		return true;
+	}
+
+	private boolean addNewGuest() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("IC not found");
+		alert.setHeaderText(null);
+		alert.setContentText("Adding new guest?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK)
+			return true;
+		else
+			return false;
+	}
+
+	private void setDisable(boolean b) {
 		fnametf.setDisable(b);
 		lnametf.setDisable(b);
 		add1tf.setDisable(b);
 		add2tf.setDisable(b);
-		stateBox.setDisable(!b);
+		stateBox.setDisable(b);
 		postcodetf.setDisable(b);
-	}
+		addbt.setDisable(b);
 
-	void setEditable(boolean b) {
-		fnametf.setEditable(b);
-		lnametf.setEditable(b);
-		add1tf.setEditable(b);
-		add2tf.setEditable(b);
-		postcodetf.setEditable(b);
+//		fnametf.setStyle(MenuController.style);
+//		lnametf.setStyle(MenuController.style);
+//		add1tf.setStyle(MenuController.style);
+//		add2tf.setStyle(MenuController.style);
+//		stateBox.setStyle(MenuController.style);
+//		postcodetf.setStyle(MenuController.style);
 	}
-
 }

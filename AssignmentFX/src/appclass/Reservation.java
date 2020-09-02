@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Reservation {
+public class Reservation extends Date {
 	private String resID;
 	private Guest guest;
 	private Room room;
@@ -22,7 +22,7 @@ public class Reservation {
 			String adultPax, String childPax, String status) {
 		this.resID = resID;
 		this.guest = guest;
-		this.room = room;
+		this.room = room; // no need
 		this.roomNumber = roomNumber;
 		this.checkinDate = checkinDate;
 		this.checkoutDate = checkoutDate;
@@ -32,17 +32,7 @@ public class Reservation {
 		this.price = 0;
 	}
 
-	public Reservation(String resID) {
-		this.resID = resID;
-		this.guest = null;
-		this.room = null;
-		this.roomNumber = null;
-		this.checkinDate = null;
-		this.checkoutDate = null;
-		this.adultPax = null;
-		this.childPax = null;
-		this.status = null;
-		this.price = 0;
+	public Reservation() {
 	}
 
 	// accessors
@@ -87,8 +77,12 @@ public class Reservation {
 	}
 
 	// mutators
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRoom(ArrayList<Room>arrRoom) {
+		for (int i = 0; i < arrRoom.size(); i++)
+			if (arrRoom.get(i).getRoomNumber().equalsIgnoreCase(this.roomNumber)) {
+				room = arrRoom.get(i);
+				break;
+			}
 	}
 
 	public void setGuest(Guest guest) {
@@ -96,7 +90,31 @@ public class Reservation {
 	}
 
 	public void setPrice(Room r) {
-		this.price = r.getPrice();
+		this.price = r.getPrice(); // ??
+	}
+
+	public void setCheckindate(String checkindate) {
+		this.checkinDate = checkindate;
+	}
+	
+	public void setCheckoutdate(String checkoutdate) {
+		this.checkoutDate = checkoutdate;
+	}
+	
+	public void setRoomNumber(String roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+	
+	public void setNumberOfBeds(String roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+	
+	public void setAdultPax(String adultPax) {
+		this.adultPax = adultPax;
+	}
+	
+	public void setChildPax(String childPax) {
+		this.childPax = childPax;
 	}
 
 	// method
@@ -144,18 +162,28 @@ public class Reservation {
 		return reservation;
 	}
 
-	public void searchReservation(ArrayList<Reservation> reservation) {
-		for (int i = 0; i < reservation.size(); i++) {
-			if (reservation.get(i).resID.equalsIgnoreCase(this.resID)) {
-				this.guest = reservation.get(i).getGuest();
-				this.room = reservation.get(i).getRoom();
-				this.roomNumber = reservation.get(i).getRoomNumber();
-				this.checkinDate = reservation.get(i).getCheckinDate();
-				this.checkoutDate = reservation.get(i).getCheckoutDate();
-				this.adultPax = reservation.get(i).getAdultPax();
-				this.childPax = reservation.get(i).getChildPax();
-				this.status = reservation.get(i).getStatus();
+	public void searchReservation(ArrayList<Reservation> arrReservation, String resID) {
+		for (int i = 0; i < arrReservation.size(); i++) {
+			if (arrReservation.get(i).resID.equalsIgnoreCase(resID)) {
+				this.resID = resID;
+				this.guest = arrReservation.get(i).getGuest();
+				this.room = arrReservation.get(i).getRoom();
+				this.roomNumber = arrReservation.get(i).getRoomNumber();
+				this.checkinDate = arrReservation.get(i).getCheckinDate();
+				this.checkoutDate = arrReservation.get(i).getCheckoutDate();
+				this.adultPax = arrReservation.get(i).getAdultPax();
+				this.childPax = arrReservation.get(i).getChildPax();
+				this.status = arrReservation.get(i).getStatus();
 			}
 		}
+	}
+
+	public void newReservation(ArrayList<Reservation> arrReservation) {
+		String lastID = arrReservation.get(arrReservation.size() - 1).getID();
+		int newID = Integer.parseInt(lastID.substring(1)) + 1;
+		String ID = "R" + Integer.toString(newID);
+
+		this.resID = ID;
+		this.status = "Process";
 	}
 }

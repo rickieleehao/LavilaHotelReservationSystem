@@ -1,6 +1,7 @@
 package appclass;
 
 import java.io.File;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,10 @@ public abstract class Room {
 		this.numberOfBeds = numberOfBeds;
 	}
 
+	// abstract method
+	public abstract double getSessionCharge(Month m);
+	
+	// method
 	public static ArrayList<Room> initializeRoom(String filepath) {
 		ArrayList<Room> room = new ArrayList<Room>();
 		String roomType, roomNumber, numberOfBeds;
@@ -48,9 +53,6 @@ public abstract class Room {
 
 		return room;
 	}
-
-	// abstract method
-	public abstract double roomCharge();
 
 	// accessor
 	public String getRoomNumber() {

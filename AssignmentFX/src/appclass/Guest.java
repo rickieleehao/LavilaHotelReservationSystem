@@ -20,16 +20,10 @@ public class Guest {
 		this.postcode = postcode;
 	}
 
-	public Guest(String icno) {
-		this.icno = icno;
-		this.fname = null;
-		this.lname = null;
-		this.add1 = null;
-		this.add2 = null;
-		this.state = null;
-		this.postcode = null;
+	public Guest() {
 	}
 
+	// accessor
 	public String getIC() {
 		return icno;
 	}
@@ -57,7 +51,7 @@ public class Guest {
 	public String getPostcode() {
 		return postcode;
 	}
-
+	
 	// method
 	public static ArrayList<Guest> initializeGuest(String filepath) {
 		ArrayList<Guest> guest = new ArrayList<Guest>();
@@ -85,10 +79,11 @@ public class Guest {
 		return guest;
 	}
 
-	public void findIC(ArrayList<Guest> guest) {
+	public void findIC(ArrayList<Guest> guest, String icno) {
 
 		for (int i = 0; i < guest.size(); i++) {
-			if (guest.get(i).icno.equalsIgnoreCase(this.icno)) {
+			if (guest.get(i).icno.equalsIgnoreCase(icno)) {
+				this.icno = guest.get(i).icno;
 				this.fname = guest.get(i).fname;
 				this.lname = guest.get(i).lname;
 				this.add1 = guest.get(i).add1;

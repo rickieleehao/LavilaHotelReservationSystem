@@ -1,5 +1,7 @@
 package appclass;
 
+import java.time.Month;
+
 public class SuperiorSuite extends Room {
 
 	private static double price = 300;
@@ -16,8 +18,15 @@ public class SuperiorSuite extends Room {
 	}
 
 	@Override
-	public double roomCharge() {
-		return super.getPrice();
+	public double getSessionCharge(Month m) {
+		if (m.getValue() == 1 && m.getValue() == 2)
+			return 2.0*price;
+		else if (m.getValue() == 11 && m.getValue() == 12)
+			return 2.5*price;
+		else if (m.getValue() == 5 && m.getValue() == 6)
+			return 1.8*price;
+		else
+			return 1.0*price;
 	}
 
 }
