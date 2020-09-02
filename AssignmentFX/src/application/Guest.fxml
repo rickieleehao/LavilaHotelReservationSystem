@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -52,36 +53,34 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label text="Postcode" GridPane.rowIndex="5">
+      <Label text="Postcode" GridPane.rowIndex="6">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label text="State" GridPane.rowIndex="6">
+      <Label text="State" GridPane.rowIndex="5">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <MenuButton fx:id="stateDropdown" mnemonicParsing="false" prefHeight="25.0" prefWidth="159.0" text="MenuButton" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <items>
-            <MenuItem mnemonicParsing="false" text="Action 1" />
-            <MenuItem mnemonicParsing="false" text="Action 2" />
-         </items>
-      </MenuButton>
-      <TextField fx:id="firstNameText" promptText="Ex: Hong Hui" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <TextField fx:id="fnametf" disable="true" promptText="Ex: Hong Hui" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="100.0" />
+         </GridPane.margin>
+      </TextField>
+      <TextField fx:id="lnametf" disable="true" promptText="Ex: Lee" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="100.0" />
          </GridPane.margin></TextField>
-      <TextField fx:id="lastNameText" promptText="Ex: Lee" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets right="100.0" />
-         </GridPane.margin></TextField>
-      <TextField fx:id="add1Text" promptText="Street Address" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <TextField fx:id="add1tf" disable="true" promptText="Street Address" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></TextField>
-      <TextField fx:id="add2Text" promptText="Apt., Suite, Unit, Building, Floor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <TextField fx:id="postCodeText" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <TextField fx:id="add2tf" disable="true" promptText="Apt., Suite, Unit, Building, Floor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="postcodetf" disable="true" prefHeight="26.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets right="143.0" />
+         </GridPane.margin></TextField>
       <GridPane GridPane.columnIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="203.0" />
@@ -91,19 +90,25 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="idText" prefHeight="25.0" prefWidth="201.0" />
-            <Button fx:id="searchBtn" mnemonicParsing="false" text="Search" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <TextField fx:id="ictf" prefHeight="25.0" prefWidth="201.0" promptText="123456-12-123456" />
+            <Button fx:id="searchbt" mnemonicParsing="false" onAction="#searchIC" text="Search" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <padding>
                   <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
                </padding>
             </Button>
          </children>
       </GridPane>
-      <Button fx:id="addGuestBtn" mnemonicParsing="false" text="Add Guest" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+      <Button fx:id="addbt" disable="true" mnemonicParsing="false" onAction="#addGuest" text="Add Guest" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
          <padding>
             <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
          </padding>
       </Button>
+      <ChoiceBox fx:id="stateBox" disable="true" prefHeight="26.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label prefHeight="18.0" prefWidth="88.0" GridPane.rowIndex="7">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
    </children>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

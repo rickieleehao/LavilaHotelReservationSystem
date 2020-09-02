@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import appclass.Login;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
@@ -13,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -32,19 +32,19 @@ public class LoginController {
 	private Label logintf;
 
 	@FXML
-	void login(ActionEvent event) throws IOException { //, (new Login) n
+	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
-		appclass.Login n = new Login();
-		n.initialAccount("login.txt");
 
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
-			if (n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
+			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
 				Parent menuViewParent = FXMLLoader.load(getClass().getResource("Menu.fxml"));
 				Scene menuViewScene = new Scene(menuViewParent);
 
-				Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-				window.setScene(menuViewScene);
-				window.show();
+				Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+				stage.setScene(menuViewScene);
+				stage.getIcons().add(new Image(Main.class.getResourceAsStream(Main.titleIcon)));
+				stage.setTitle("Hotel System - Menu");
+				stage.show();
 			} else
 				logintf.setText("invalid username or password");
 		} else
@@ -55,11 +55,12 @@ public class LoginController {
 	void usernametab(KeyEvent event) {
 		if (event.getCode() == KeyCode.TAB) {
 			passwordtf.requestFocus();
-		}
+		} else if (event.getCode() == KeyCode.ENTER)
+			loginbt.fire();
 	}
 
 	@FXML
-	void passwordenter(KeyEvent event) {
+	void passwordtab(KeyEvent event) {
 		if (event.getCode() == KeyCode.TAB) {
 			loginbt.requestFocus();
 		} else if (event.getCode() == KeyCode.ENTER)
@@ -72,9 +73,4 @@ public class LoginController {
 			usernametf.requestFocus();
 		}
 	}
-	
-//	private static void readFile() {
-//		appclass.Login n = new Login();
-//		n.initialAccount("login.txt");
-//	}
 }
