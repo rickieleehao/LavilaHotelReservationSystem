@@ -22,6 +22,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyEvent;
 
 public class GuestController implements Initializable {
 
@@ -32,6 +34,7 @@ public class GuestController implements Initializable {
 	// instance variable
 	private Guest guest = null;
 	private boolean add;
+	private String idTemp;
 
 	// accessor
 	public Guest getGuest() {
@@ -119,7 +122,7 @@ public class GuestController implements Initializable {
 	// private method
 	private boolean validateFields() throws IOException {
 		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
-				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
+				|| stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Missing guest information");
 			alert.setHeaderText(null);
@@ -127,8 +130,7 @@ public class GuestController implements Initializable {
 			alert.showAndWait();
 			return false;
 		} else if (!(fnametf.getText().isEmpty() && lnametf.getText().isEmpty() && add1tf.getText().isEmpty()
-				&& add1tf.getText().isEmpty() && stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty())
-				&& add == true) {
+				&& stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty()) && add) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("New guest information");
 			alert.setHeaderText(null);
@@ -185,5 +187,23 @@ public class GuestController implements Initializable {
 		// add2tf.setStyle(MenuController.style);
 		// stateBox.setStyle(MenuController.style);
 		// postcodetf.setStyle(MenuController.style);
+	}
+
+	@FXML
+	void icKeyTyped(KeyEvent event) {
+		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
+			idTemp = ictf.getText();
+		} else {
+			ictf.setText(idTemp);
+		}
+	}
+
+	@FXML // this is intended if the user pastes
+	void icTextChanged(InputMethodEvent event) {
+		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
+			idTemp = ictf.getText();
+		} else {
+			ictf.setText(idTemp);
+		}
 	}
 }
