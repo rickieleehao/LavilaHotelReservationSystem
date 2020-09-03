@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane prefHeight="51.0" prefWidth="126.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.199951171875" minWidth="10.0" prefWidth="126.40001831054687" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.800048828125" minWidth="10.0" prefWidth="201.59998168945313" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.20001220703125" minWidth="10.0" prefWidth="88.79998779296875" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.4000122070312" minWidth="10.0" prefWidth="349.4000122070312" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField alignment="CENTER" prefHeight="74.0" prefWidth="111.0" text="TYPE">
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font>
+            </TextField>
+            <TextField alignment="CENTER" prefHeight="74.0" prefWidth="115.0" text="NUMBER OF ROOMS" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font></TextField>
+            <TextField alignment="CENTER" prefHeight="72.0" prefWidth="140.0" text="PRICE" GridPane.columnIndex="2">
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font></TextField>
+            <TextField alignment="CENTER" prefHeight="70.0" prefWidth="234.0" text="DESCRIPTION" GridPane.columnIndex="3">
+               <font>
+                  <Font name="Baskerville Old Face" size="18.0" />
+               </font>
+            </TextField>
+            <TextField text="Superior Suite" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="14.0" />
+               </font></TextField>
+            <TextField text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField text="RM 700" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField prefHeight="70.0" prefWidth="234.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField text="Studio" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="14.0" />
+               </font></TextField>
+            <TextField text="4" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField text="RM400" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField prefHeight="71.0" prefWidth="234.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField text="Deluxe" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="14.0" />
+               </font></TextField>
+            <TextField text="6" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField text="RM200" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField prefHeight="74.0" prefWidth="234.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextArea prefHeight="200.0" prefWidth="200.0" text="Superior Suites are furnished with a king-size bed or twin beds &#10;overlooking the city. Each suite features a separate living area, a bedroom &#10;and a luxurious bathroom. The spacious and well-appointed bathroom&#10;open to a lavish bathtub with twin vanity sinks and a separate shower.&#10;All suites are equipped with a UHD flat screen television with satellite &#10;channels, Nespresso coffee machine, a tea station and a mini bar." GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextArea prefHeight="200.0" prefWidth="200.0" text="With a clean, minimalist design and palette of neutral colours,&#10;the Studios provide a calming respite from the bustle of the &#10;city, with separate work and living areas, and amenities for &#10;your enjoyment and convenience." GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextArea prefHeight="200.0" prefWidth="200.0" text="Our contemporary Deluxe Room is stylishly furnished with a&#10;modern ensuite bathroom that offers both a shower and a &#10;bathtub. Looking to unwind or catch up on work? Large bay &#10;windows and 32” LCD television provide a relaxing atmosphere,&#10;while an executive work desk helps you get things done." GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+      <TextFlow prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TextField alignment="CENTER" prefHeight="50.0" prefWidth="765.0" text="Room Description">
+               <font>
+                  <Font name="Algerian" size="24.0" />
+               </font>
+            </TextField>
+         </children></TextFlow>
+   </children>
+</AnchorPane>
