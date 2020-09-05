@@ -1,0 +1,2 @@
+OFF15,0.85,true
+CYNPC,0.80,false
