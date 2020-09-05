@@ -144,11 +144,11 @@
          </font>
       </Label>
       <ComboBox fx:id="rNumberBox" disable="true" layoutX="452.0" layoutY="105.0" onAction="#rNumberField" prefHeight="25.0" prefWidth="127.0" promptText="pick a room" />
-      <Label fx:id="statuslb" alignment="CENTER" disable="true" layoutX="454.0" layoutY="188.0" prefHeight="25.0" prefWidth="127.0">
+      <Label fx:id="statuslb" alignment="CENTER" disable="true" layoutX="511.0" layoutY="188.0" prefHeight="25.0" prefWidth="70.0">
          <font>
             <Font size="15.0" />
          </font></Label>
-      <Label fx:id="bedlb" alignment="CENTER" disable="true" layoutX="453.0" layoutY="147.0" prefHeight="25.0" prefWidth="127.0" />
+      <Label fx:id="bedlb" alignment="CENTER" disable="true" layoutX="510.0" layoutY="151.0" prefHeight="25.0" prefWidth="70.0" />
       <Label fx:id="roomClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="301.0" prefHeight="25.0" prefWidth="88.0" />
       <Label fx:id="serviceClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="331.0" prefHeight="25.0" prefWidth="88.0" />
       <Label fx:id="totalClb" alignment="CENTER" disable="true" layoutX="509.0" layoutY="421.0" prefHeight="25.0" prefWidth="88.0" />
@@ -168,7 +168,7 @@
             <Image url="@../../image/Status%20icon.png" />
          </image>
       </ImageView>
-      <Button fx:id="checkinbt" layoutX="335.0" layoutY="562.0" mnemonicParsing="false" onAction="#checkIn" prefWidth="80.0" text="Check In" visible="false" />
+      <Button fx:id="checkinbt" layoutX="335.0" layoutY="562.0" mnemonicParsing="false" prefWidth="80.0" text="Check In" visible="false" />
       <Button fx:id="checkoutbt" layoutX="425.0" layoutY="562.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Check Out" visible="false" />
       <Button fx:id="cancelResbt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="80.0" text="Cancel Reservation" textAlignment="CENTER" visible="false" wrapText="true" />
       <Button fx:id="confirmResbt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#confirmRes" prefHeight="57.0" prefWidth="80.0" text="Confirm Reservation" textAlignment="CENTER" visible="false" wrapText="true" />

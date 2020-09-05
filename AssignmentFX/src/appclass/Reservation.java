@@ -114,10 +114,6 @@ public class Reservation extends Date {
 		this.childPax = childPax;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	// method
 	public static ArrayList<Reservation> initializeReservation(String filepath, ArrayList<Room> arrroom,
 			ArrayList<Guest> arrguest) {
@@ -153,8 +149,8 @@ public class Reservation extends Date {
 						break;
 					}
 
-				reservation.add(new Reservation(resID, guest, room, roomNumber, checkinDate, checkoutDate,
-						Integer.parseInt(adultPax), Integer.parseInt(childPax), status));
+				reservation.add(new Reservation(resID, guest, room, roomNumber, checkinDate, checkoutDate, Integer.parseInt(adultPax),
+						Integer.parseInt(childPax), status));
 			}
 		} catch (Exception e) {
 			System.out.println("create arrayReservation reservation.txt has error!");
@@ -163,9 +159,7 @@ public class Reservation extends Date {
 		return reservation;
 	}
 
-	public int searchReservation(ArrayList<Reservation> arrReservation, String resID) {
-		int index = 0;
-
+	public void searchReservation(ArrayList<Reservation> arrReservation, String resID) {
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).resID.equalsIgnoreCase(resID)) {
 				this.resID = resID;
@@ -177,11 +171,8 @@ public class Reservation extends Date {
 				this.adultPax = arrReservation.get(i).getAdultPax();
 				this.childPax = arrReservation.get(i).getChildPax();
 				this.status = arrReservation.get(i).getStatus();
-				index = i;
-				break;
 			}
 		}
-		return index;
 	}
 
 	public void newReservation(ArrayList<Reservation> arrReservation) {
@@ -203,10 +194,10 @@ public class Reservation extends Date {
 
 	public double calculatePrice() {
 		double stay_day = (LOCAL_DATE(this.checkoutDate).toEpochDay() - LOCAL_DATE(this.checkinDate).toEpochDay());
-
-		return stay_day * this.room.getSessionCharge(LOCAL_DATE(this.checkinDate).getMonth());
+		
+		return stay_day *this.room.getSessionCharge(LOCAL_DATE(this.checkinDate).getMonth());
 	}
-
+	
 	public void generatePaxList() {
 		this.adultPax = this.room.getAdultPaxLimit();
 		this.childPax = this.room.getChildPaxLimit();

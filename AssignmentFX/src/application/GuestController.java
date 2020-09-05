@@ -21,8 +21,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.KeyEvent;
 
 //simplify update @3/9 RickiE
 public class GuestController implements Initializable {
@@ -31,16 +29,15 @@ public class GuestController implements Initializable {
 			"Kuala Lumpur", "Malacca", "Negeri Sembilan", "Pahang", "Pulau Penang", "Perak", "Perlis", "Sabah",
 			"Sarawak", "Selangor", "Terengganu");
 
-	// instance variable
-	private Guest guest = null;
-	private boolean add;
-	private String idTemp;
+	private Guest guest;
 
 	public Guest getGuest() {
 		return guest;
 	}
 
 	private ArrayList<Guest> arrGuest;
+
+	private boolean add;
 
 	@FXML
 	private ChoiceBox<String> stateBox;
@@ -89,12 +86,12 @@ public class GuestController implements Initializable {
 
 	// method
 	private boolean validateFields() throws IOException {
-		// if any information is missing
-		// -> return missingInfo();
-		// else if all information filled && add == true
-		// -> return confirmation();
-		// else
-		// -> return true
+//		  if any information is missing 
+//		  -> return missingInfo();
+//		  else if all information filled && add == true
+//		  -> return confirmation(); 
+//		  else 
+//		  -> return true
 		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
 				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
 			return missingInfo();
@@ -131,7 +128,7 @@ public class GuestController implements Initializable {
 		alert.setHeaderText(null);
 		alert.setContentText("Please enter guest information");
 		alert.showAndWait();
-
+		
 		return false;
 	}
 
@@ -159,30 +156,5 @@ public class GuestController implements Initializable {
 		stateBox.setDisable(b);
 		postcodetf.setDisable(b);
 		addbt.setDisable(b);
-
-		// fnametf.setStyle(MenuController.style);
-		// lnametf.setStyle(MenuController.style);
-		// add1tf.setStyle(MenuController.style);
-		// add2tf.setStyle(MenuController.style);
-		// stateBox.setStyle(MenuController.style);
-		// postcodetf.setStyle(MenuController.style);
-	}
-
-	@FXML
-	void icKeyTyped(KeyEvent event) {
-		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
-			idTemp = ictf.getText();
-		} else {
-			ictf.setText(idTemp);
-		}
-	}
-
-	@FXML // this is intended if the user pastes
-	void icTextChanged(InputMethodEvent event) {
-		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
-			idTemp = ictf.getText();
-		} else {
-			ictf.setText(idTemp);
-		}
 	}
 }
