@@ -42,8 +42,6 @@ public class GuestController implements Initializable {
 
 	private ArrayList<Guest> arrGuest;
 
-	private boolean add;
-
 	@FXML
 	private ChoiceBox<String> stateBox;
 
