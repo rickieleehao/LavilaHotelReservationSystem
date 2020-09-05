@@ -600,7 +600,7 @@ public class MenuController extends Date implements Initializable {
 	void checkIn(ActionEvent event) throws IOException { // add a
 		String text = "Checked In";
 		if (reservation.getStatus().matches(text)) {
-
+			checkInDenied();
 		} else if (checkInConfirmation()) {
 			statuslb.setText(text);
 			arrReservation.get(reservationIndex).setStatus(text);
