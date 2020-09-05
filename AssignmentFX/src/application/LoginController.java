@@ -31,6 +31,7 @@ public class LoginController {
 	@FXML
 	private Label logintf;
 
+	// ActionEvent
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
@@ -51,6 +52,7 @@ public class LoginController {
 			logintf.setText("Enter username & password");
 	}
 
+	// KeyEvent
 	@FXML
 	void usernametab(KeyEvent event) {
 		if (event.getCode() == KeyCode.TAB) {

@@ -104,8 +104,8 @@
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="360.0" prefHeight="30.0" prefWidth="100.0" text="Other charges" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="326.0" layoutY="388.0" prefHeight="30.0" prefWidth="173.0" text="Discount (enter promo code)" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="300.0" prefHeight="30.0" prefWidth="100.0" text="Room charges" textAlignment="RIGHT" />
-      <TextField fx:id="otherCtf" disable="true" layoutX="509.0" layoutY="360.0" prefHeight="25.0" prefWidth="88.0" />
-      <TextField fx:id="discountCtf" disable="true" layoutX="509.0" layoutY="390.0" prefHeight="25.0" prefWidth="88.0" promptText="Ex: PROMO" />
+      <TextField fx:id="otherCtf" alignment="CENTER" disable="true" layoutX="509.0" layoutY="360.0" onKeyPressed="#otherCField" prefHeight="25.0" prefWidth="88.0" />
+      <TextField fx:id="discountCtf" alignment="CENTER" disable="true" layoutX="509.0" layoutY="390.0" onKeyPressed="#discountCField" prefHeight="25.0" prefWidth="88.0" promptText="Ex: PROMO" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="418.0" prefHeight="30.0" prefWidth="100.0" text="Total charges" textAlignment="RIGHT" />
       <Label alignment="CENTER_RIGHT" layoutX="400.0" layoutY="450.0" prefHeight="30.0" prefWidth="100.0" text="Payment Method" textAlignment="RIGHT" />
       <Label layoutX="370.0" layoutY="181.0" prefHeight="40.0" prefWidth="100.0" text="Status">
@@ -149,9 +149,9 @@
             <Font size="15.0" />
          </font></Label>
       <Label fx:id="bedlb" alignment="CENTER" disable="true" layoutX="510.0" layoutY="151.0" prefHeight="25.0" prefWidth="70.0" />
-      <Label fx:id="roomClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="301.0" prefHeight="25.0" prefWidth="80.0" />
-      <Label fx:id="serviceClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="331.0" prefHeight="25.0" prefWidth="80.0" />
-      <Label fx:id="totalClb" alignment="CENTER" disable="true" layoutX="509.0" layoutY="421.0" prefHeight="25.0" prefWidth="80.0" />
+      <Label fx:id="roomClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="301.0" prefHeight="25.0" prefWidth="88.0" />
+      <Label fx:id="serviceClb" alignment="CENTER" disable="true" layoutX="508.0" layoutY="331.0" prefHeight="25.0" prefWidth="88.0" />
+      <Label fx:id="totalClb" alignment="CENTER" disable="true" layoutX="509.0" layoutY="421.0" prefHeight="25.0" prefWidth="88.0" />
       <Button fx:id="addbt" disable="true" layoutX="245.0" layoutY="268.0" mnemonicParsing="false" onAction="#addGuest" prefHeight="25.0" prefWidth="51.0" text="Add" />
       <Label fx:id="iclb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="302.0" prefHeight="25.0" prefWidth="149.0" />
       <Label fx:id="fnamelb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="332.0" prefHeight="25.0" prefWidth="149.0" />

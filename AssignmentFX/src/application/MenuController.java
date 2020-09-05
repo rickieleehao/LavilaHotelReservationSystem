@@ -38,7 +38,7 @@ import javafx.stage.Stage;
 
 public class MenuController extends Date implements Initializable {
 
-	final private double SERVICE_CHARGE = 1.1;
+	final private double SERVICE_CHARGE = 0.1;
 
 	final private ObservableList<String> PMethodList = FXCollections.observableArrayList("Cash",
 			"Credit Card/Debit Card", "Online Banking");
@@ -116,6 +116,7 @@ public class MenuController extends Date implements Initializable {
 
 			idtf.setText(reservation.getID());
 			statuslb.setText(reservation.getStatus());
+
 		}
 	}
 
@@ -286,10 +287,23 @@ public class MenuController extends Date implements Initializable {
 	}
 
 	private void calculateTotal() {
-		totalClb.setText(Double.toString(Double.parseDouble(roomClb.getText())
-				+ Double.parseDouble(serviceClb.getText()) + Double.parseDouble(otherCtf.getText())));
+		double roomCharge = Double.parseDouble(roomClb.getText());
+		double serviceCharge = Double.parseDouble(serviceClb.getText());
+		double otherCharge = 0;
+		String discountCode;
+		double discount = 1;
+
+		if (!otherCtf.getText().isBlank())
+			try {
+				otherCharge = Double.parseDouble(otherCtf.getText());
+			} catch (Exception ex) {
+				otherCharge = 0;
+				invalidAmount();
+			}
+
+		totalClb.setText(Double.toString((roomCharge + serviceCharge + otherCharge) * discount));
 	}
-	
+
 	private boolean addConfirmation() throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Add new reservation");
@@ -330,6 +344,14 @@ public class MenuController extends Date implements Initializable {
 		confirmResbt.setVisible(false);
 	}
 
+	private void invalidAmount() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Invalid Amount");
+		alert.setHeaderText(null);
+		alert.setContentText("Please enter valid amount");
+		alert.showAndWait();
+	}
+
 	private void foundRes() {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Reservation ID");
@@ -365,6 +387,8 @@ public class MenuController extends Date implements Initializable {
 		checkoutbt.setVisible(true);
 		cancelResbt.setVisible(true);
 		confirmResbt.setVisible(false);
+
+		calculateTotal();
 	}
 
 	private void invalidRes() {
@@ -419,23 +443,37 @@ public class MenuController extends Date implements Initializable {
 	// KeyEvent
 	@FXML
 	void resIDtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB) {
+		if (event.getCode() == KeyCode.TAB)
 			searchbt.requestFocus();
-		} else if (event.getCode() == KeyCode.ENTER)
+		else if (event.getCode() == KeyCode.ENTER)
 			searchbt.fire();
 	}
 
 	@FXML
 	void searchtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB) {
+		if (event.getCode() == KeyCode.TAB)
 			newbt.requestFocus();
-		}
 	}
 
 	@FXML
 	void newtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB) {
+		if (event.getCode() == KeyCode.TAB)
 			idtf.requestFocus();
+	}
+
+	@FXML
+	void otherCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			discountCtf.requestFocus();
+		}
+	}
+
+	@FXML
+	void discountCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			pmethodBox.requestFocus();
 		}
 	}
 
