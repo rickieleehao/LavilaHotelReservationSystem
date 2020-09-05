@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import appclass.Date;
+import appclass.FileUpdate;
 import appclass.Guest;
 import appclass.Reservation;
 import appclass.Room;
@@ -94,7 +95,7 @@ public class MenuController extends Date implements Initializable {
 			missingID();
 		} else {
 			reservation = new Reservation();
-			reservation.searchReservation(arrReservation, idtf.getText());
+			reservationIndex = reservation.searchReservation(arrReservation, idtf.getText());
 
 			if (reservation.getID() != null)
 				foundRes();
@@ -212,7 +213,7 @@ public class MenuController extends Date implements Initializable {
 
 	@FXML
 	void paxField(ActionEvent event) {
-		if (adultBox.getValue() != null & childBox.getValue() != null) {
+		if (adultBox.getValue() != null && childBox.getValue() != null) {
 			reservation.setAdultPax(Integer.parseInt(adultBox.getValue()));
 			reservation.setChildPax(Integer.parseInt(childBox.getValue()));
 		}
@@ -589,5 +590,42 @@ public class MenuController extends Date implements Initializable {
 		discountCtf.setDisable(true);
 		totalClb.setDisable(true);
 		pmethodBox.setDisable(true);
+	}
+
+	// new code here
+
+	private int reservationIndex;
+
+	@FXML
+	void checkIn(ActionEvent event) throws IOException { // add a
+		String text = "Checked In";
+		if (reservation.getStatus().matches(text)) {
+			checkInDenied();
+		} else if (checkInConfirmation()) {
+			statuslb.setText(text);
+			arrReservation.get(reservationIndex).setStatus(text);
+			FileUpdate.updateReservation(arrReservation);
+		}
+	}
+
+	private boolean checkInConfirmation() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Check In");
+		alert.setHeaderText(null);
+		alert.setContentText("Are you sure you want to check in?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK)
+			return true;
+		else
+			return false;
+	}
+
+	private void checkInDenied() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Check In Denied");
+		alert.setHeaderText(null);
+		alert.setContentText("Guest has already checked in!");
+		alert.showAndWait();
 	}
 }
