@@ -37,9 +37,11 @@ public class LoginController {
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
-
+		logintf.setText(null);
+		
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
 			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
+
 				loginSuccessful();
 				
 				Parent menuViewParent = FXMLLoader.load(getClass().getResource("Menu.fxml"));
