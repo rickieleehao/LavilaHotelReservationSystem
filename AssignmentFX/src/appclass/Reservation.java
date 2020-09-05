@@ -1,6 +1,8 @@
 package appclass;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,15 +13,15 @@ public class Reservation extends Date {
 	private String roomNumber;
 	private String checkinDate;
 	private String checkoutDate;
-	private String adultPax;
-	private String childPax;
+	private int adultPax;
+	private int childPax;
 	private String status;
 	private double price;
 	private static Scanner x;
 
 	// constructor
 	public Reservation(String resID, Guest guest, Room room, String roomNumber, String checkinDate, String checkoutDate,
-			String adultPax, String childPax, String status) {
+			int adultPax, int childPax, String status) {
 		this.resID = resID;
 		this.guest = guest;
 		this.room = room; // no need
@@ -29,7 +31,6 @@ public class Reservation extends Date {
 		this.adultPax = adultPax;
 		this.childPax = childPax;
 		this.status = status;
-		this.price = 0;
 	}
 
 	public Reservation() {
@@ -60,11 +61,11 @@ public class Reservation extends Date {
 		return checkoutDate;
 	}
 
-	public String getAdultPax() {
+	public int getAdultPax() {
 		return adultPax;
 	}
 
-	public String getChildPax() {
+	public int getChildPax() {
 		return childPax;
 	}
 
@@ -77,7 +78,7 @@ public class Reservation extends Date {
 	}
 
 	// mutators
-	public void setRoom(ArrayList<Room>arrRoom) {
+	public void setRoom(ArrayList<Room> arrRoom) {
 		for (int i = 0; i < arrRoom.size(); i++)
 			if (arrRoom.get(i).getRoomNumber().equalsIgnoreCase(this.roomNumber)) {
 				room = arrRoom.get(i);
@@ -89,31 +90,27 @@ public class Reservation extends Date {
 		this.guest = guest;
 	}
 
-	public void setPrice(Room r) {
-		this.price = r.getPrice(); // ??
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public void setCheckindate(String checkindate) {
 		this.checkinDate = checkindate;
 	}
-	
+
 	public void setCheckoutdate(String checkoutdate) {
 		this.checkoutDate = checkoutdate;
 	}
-	
+
 	public void setRoomNumber(String roomNumber) {
 		this.roomNumber = roomNumber;
 	}
-	
-	public void setNumberOfBeds(String roomNumber) {
-		this.roomNumber = roomNumber;
-	}
-	
-	public void setAdultPax(String adultPax) {
+
+	public void setAdultPax(int adultPax) {
 		this.adultPax = adultPax;
 	}
-	
-	public void setChildPax(String childPax) {
+
+	public void setChildPax(int childPax) {
 		this.childPax = childPax;
 	}
 
@@ -152,8 +149,8 @@ public class Reservation extends Date {
 						break;
 					}
 
-				reservation.add(new Reservation(resID, guest, room, roomNumber, checkinDate, checkoutDate, adultPax,
-						childPax, status));
+				reservation.add(new Reservation(resID, guest, room, roomNumber, checkinDate, checkoutDate, Integer.parseInt(adultPax),
+						Integer.parseInt(childPax), status));
 			}
 		} catch (Exception e) {
 			System.out.println("create arrayReservation reservation.txt has error!");
@@ -185,5 +182,24 @@ public class Reservation extends Date {
 
 		this.resID = ID;
 		this.status = "Process";
+	}
+
+	public void addReservation(String filepath) throws IOException {
+		FileWriter newReservation = new FileWriter(filepath, true);
+		newReservation
+				.write("\n" + this.resID + "," + this.guest.getIC() + "," + this.roomNumber + "," + this.checkinDate
+						+ "," + this.checkoutDate + "," + this.adultPax + "," + this.childPax + "," + this.status);
+		newReservation.close();
+	}
+
+	public double calculatePrice() {
+		double stay_day = (LOCAL_DATE(this.checkoutDate).toEpochDay() - LOCAL_DATE(this.checkinDate).toEpochDay());
+		
+		return stay_day *this.room.getSessionCharge(LOCAL_DATE(this.checkinDate).getMonth());
+	}
+	
+	public void generatePaxList() {
+		this.adultPax = this.room.getAdultPaxLimit();
+		this.childPax = this.room.getChildPaxLimit();
 	}
 }

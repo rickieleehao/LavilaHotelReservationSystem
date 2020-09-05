@@ -3,7 +3,7 @@ package appclass;
 import java.time.Month;
 
 public class Studio extends Room {
-	private static double price = 200;
+	private static double price = 100;
 	private static int adultPax = 2;
 	private static int childPax = 1;
 

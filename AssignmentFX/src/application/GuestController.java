@@ -2,7 +2,6 @@ package application;
 
 import appclass.Guest;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 
+//simplify update @3/9 RickiE
 public class GuestController implements Initializable {
 
 	final private ObservableList<String> StateList = FXCollections.observableArrayList("Johor", "Kedah", "Kelantan",
@@ -36,10 +36,13 @@ public class GuestController implements Initializable {
 	private boolean add;
 	private String idTemp;
 
-	// accessor
 	public Guest getGuest() {
 		return guest;
 	}
+
+	private ArrayList<Guest> arrGuest;
+
+	private boolean add;
 
 	@FXML
 	private ChoiceBox<String> stateBox;
@@ -54,37 +57,13 @@ public class GuestController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		stateBox.setTooltip(new Tooltip("Select a state"));
 		stateBox.setItems(StateList);
-
-		// appclass.Guest.initializeGuest(filepath);
-		// Scanner x;
-		// String icno, fname, lname, add1, add2, state, postcode;
-		//
-		// try {
-		// x = new Scanner(new File("guest.txt"));
-		// x.useDelimiter("[,\n]");
-		//
-		// while (x.hasNext()) {
-		// icno = x.next();
-		// fname = x.next();
-		// lname = x.next();
-		// add1 = x.next();
-		// add2 = x.next();
-		// state = x.next();
-		// postcode = x.next();
-		//
-		// arrGuest.add(new Guest(icno, fname, lname, add1, add2, state, postcode));
-		// }
-		// } catch (Exception e) {
-		// System.out.println("create arrayGuest guest.txt has error!");
-		// }
+		arrGuest = Guest.initializeGuest(Main.GUEST_TXT);
 	}
 
-	// button
+	// ActionEvent
 	@FXML
 	void searchIC(ActionEvent event) {
 		guest = new Guest();
-		ArrayList<Guest> arrGuest = Guest.initializeGuest("guest.txt");
-
 		guest.findIC(arrGuest, ictf.getText());
 		if (guest.getIC() != null) {
 			setDisable(true);
@@ -97,17 +76,8 @@ public class GuestController implements Initializable {
 
 			addbt.setDisable(false);
 			add = false;
-		} else {
-			if (addNewGuest()) {
-				setDisable(false);
-				addbt.setDisable(false);
-				add = true;
-			} else {
-				setDisable(true);
-				addbt.setDisable(true);
-				add = false;
-			}
-		}
+		} else
+			addNewGuest();
 	}
 
 	@FXML
@@ -119,56 +89,67 @@ public class GuestController implements Initializable {
 		}
 	}
 
-	// private method
+	// method
 	private boolean validateFields() throws IOException {
+		// if any information is missing
+		// -> return missingInfo();
+		// else if all information filled && add == true
+		// -> return confirmation();
+		// else
+		// -> return true
 		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
-				|| stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Missing guest information");
-			alert.setHeaderText(null);
-			alert.setContentText("Please enter guest information");
-			alert.showAndWait();
-			return false;
+				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
+			return missingInfo();
 		} else if (!(fnametf.getText().isEmpty() && lnametf.getText().isEmpty() && add1tf.getText().isEmpty()
-				&& stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty()) && add) {
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("New guest information");
-			alert.setHeaderText(null);
-			alert.setContentText("Adding guest to database?");
-			Optional<ButtonType> action = alert.showAndWait();
-
-			if (action.get() == ButtonType.OK) {
-				guest = new Guest(ictf.getText(), fnametf.getText(), lnametf.getText(), add1tf.getText(),
-						add2tf.getText(), stateBox.getValue(), postcodetf.getText());
-				FileWriter output = new FileWriter("guest.txt", true);
-				output.write("\n" + ictf.getText() + "," + fnametf.getText() + "," + lnametf.getText() + ","
-						+ add1tf.getText() + "," + add2tf.getText() + "," + stateBox.getValue() + ","
-						+ postcodetf.getText());
-				Alert alert1 = new Alert(AlertType.WARNING);
-				alert1.setTitle("New guest information");
-				alert1.setHeaderText(null);
-				alert1.setContentText("Update successful");
-				alert1.showAndWait();
-				output.close();
-
-				return true;
-			} else
-				return false;
-		}
-
-		return true;
+				&& add1tf.getText().isEmpty() && stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty())
+				&& add == true) {
+			return confirmation();
+		} else
+			return true;
 	}
 
-	private boolean addNewGuest() {
+	// alert message
+	private void addNewGuest() {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("IC not found");
 		alert.setHeaderText(null);
 		alert.setContentText("Adding new guest?");
 		Optional<ButtonType> action = alert.showAndWait();
 
-		if (action.get() == ButtonType.OK)
+		if (action.get() == ButtonType.OK) {
+			setDisable(false);
+			addbt.setDisable(false);
+			add = true;
+		} else {
+			setDisable(true);
+			addbt.setDisable(true);
+			add = false;
+		}
+	}
+
+	private boolean missingInfo() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Missing guest information");
+		alert.setHeaderText(null);
+		alert.setContentText("Please enter guest information");
+		alert.showAndWait();
+
+		return false;
+	}
+
+	private boolean confirmation() throws IOException {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("New guest information");
+		alert.setHeaderText(null);
+		alert.setContentText("Adding guest to database?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK) {
+			guest = new Guest(ictf.getText(), fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
+					stateBox.getValue(), postcodetf.getText());
+			guest.addGuest(Main.GUEST_TXT);
 			return true;
-		else
+		} else
 			return false;
 	}
 
