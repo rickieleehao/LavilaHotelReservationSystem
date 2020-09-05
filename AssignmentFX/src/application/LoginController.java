@@ -8,10 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -35,9 +37,13 @@ public class LoginController {
 	@FXML
 	void login(ActionEvent event) throws IOException {
 		logintf.setVisible(true);
-
+		logintf.setText(null);
+		
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
 			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
+
+				loginSuccessful();
+				
 				Parent menuViewParent = FXMLLoader.load(getClass().getResource("Menu.fxml"));
 				Scene menuViewScene = new Scene(menuViewParent);
 
@@ -52,6 +58,16 @@ public class LoginController {
 			logintf.setText("Enter username & password");
 	}
 
+	//alert message
+	private void loginSuccessful() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Welcome");
+		alert.setHeaderText(null);
+		alert.setContentText("Login Successful.");
+		alert.showAndWait();
+	}
+	
+	
 	// KeyEvent
 	@FXML
 	void usernametab(KeyEvent event) {
