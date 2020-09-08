@@ -26,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,6 +37,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class MenuController extends Date implements Initializable {
 
@@ -173,7 +175,40 @@ public class MenuController extends Date implements Initializable {
 	@FXML
 	void checkindateField(ActionEvent event) {
 		if (checkindate.getValue() != null) {
-			reservation.setCheckindate(checkindate.getValue().toString());
+			LocalDate date = checkindate.getValue();
+			reservation.setCheckindate(date.toString());
+			
+			//Gonna be honest, this code is referred directly from http://www.java2s.com/Tutorials/Java/JavaFX/0540__JavaFX_DatePicker.htm
+			//I think this is how it works
+			//There is a method called DayCellFactory
+			//This method handles the drawing and enabling of each day cell within the date picker
+			//The following code hijacks the method, and overrides the default DateCell drawing method
+			//Basically, in this instance, the code is checked,
+            //so that every date on and before the checkindate is disabled and coloured differently
+			//Ingenious, if you ask me
+			
+			final Callback<DatePicker, DateCell> endDateDayCellFactory = new Callback<DatePicker, DateCell>() {
+				@Override
+				public DateCell call(final DatePicker datePicker) {
+					return new DateCell() {
+						@Override
+						public void updateItem(LocalDate item, boolean empty) {
+							super.updateItem(item, empty);
+							
+							if (item.isBefore(checkindate.getValue().plusDays(1))) {	
+								setDisable(true);
+								setStyle("-fx-background-color: #EEEEEE;");
+							}
+						}
+					};
+				}
+			};
+			    
+			checkoutdate.setDayCellFactory(endDateDayCellFactory);
+			//if checkoutdate invalid, automatically set a valid one
+			if (checkoutdate.getValue() == null || checkoutdate.getValue().isBefore(checkindate.getValue())) {
+				checkoutdate.setValue(checkindate.getValue().plusDays(1));
+			}
 			checkoutdate.setDisable(false);
 		}
 	}
@@ -181,7 +216,8 @@ public class MenuController extends Date implements Initializable {
 	@FXML
 	void checkoutdateField(ActionEvent event) {
 		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
-			reservation.setCheckoutdate(checkoutdate.getValue().toString());
+			LocalDate date = checkoutdate.getValue();
+			reservation.setCheckindate(date.toString());
 			rTypeBox.setDisable(false);
 			setRoomTypeList();
 		}
