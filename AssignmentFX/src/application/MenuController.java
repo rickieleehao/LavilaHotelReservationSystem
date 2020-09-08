@@ -378,15 +378,22 @@ public class MenuController extends Date implements Initializable {
 		add2lb.setText(reservation.getGuest().getAdd2());
 		statelb.setText(reservation.getGuest().getState());
 		postcodelb.setText(reservation.getGuest().getPostcode());
+		
+		if (reservation.getStatus().matches("Cancelled")) {
+			checkinbt.setVisible(false);
+			checkoutbt.setVisible(false);
+			cancelResbt.setVisible(false);
+		} else {
+			checkinbt.setVisible(true);
+			checkoutbt.setVisible(true);
+			cancelResbt.setVisible(true);
+		}
 
 		disableAll();
 		editbt.setDisable(false);
 		otherCtf.setDisable(false);
 		discountCtf.setDisable(false);
 		pmethodBox.setDisable(false);
-		checkinbt.setVisible(true);
-		checkoutbt.setVisible(true);
-		cancelResbt.setVisible(true);
 		confirmResbt.setVisible(false);
 
 		calculateTotal();
@@ -592,7 +599,7 @@ public class MenuController extends Date implements Initializable {
 		pmethodBox.setDisable(true);
 	}
 
-	// new code here
+	// check in code here
 
 	private int reservationIndex;
 
@@ -600,9 +607,12 @@ public class MenuController extends Date implements Initializable {
 	void checkIn(ActionEvent event) throws IOException { // add a
 		String text = "Checked In";
 		if (reservation.getStatus().matches(text)) {
-			checkInDenied();
+			checkInDenied("Guest has already checked in!");
+		} else if (reservation.getStatus().matches("Checked Out")) {
+			checkInDenied("Checked out guest cannot be checked in!");
 		} else if (checkInConfirmation()) {
 			statuslb.setText(text);
+			reservation.setStatus(text);
 			arrReservation.get(reservationIndex).setStatus(text);
 			FileUpdate.updateReservation(arrReservation);
 		}
@@ -621,11 +631,102 @@ public class MenuController extends Date implements Initializable {
 			return false;
 	}
 
-	private void checkInDenied() {
+	private void checkInDenied(String error) {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Check In Denied");
 		alert.setHeaderText(null);
-		alert.setContentText("Guest has already checked in!");
+		alert.setContentText(error);
 		alert.showAndWait();
 	}
+	
+	//check out code here
+	
+	private void checkOutDenied(String error) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Check Out Denied");
+		alert.setHeaderText(null);
+		alert.setContentText(error);
+		alert.showAndWait();
+	}
+	
+	private boolean checkOutConfirmation() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Check Out");
+		alert.setHeaderText(null);
+		alert.setContentText("Are you sure you want to check out?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK)
+			return true;
+		else
+			return false;
+	}
+	
+	@FXML
+    void checkOut(ActionEvent event) throws IOException{
+		String text = "Checked Out";
+		if (reservation.getStatus().matches("Process")) {
+			checkOutDenied("Guest must first be checked in to check out!");
+		}else if(reservation.getStatus().matches(text)) {
+			checkOutDenied("Guest cannot be checked out again!");
+		}else if(pmethodBox.getValue() == null) {
+			checkOutDenied("Guest must pay first to check out!");
+		}else if (checkOutConfirmation()) {
+			statuslb.setText(text);
+			reservation.setStatus(text);
+			arrReservation.get(reservationIndex).setStatus(text);
+			FileUpdate.updateReservation(arrReservation);
+		}
+    }
+	
+	//cancel reservation code here
+	
+	//  after writing this like n-th time, I'm starting to think this is inefficient, the confirmation box below.
+	/*  Suggestion: 
+	 *  private boolean confirmationBox (String title, String prompt) 
+	 *  to allow for refactoring and readability purpose.
+	 *  
+	 *  Same suggestion for the warning box. If help is needed, I can refactor the codes too.
+	 */
+	
+	private boolean cancelConfirmation() { 
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Cancel Reservation");
+		alert.setHeaderText(null);
+		alert.setContentText("Are you sure you want to cancel reservation?");
+		Optional<ButtonType> action = alert.showAndWait();
+
+		if (action.get() == ButtonType.OK)
+			return true;
+		else
+			return false;
+	}
+	
+	private void cancellationDenied(String error) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Cancellation Denied");
+		alert.setHeaderText(null);
+		alert.setContentText(error);
+		alert.showAndWait();
+	}
+	
+	@FXML
+    void cancelReservation(ActionEvent event) throws IOException{
+		String text = "Cancelled";
+		if (!reservation.getStatus().matches("Process")) { //Process should be "Processed" for all instance?
+			String errorType = reservation.getStatus();
+			cancellationDenied("Reservation cannot be cancelled if the reservation status is " + errorType);
+		}else if(cancelConfirmation()) {
+			statuslb.setText(text);
+			reservation.setStatus(text);
+			arrReservation.get(reservationIndex).setStatus(text);
+			FileUpdate.updateReservation(arrReservation);
+			
+			checkinbt.setVisible(false);
+			checkoutbt.setVisible(false);
+			cancelResbt.setVisible(false);
+		}
+    }
+	
+	
 }
