@@ -34,7 +34,7 @@ public class GuestController implements Initializable {
 	// instance variable
 	private Guest guest = null;
 	private boolean add;
-	private String idTemp;
+	private String idTemp = "";
 
 	public Guest getGuest() {
 		return guest;
@@ -167,22 +167,49 @@ public class GuestController implements Initializable {
 		// stateBox.setStyle(MenuController.style);
 		// postcodetf.setStyle(MenuController.style);
 	}
+	
+	//the following regex is quite literally a pain, the following comment will attempt to explain what it does 
+	//first it checks whether the whole string is xxxxxx-xx-xxxx, with the last 4 digit being of variable length (it can be there or not)
+	//if not, it checks whether it is xxxxxx-xx, with the last 2 digit 
+	//if not, then it checks whether it is xxxxxx, or anything between 0 to 6 digits
 
 	@FXML
 	void icKeyTyped(KeyEvent event) {
-		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
+		boolean autoEdit = false;
+		if (ictf.getText().matches("(^\\d{6}-\\d{2}$)|(^\\d{6}$)") && !autoEdit) {
+			idTemp = ictf.getText() + "-";
+			ictf.setText(idTemp);
+			ictf.positionCaret(idTemp.length());
+			autoEdit = true;
+		} else if (ictf.getText().matches("(^\\d{6}-\\d{2}-$)|(^\\d{6}-$)") && !autoEdit) {
+			idTemp = ictf.getText(0,ictf.getText().length() - 1);
+			ictf.setText(idTemp);
+			ictf.positionCaret(idTemp.length());
+			autoEdit = true;
+		} else if (ictf.getText().matches("(^\\d{6}-\\d{3}$)|(^\\d{7}$)") && !autoEdit) {
+			String last = ictf.getText(ictf.getText().length() - 1, ictf.getText().length());
+			idTemp = ictf.getText(0,ictf.getText().length() - 1) + "-" + last;
+			ictf.setText(idTemp);
+			ictf.positionCaret(idTemp.length());
+			autoEdit = true;
+		} else if (ictf.getText().matches("(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
 			idTemp = ictf.getText();
+			autoEdit = false;
 		} else {
 			ictf.setText(idTemp);
+			ictf.positionCaret(idTemp.length());
+			autoEdit = false;
 		}
 	}
 
 	@FXML // this is intended if the user pastes
+	// so far I have no idea how to show error messages, tooltip is a semi-deadend (?) So I'll need more info there.
 	void icTextChanged(InputMethodEvent event) {
-		if (ictf.getText().matches("^\\d*$") && ictf.getText().length() <= 12) {
+		 if (ictf.getText().matches("(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
 			idTemp = ictf.getText();
 		} else {
 			ictf.setText(idTemp);
+			ictf.positionCaret(idTemp.length());
 		}
 	}
 }
