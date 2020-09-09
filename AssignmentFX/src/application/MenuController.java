@@ -168,16 +168,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	}
 
 	@FXML // newRes part1
-	void confirmRes(ActionEvent event) throws IOException {
-		if (validateFields()) {
-			if (alertMsg.confirmation("Add new reservation", "Confirm adding this reservation?"))
-				;
-			reservation.addReservation(Main.RESERVATION_TXT);
-		} else
-			alertMsg.warning("Missing information", "Fill in reservation information");
-	}
-
-	@FXML // newRes part2
 	void checkindateField(ActionEvent event) {
 		if (checkindate.getValue() != null) {
 			LocalDate date = checkindate.getValue();
@@ -211,38 +201,40 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				checkoutdate.setDisable(false);
 			}
 			
-			rTypeBox.setValue("Pick a room");
-			rNumberBox.setValue("Pick a room");
-			rTypeBox.setDisable(true);
+			rTypeBox.setValue(null);
+			rNumberBox.setValue(null);
 			rNumberBox.setDisable(true);
 		}
 	}
 
-	@FXML // newRes part3
+	@FXML // newRes part2
 	void checkoutdateField(ActionEvent event) {
 		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
 			LocalDate date = checkoutdate.getValue();
 			reservation.setCheckoutdate(date.toString());
-			rTypeBox.setDisable(false);
-			setRoomTypeList();
 			
-			rNumberBox.setValue("Pick a room");
+			rNumberBox.setValue(null);
+			rTypeBox.setValue(null);
+			rTypeBox.setDisable(false);
 			rNumberBox.setDisable(true);
+			
+			setRoomTypeList();
 		}
 	}
 
-	@FXML // newRes part4
+	@FXML // newRes part3
 	void rTypeField(ActionEvent event) {
-		if (!rTypeBox.getValue().equalsIgnoreCase("Pick A Room")) {
+		if (rTypeBox.getValue() != null) {
 			rNumberBox.setDisable(false);
 			setRoomNumberList(rTypeBox.getValue());
 		}
 	}
 
-	@FXML // newRes part5
+	@FXML // newRes part4
 	void rNumberField(ActionEvent event) {
-		if (!rNumberBox.getValue().equalsIgnoreCase("Pick A Room")) {
-			reservation.setRoom(reservation.getRoom().findRoom(arrRoom, rNumberBox.getValue()));
+		if (rNumberBox.getValue()!= null) {
+			Room r = new Room();
+			reservation.setRoom(r.findRoom(arrRoom, rNumberBox.getValue()));
 
 			reservation.setSubPrice(reservation.calculateSubPrice());
 
@@ -264,13 +256,99 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		}
 	}
 
+	@FXML
+	void confirmRes(ActionEvent event) throws IOException {
+		if (validateFields()) {
+			if (alertMsg.confirmation("Add new reservation", "Confirm adding this reservation?"))
+				;
+			reservation.addReservation(Main.RESERVATION_TXT);
+		} else
+			alertMsg.warning("Missing information", "Fill in reservation information");
+	}
+
+	@FXML
+	void checkIn(ActionEvent event) throws IOException {
+		String text = "Check in";
+		if (alertMsg.confirmation("Check In", "Proceed check in?")) {
+			statuslb.setText(text);
+			reservation.setStatus(text);
+	
+			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+		}
+	}
+
+	@FXML
+	void checkOut(ActionEvent event) throws IOException {
+		String text = "Check out";
+		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
+			if (!pmethodBox.getValue().isBlank()) {
+				statuslb.setText(text);
+				reservation.setStatus(text);
+	
+				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+			} else {
+				alertMsg.warning("Check out denied", "Please select payment before checking out");
+			}
+	
+	}
+
+	@FXML
+	void cancelReservation(ActionEvent event) throws IOException {
+		String text = "Cancelled";
+		if (alertMsg.confirmation("Cancel Reservation", "Are you sure you want to cancel reservation?")) {
+			statuslb.setText(text);
+			reservation.setStatus(text);
+			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+		}
+	
+		checkinbt.setVisible(false);
+		checkoutbt.setVisible(false);
+		cancelResbt.setVisible(false);
+	}
+
+	// KeyEvent
+	@FXML
+	void resIDtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			searchbt.requestFocus();
+		else if (event.getCode() == KeyCode.ENTER)
+			searchbt.fire();
+	}
+
+	@FXML
+	void searchtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			newbt.requestFocus();
+	}
+
+	@FXML
+	void newtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			idtf.requestFocus();
+	}
+
+	@FXML
+	void otherCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			discountCtf.requestFocus();
+		}
+	}
+
+	@FXML
+	void discountCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			pmethodBox.requestFocus();
+		}
+	}
+
 	// method
 	private void setRoomTypeList() {
 		RoomTypeList = FXCollections.observableArrayList();
 		ChronoLocalDate arrCheckin, arrCheckout;
 		ChronoLocalDate checkin = checkindate.getValue(), checkout = checkoutdate.getValue();
 		String temp = "";
-		//ArrayList<Room> arrTemp = new ArrayList<Room>(); // unavailable roomNumber
 
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
@@ -282,22 +360,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 					temp = arrReservation.get(i).getRoom().getRoomType();
 					if (!RoomTypeList.contains(temp))
 						RoomTypeList.add(temp);
-				/*for (int x = 0; x <= (checkout.toEpochDay() - checkin.toEpochDay()); x++) {
-					if ((checkin.toEpochDay() + x) >= arrCheckin.toEpochDay()
-							&& (checkin.toEpochDay() + x) <= arrCheckout.toEpochDay()) {
-						arrTemp.add(arrReservation.get(i).getRoom());
-						break;
-					}
-				}*/
 			}
 		}
-
-		/*for (int i = 0; i < arrRoom.size(); i++) {
-			for (int x = 0; x < arrTemp.size(); x++)
-				if (!arrRoom.get(i).getRoomNumber().equalsIgnoreCase(arrTemp.get(x).getRoomNumber()))
-					if (!RoomTypeList.contains(arrRoom.get(i).getRoomType()))
-						RoomTypeList.add(arrRoom.get(i).getRoomType());
-		}*/
 
 		rTypeBox.setItems(RoomTypeList);
 	}
@@ -322,34 +386,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 						tempNumber.add(temp);
 			}
 		}
-
-		/*		if (!(checkin.toEpochDay() >= arrCheckin.toEpochDay()
-						&& checkin.toEpochDay() <= arrCheckin.toEpochDay()))
-					if (!(checkout.toEpochDay() >= arrCheckin.toEpochDay()
-							&& checkout.toEpochDay() <= arrCheckout.toEpochDay()))
-						if (arrReservation.get(i).getRoom().getRoomType().equalsIgnoreCase(rType))
-							tempNumber.add(arrReservation.get(i).getRoom().getRoomNumber());
-			}
-		}*/
 		
 		for (Room room : arrRoom) {
 			temp = room.getRoomNumber();
 			if(!tempNumber.contains(room.getRoomNumber()) && room.getRoomType().equalsIgnoreCase(rTypeBox.getValue()))
 				RoomNumberList.add(temp);
 		}
-
-		/*for (int i = 0; i < arrRoom.size(); i++) { // find available roomNumber for the selected roomType within the
-													// booking
-			
-			
-			if (arrRoom.get(i).getRoomType().equalsIgnoreCase(rType))
-				if (tempNumber.size() != 0) {
-					for (int x = 0; x < tempNumber.size(); x++)
-						if (!arrRoom.get(i).getRoomNumber().equalsIgnoreCase(tempNumber.get(x)))
-							RoomNumberList.add(arrRoom.get(i).getRoomNumber());
-				} else
-					RoomNumberList.add(arrRoom.get(i).getRoomNumber());
-		}*/
 
 		rNumberBox.setItems(RoomNumberList);
 	}
@@ -410,43 +452,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			return false;
 		else
 			return true;
-	}
-
-	// KeyEvent
-	@FXML
-	void resIDtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			searchbt.requestFocus();
-		else if (event.getCode() == KeyCode.ENTER)
-			searchbt.fire();
-	}
-
-	@FXML
-	void searchtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			newbt.requestFocus();
-	}
-
-	@FXML
-	void newtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			idtf.requestFocus();
-	}
-
-	@FXML
-	void otherCField(KeyEvent event) {
-		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
-			calculateTotal();
-			discountCtf.requestFocus();
-		}
-	}
-
-	@FXML
-	void discountCField(KeyEvent event) {
-		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
-			calculateTotal();
-			pmethodBox.requestFocus();
-		}
 	}
 
 	// format method
@@ -625,45 +630,5 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		discountCtf.setDisable(b);
 		totalClb.setDisable(b);
 		pmethodBox.setDisable(b);
-	}
-
-	@FXML
-	void checkIn(ActionEvent event) throws IOException {
-		String text = "Check in";
-		if (alertMsg.confirmation("Check In", "Proceed check in?")) {
-			statuslb.setText(text);
-			reservation.setStatus(text);
-
-			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
-		}
-	}
-
-	@FXML
-	void checkOut(ActionEvent event) throws IOException {
-		String text = "Check out";
-		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
-			if (!pmethodBox.getValue().isBlank()) {
-				statuslb.setText(text);
-				reservation.setStatus(text);
-
-				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
-			} else {
-				alertMsg.warning("Check out denied", "Please select payment before checking out");
-			}
-
-	}
-
-	@FXML
-	void cancelReservation(ActionEvent event) throws IOException {
-		String text = "Cancelled";
-		if (alertMsg.confirmation("Cancel Reservation", "Are you sure you want to cancel reservation?")) {
-			statuslb.setText(text);
-			reservation.setStatus(text);
-			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
-		}
-
-		checkinbt.setVisible(false);
-		checkoutbt.setVisible(false);
-		cancelResbt.setVisible(false);
 	}
 }
