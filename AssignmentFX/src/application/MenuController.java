@@ -21,7 +21,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -62,9 +61,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML
 	private Button newbt, searchbt, editbt, cancelbt, checkinbt, checkoutbt, cancelResbt, confirmResbt, updatebt, addbt;
-
-	@FXML
-	private CheckBox breakfastbt, lunchbt;
 
 	@FXML
 	private Label statuslb, bedlb, roomClb, serviceClb, totalClb;
@@ -204,6 +200,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			rTypeBox.setValue(null);
 			rNumberBox.setValue(null);
 			rNumberBox.setDisable(true);
+			adultBox.setDisable(false);
+			childBox.setDisable(false);
 		}
 	}
 
@@ -213,8 +211,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			LocalDate date = checkoutdate.getValue();
 			reservation.setCheckoutdate(date.toString());
 			
-			rNumberBox.setValue(null);
 			rTypeBox.setValue(null);
+			rNumberBox.setValue(null);
 			rTypeBox.setDisable(false);
 			rNumberBox.setDisable(true);
 			
@@ -506,8 +504,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	private void formatSetting() {
 		adultBox.setDisable(false);
 		childBox.setDisable(false);
-		breakfastbt.setDisable(false);
-		lunchbt.setDisable(false);
 
 		iclb.setDisable(false);
 		iclb.setDisable(false);
@@ -611,8 +607,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		statuslb.setDisable(b);
 		rTypeBox.setDisable(b);
 		rNumberBox.setDisable(b);
-		breakfastbt.setDisable(b);
-		lunchbt.setDisable(b);
 		bedlb.setDisable(b);
 
 		addbt.setDisable(b);

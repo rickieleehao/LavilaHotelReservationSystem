@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -77,8 +76,8 @@
       </ImageView>
       <TextField fx:id="idtf" layoutX="141.0" layoutY="23.0" onKeyPressed="#resIDtab" prefHeight="25.0" prefWidth="173.0" promptText="R1234" />
       <Line endX="456.0" layoutX="134.0" layoutY="180.0" startX="-100.0" strokeWidth="0.5" />
-      <DatePicker fx:id="checkindate" disable="true" editable="false" layoutX="153.0" layoutY="65.0" onAction="#checkindateField" prefHeight="25.0" prefWidth="149.0" promptText="pick a date" />
-      <DatePicker fx:id="checkoutdate" disable="true" layoutX="430.0" layoutY="65.0" onAction="#checkoutdateField" prefHeight="25.0" prefWidth="149.0" promptText="pick a date" />
+      <DatePicker fx:id="checkindate" disable="true" editable="false" layoutX="153.0" layoutY="65.0" onAction="#checkindateField" prefHeight="25.0" prefWidth="149.0" promptText="Pick a date" />
+      <DatePicker fx:id="checkoutdate" disable="true" layoutX="430.0" layoutY="65.0" onAction="#checkoutdateField" prefHeight="25.0" prefWidth="149.0" promptText="Pick a date" />
       <Button fx:id="newbt" layoutX="373.0" layoutY="23.0" mnemonicParsing="false" onAction="#newRes" onKeyPressed="#newtab" text="New" />
       <Button fx:id="searchbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" onAction="#searchRes" onKeyPressed="#searchtab" text="Search" />
       <Label layoutX="36.0" layoutY="260.0" prefHeight="40.0" prefWidth="126.0" text="Guest Information">
@@ -115,7 +114,7 @@
       </Label>
       <Button fx:id="editbt" layoutX="416.0" layoutY="23.0" mnemonicParsing="false" onAction="#editRes" prefHeight="20.0" prefWidth="40.0" text="Edit" visible="false" />
       <Line endX="456.0" layoutX="136.0" layoutY="514.0" startX="-100.0" strokeWidth="0.5" />
-      <ComboBox fx:id="rTypeBox" disable="true" layoutX="175.0" layoutY="105.0" onAction="#rTypeField" prefHeight="25.0" prefWidth="127.0" promptText="pick a type" />
+      <ComboBox fx:id="rTypeBox" disable="true" layoutX="175.0" layoutY="105.0" onAction="#rTypeField" prefHeight="25.0" prefWidth="127.0" promptText="Pick a type" />
       <Label layoutX="369.0" layoutY="139.0" prefHeight="40.0" prefWidth="100.0" text="Bed">
          <font>
             <Font size="15.0" />
@@ -126,23 +125,8 @@
             <Image url="@../../image/room.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="25.0" fitWidth="30.0" layoutX="38.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../image/breakfasticon.png" />
-         </image>
-      </ImageView>
-      <CheckBox fx:id="lunchbt" disable="true" layoutX="236.0" layoutY="190.0" mnemonicParsing="false" text="Lunch">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </CheckBox>
-      <Line endX="456.0" layoutX="136.0" layoutY="221.0" startX="-100.0" strokeWidth="0.5" />
-      <Label layoutX="75.0" layoutY="181.0" prefHeight="40.0" prefWidth="100.0" text="Meal">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="rNumberBox" disable="true" layoutX="452.0" layoutY="105.0" onAction="#rNumberField" prefHeight="25.0" prefWidth="127.0" promptText="pick a room" />
+      <Line endX="456.0" layoutX="136.0" layoutY="221.0" startX="180.6" strokeWidth="0.5" />
+      <ComboBox fx:id="rNumberBox" disable="true" layoutX="452.0" layoutY="105.0" onAction="#rNumberField" prefHeight="25.0" prefWidth="127.0" promptText="Pick a room" />
       <Label fx:id="statuslb" alignment="CENTER" disable="true" layoutX="454.0" layoutY="188.0" prefHeight="25.0" prefWidth="127.0">
          <font>
             <Font size="15.0" />
@@ -171,11 +155,6 @@
       <Button fx:id="checkoutbt" layoutX="425.0" layoutY="562.0" mnemonicParsing="false" onAction="#checkOut" prefHeight="25.0" prefWidth="80.0" text="Check Out" visible="false" />
       <Button fx:id="cancelResbt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#cancelReservation" prefHeight="57.0" prefWidth="80.0" text="Cancel Reservation" textAlignment="CENTER" visible="false" wrapText="true" />
       <Button fx:id="confirmResbt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#confirmRes" prefHeight="57.0" prefWidth="80.0" text="Confirm Reservation" textAlignment="CENTER" visible="false" wrapText="true" />
-      <CheckBox fx:id="breakfastbt" disable="true" layoutX="134.0" layoutY="190.0" mnemonicParsing="false" text="Breakfast">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </CheckBox>
       <Button fx:id="cancelbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" onAction="#cancel" onKeyPressed="#searchtab" prefHeight="25.0" prefWidth="95.0" text="Cancel" visible="false" />
       <Button fx:id="updatebt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#updateRes" prefHeight="57.0" prefWidth="80.0" text="Update" textAlignment="CENTER" visible="false" wrapText="true" />
    </children>
