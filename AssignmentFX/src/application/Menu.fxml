@@ -113,7 +113,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="editbt" disable="true" layoutX="416.0" layoutY="23.0" mnemonicParsing="false" onAction="#editRes" prefHeight="20.0" prefWidth="40.0" text="Edit" />
+      <Button fx:id="editbt" layoutX="416.0" layoutY="23.0" mnemonicParsing="false" onAction="#editRes" prefHeight="20.0" prefWidth="40.0" text="Edit" visible="false" />
       <Line endX="456.0" layoutX="136.0" layoutY="514.0" startX="-100.0" strokeWidth="0.5" />
       <ComboBox fx:id="rTypeBox" disable="true" layoutX="175.0" layoutY="105.0" onAction="#rTypeField" prefHeight="25.0" prefWidth="127.0" promptText="pick a type" />
       <Label layoutX="369.0" layoutY="139.0" prefHeight="40.0" prefWidth="100.0" text="Bed">
@@ -176,6 +176,7 @@
             <Font size="15.0" />
          </font>
       </CheckBox>
-      <Button fx:id="cancelbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" onAction="#cancel" onKeyPressed="#searchtab" prefHeight="25.0" prefWidth="138.0" text="Cancel" visible="false" />
+      <Button fx:id="cancelbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" onAction="#cancel" onKeyPressed="#searchtab" prefHeight="25.0" prefWidth="95.0" text="Cancel" visible="false" />
+      <Button fx:id="updatebt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#updateRes" prefHeight="57.0" prefWidth="80.0" text="Update" textAlignment="CENTER" visible="false" wrapText="true" />
    </children>
 </Pane>

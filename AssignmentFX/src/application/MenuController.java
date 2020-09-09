@@ -49,7 +49,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	private ArrayList<Reservation> arrReservation;
 	private ArrayList<Room> arrRoom;
 	private ArrayList<Promotion> arrPromo;
-	private Reservation reservation = new Reservation();
+	private Reservation reservation;
 
 	@FXML
 	private ComboBox<String> rTypeBox, rNumberBox, childBox, adultBox, pmethodBox;
@@ -61,7 +61,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	private DatePicker checkindate, checkoutdate;
 
 	@FXML
-	private Button newbt, searchbt, editbt, cancelbt, checkinbt, checkoutbt, cancelResbt, confirmResbt, addbt;
+	private Button newbt, searchbt, editbt, cancelbt, checkinbt, checkoutbt, cancelResbt, confirmResbt, updatebt, addbt;
 
 	@FXML
 	private CheckBox breakfastbt, lunchbt;
@@ -89,7 +89,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			alertMsg.warning("Mising reservation ID", "Please enter reservation ID");
 			defaultSetting();
 		} else {
-			// reservation = new Reservation();
+			reservation = new Reservation();
 			reservation = reservation.searchReservation(arrReservation, idtf.getText());
 			if (reservation != null) {
 				alertMsg.warning("Reservation ID", reservation.getID() + " result found");
@@ -98,18 +98,27 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				alertMsg.warning("Invalid reservation ID", "Result not found");
 				defaultSetting();
 			}
-
 		}
 	}
 
 	@FXML // edit a reservation record
 	void editRes(ActionEvent event) {
-
+		if(alertMsg.confirmation("Editing", "Edit this reservation?"))
+			editingSetting();
 	}
 
+	@FXML
+	void updateRes(ActionEvent event) throws IOException {
+		if (validateFields()) {
+			if (alertMsg.confirmation("Update reservation", "Confirm changing this reservation?"))
+			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+		} else
+			alertMsg.warning("Missing information", "Fill in reservation information");
+	}
+	
 	@FXML // cancel
 	void cancel(ActionEvent event) {
-		if (alertMsg.confirmation("Cancellation", "Discard this reservation?"))
+		if (alertMsg.confirmation("Cancellation", "Discard changes?"))
 			defaultSetting();
 	}
 
@@ -429,19 +438,35 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		checkindate.setDisable(false);
 	}
 
+	private void editingSetting() {
+		idtf.setEditable(false);
+		searchbt.setVisible(false);
+		newbt.setVisible(false);
+		editbt.setVisible(false);
+		cancelbt.setVisible(true);
+		
+		disableAll(false);
+		
+		checkinbt.setVisible(false);
+		checkoutbt.setVisible(false);
+		cancelResbt.setVisible(false);
+		updatebt.setVisible(true);
+	}
+	
 	private void defaultSetting() {
 		clearText();
-		disableAll();
+		disableAll(true);
 		idtf.setEditable(true);
 		searchbt.setVisible(true);
 		newbt.setVisible(true);
-		editbt.setVisible(true);
+		editbt.setVisible(false);
 		cancelbt.setVisible(false);
 
 		confirmResbt.setVisible(false);
 		checkinbt.setVisible(false);
 		checkoutbt.setVisible(false);
 		cancelResbt.setVisible(false);
+		updatebt.setVisible(false);
 	}
 
 	private void formatSetting() {
@@ -508,12 +533,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			cancelResbt.setVisible(true);
 		}
 
-		disableAll();
-		editbt.setDisable(false);
+		disableAll(true);
 		otherCtf.setDisable(false);
 		discountCtf.setDisable(false);
 		pmethodBox.setDisable(false);
 		confirmResbt.setVisible(false);
+		editbt.setVisible(true);
 	}
 
 	private void clearText() {
@@ -544,33 +569,33 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	}
 
-	private void disableAll() {
-		checkindate.setDisable(true);
-		checkoutdate.setDisable(true);
-		adultBox.setDisable(true);
-		childBox.setDisable(true);
-		statuslb.setDisable(true);
-		rTypeBox.setDisable(true);
-		rNumberBox.setDisable(true);
-		breakfastbt.setDisable(true);
-		lunchbt.setDisable(true);
-		bedlb.setDisable(true);
+	private void disableAll(boolean b) {
+		checkindate.setDisable(b);
+		checkoutdate.setDisable(b);
+		adultBox.setDisable(b);
+		childBox.setDisable(b);
+		statuslb.setDisable(b);
+		rTypeBox.setDisable(b);
+		rNumberBox.setDisable(b);
+		breakfastbt.setDisable(b);
+		lunchbt.setDisable(b);
+		bedlb.setDisable(b);
 
-		addbt.setDisable(true);
-		iclb.setDisable(true);
-		fnamelb.setDisable(true);
-		lnamelb.setDisable(true);
-		add1lb.setDisable(true);
-		add2lb.setDisable(true);
-		statelb.setDisable(true);
-		postcodelb.setDisable(true);
+		addbt.setDisable(b);
+		iclb.setDisable(b);
+		fnamelb.setDisable(b);
+		lnamelb.setDisable(b);
+		add1lb.setDisable(b);
+		add2lb.setDisable(b);
+		statelb.setDisable(b);
+		postcodelb.setDisable(b);
 
-		roomClb.setDisable(true);
-		serviceClb.setDisable(true);
-		otherCtf.setDisable(true);
-		discountCtf.setDisable(true);
-		totalClb.setDisable(true);
-		pmethodBox.setDisable(true);
+		roomClb.setDisable(b);
+		serviceClb.setDisable(b);
+		otherCtf.setDisable(b);
+		discountCtf.setDisable(b);
+		totalClb.setDisable(b);
+		pmethodBox.setDisable(b);
 	}
 
 	@FXML

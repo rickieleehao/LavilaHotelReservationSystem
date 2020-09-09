@@ -20,7 +20,7 @@ public class Promotion {
 		this.code = code;
 		this.discount = 1;
 	}
-
+	
 	// accessor
 	public String getCode() {
 		return this.code;

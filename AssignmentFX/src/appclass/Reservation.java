@@ -165,6 +165,7 @@ public class Reservation extends Date {
 				resID = x.next();
 				icno = x.next();
 				roomNumber = x.next();
+				discountCode = x.next();
 				checkinDate = x.next();
 				checkoutDate = x.next();
 				adultPax = x.next();
@@ -172,7 +173,6 @@ public class Reservation extends Date {
 				status = x.next();
 				subPrice = x.next();
 				otherPrice = x.next();
-				discountCode = x.next();
 				totalPrice = x.next();
 				paymentType = x.next();
 
@@ -188,6 +188,7 @@ public class Reservation extends Date {
 						break;
 					}
 
+				promo = new Promotion(discountCode);
 				for (int i = 0; i < arrPromo.size(); i++)
 					if (arrPromo.get(i).getCode().equalsIgnoreCase(discountCode)) {
 						promo = arrPromo.get(i);
@@ -208,19 +209,6 @@ public class Reservation extends Date {
 	public Reservation searchReservation(ArrayList<Reservation> arrReservation, String resID) {
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).resID.equalsIgnoreCase(resID)) {
-//				this.resID = resID;
-//				this.guest = arrReservation.get(i).getGuest();
-//				this.room = arrReservation.get(i).getRoom();
-//				this.promo = arrReservation.get(i).getPromo();
-//				this.checkinDate = arrReservation.get(i).getCheckinDate();
-//				this.checkoutDate = arrReservation.get(i).getCheckoutDate();
-//				this.adultPax = arrReservation.get(i).getAdultPax();
-//				this.childPax = arrReservation.get(i).getChildPax();
-//				this.status = arrReservation.get(i).getStatus();
-//				this.subPrice = arrReservation.get(i).getSubPrice();
-//				this.otherPrice = arrReservation.get(i).getOtherPrice();
-//				this.totalPrice = arrReservation.get(i).getTotalPrice();
-
 				return arrReservation.get(i);
 			}
 		}
@@ -245,8 +233,11 @@ public class Reservation extends Date {
 	}
 
 	public void updateReservation(ArrayList<Reservation> arrReservation, String filepath) throws IOException {
-		FileWriter update = new FileWriter("temp.txt", true);
-
+		FileWriter old = new FileWriter(filepath);
+		old.write("");
+		old.close();
+		
+		FileWriter update = new FileWriter(filepath, true);
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).getID().equals(resID))
 				arrReservation.set(i, this);
@@ -261,10 +252,6 @@ public class Reservation extends Date {
 		}
 
 		update.close();
-		File oldFile = new File(filepath);
-		File newFile = new File("temp.txt");
-		if (oldFile.delete())
-			newFile.renameTo(oldFile);
 	}
 
 	public double calculateSubPrice() {
