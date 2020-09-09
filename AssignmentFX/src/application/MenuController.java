@@ -197,13 +197,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				checkoutdate.setValue(checkindate.getValue().plusDays(1));
 				checkoutdate.setDisable(false);
 			}
-
-			rTypeBox.setValue(null);
-			rNumberBox.setValue(null);
-			rTypeBox.setDisable(true);
-			rNumberBox.setDisable(true);
-			adultBox.setDisable(false);
-			childBox.setDisable(false);
 		}
 	}
 
@@ -212,11 +205,16 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
 			LocalDate date = checkoutdate.getValue();
 			reservation.setCheckoutdate(date.toString());
-	
+			
 			rTypeBox.setValue(null);
 			rNumberBox.setValue(null);
+			
 			rTypeBox.setDisable(false);
 			rNumberBox.setDisable(true);
+			
+			bedlb.setText(null);
+			adultBox.setDisable(false);
+			childBox.setDisable(false);
 
 			setRoomTypeList();
 		}
