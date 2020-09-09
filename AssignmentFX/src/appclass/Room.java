@@ -12,18 +12,20 @@ public abstract class Room {
 	private int adultPaxLimit;
 	private int childPaxLimit;
 	private String numberOfBeds;
-	private String description;
 	private static Scanner x;
 
 	// constructor
-	public Room(String roomNumber, String numberOfBeds) {
+	public Room(String roomNumber, String numberOfBeds, double price, int adultPaxLimit, int childPaxLimit) {
 		this.roomNumber = roomNumber;
 		this.numberOfBeds = numberOfBeds;
+		this.price = price;
+		this.adultPaxLimit = adultPaxLimit;
+		this.childPaxLimit = childPaxLimit;
 	}
 
 	// abstract method
 	public abstract double getSessionCharge(Month m);
-	
+
 	// method
 	public static ArrayList<Room> initializeRoom(String filepath) {
 		ArrayList<Room> room = new ArrayList<Room>();
@@ -48,10 +50,18 @@ public abstract class Room {
 					throw new Exception("roomType has error!");
 			}
 		} catch (Exception e) {
-			System.out.println("create arrayRoom room.txt has error!");
+			System.out.println("create arrayRoom room.txt has error!" + e.getMessage());
 		}
 
 		return room;
+	}
+
+	public Room findRoom(ArrayList<Room> arrRoom, String roomNumber) {
+		for (int i = 0; i < arrRoom.size(); i++)
+			if (arrRoom.get(i).getRoomNumber().equals(roomNumber))
+				return arrRoom.get(i);
+
+		return null;
 	}
 
 	// accessor
@@ -79,23 +89,7 @@ public abstract class Room {
 		return numberOfBeds;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
 	// mutator
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public void setAdultPaxLimit(int pax) {
-		this.adultPaxLimit = pax;
-	}
-
-	public void setChildPaxLimit(int pax) {
-		this.childPaxLimit = pax;
-	}
-
 	public void setRoomType(String roomType) {
 		this.roomType = roomType;
 	}
