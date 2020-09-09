@@ -5,7 +5,6 @@ import appclass.Guest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -13,10 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -39,12 +35,11 @@ public class GuestController implements Initializable {
 	private String idTemp2 = "";
 	private String idTemp3 = "";
 	private String postTemp = "";
+	private ArrayList<Guest> arrGuest;
 
 	public Guest getGuest() {
 		return guest;
 	}
-
-	private ArrayList<Guest> arrGuest;
 
 	@FXML
 	private ChoiceBox<String> stateBox;
@@ -72,8 +67,7 @@ public class GuestController implements Initializable {
 	@FXML
 	void searchIC(ActionEvent event) {
 		guest = new Guest();
-		guest.findIC(arrGuest, idUsed);
-		if (guest.getIC() != null) {
+		if (guest.findIC(arrGuest, idUsed)) {
 			setDisable(true);
 			fnametf.setText(guest.getFName());
 			lnametf.setText(guest.getLName());
@@ -84,47 +78,7 @@ public class GuestController implements Initializable {
 
 			addbt.setDisable(false);
 			add = false;
-		} else
-			addNewGuest();
-	}
-
-	@FXML
-	void addGuest(ActionEvent event) throws IOException {
-		if (!validateFields()) {
-		} else {
-			Stage stage = (Stage) addbt.getScene().getWindow();
-			stage.close();
-		}
-	}
-
-	// method
-	private boolean validateFields() throws IOException {
-		// if any information is missing
-		// -> return missingInfo();
-		// else if all information filled && add == true
-		// -> return confirmation();
-		// else
-		// -> return true
-		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
-				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
-			return missingInfo();
-		} else if (!(fnametf.getText().isEmpty() && lnametf.getText().isEmpty() && add1tf.getText().isEmpty()
-				&& add1tf.getText().isEmpty() && stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty())
-				&& add == true) {
-			return confirmation();
-		} else
-			return true;
-	}
-
-	// alert message
-	private void addNewGuest() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("IC not found");
-		alert.setHeaderText(null);
-		alert.setContentText("Adding new guest?");
-		Optional<ButtonType> action = alert.showAndWait();
-
-		if (action.get() == ButtonType.OK) {
+		} else if (alertMsg.confirmation("IC not found", "Adding new guest?")) {
 			setDisable(false);
 			addbt.setDisable(false);
 			add = true;
@@ -133,32 +87,41 @@ public class GuestController implements Initializable {
 			addbt.setDisable(true);
 			add = false;
 		}
+
 	}
 
-	private boolean missingInfo() {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Missing guest information");
-		alert.setHeaderText(null);
-		alert.setContentText("Please enter guest information");
-		alert.showAndWait();
-
-		return false;
+	@FXML
+	void addGuest(ActionEvent event) throws IOException {
+		if (validateFields()) {
+			if (alertMsg.confirmation("New guest information", "Adding guest to database?")) {
+				guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
+						stateBox.getValue(), postcodetf.getText());
+				guest.addGuest(Main.GUEST_TXT);
+				Stage stage = (Stage) addbt.getScene().getWindow();
+				stage.close();
+			}
+		} else {
+			alertMsg.warning("Missing guest information", "Please fill in guest information");
+		}
 	}
 
-	private boolean confirmation() throws IOException {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("New guest information");
-		alert.setHeaderText(null);
-		alert.setContentText("Adding guest to database?");
-		Optional<ButtonType> action = alert.showAndWait();
-
-		if (action.get() == ButtonType.OK) {
-			guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
-					stateBox.getValue(), postcodetf.getText());
-			guest.addGuest(Main.GUEST_TXT);
+	// method
+	private boolean validateFields() {
+		// if any information is missing
+		// -> return false
+		// else if all information filled && add == true
+		// -> return true (update file and add info to Menu)
+		// else
+		// -> return true (direct add info to Menu)
+		if (fnametf.getText().isEmpty() || lnametf.getText().isEmpty() || add1tf.getText().isEmpty()
+				|| add1tf.getText().isEmpty() || stateBox.getValue().isEmpty() || postcodetf.getText().isEmpty()) {
+			return false;
+		} else if (!(fnametf.getText().isEmpty() && lnametf.getText().isEmpty() && add1tf.getText().isEmpty()
+				&& add1tf.getText().isEmpty() && stateBox.getValue().isEmpty() && postcodetf.getText().isEmpty())
+				&& add == true) {
 			return true;
 		} else
-			return false;
+			return true;
 	}
 
 	private void setDisable(boolean b) {
@@ -170,31 +133,6 @@ public class GuestController implements Initializable {
 		postcodetf.setDisable(b);
 		addbt.setDisable(b);
 	}
-
-	/*
-	 * @FXML void icKeyTyped(KeyEvent event) { boolean autoEdit = false; //1 if
-	 * (ictf.getText().matches("(^\\d{6}-\\d{2}$)|(^\\d{6}$)") && !autoEdit) {
-	 * idTemp = ictf.getText() + "-"; ictf.setText(idTemp);
-	 * ictf.positionCaret(idTemp.length()); autoEdit = true; } else if
-	 * (ictf.getText().matches("(^\\d{6}-\\d{2}-$)|(^\\d{6}-$)") && !autoEdit) {
-	 * idTemp = ictf.getText(0, ictf.getText().length() - 1); ictf.setText(idTemp);
-	 * ictf.positionCaret(idTemp.length()); autoEdit = true; } else if
-	 * (ictf.getText().matches("(^\\d{6}-\\d{3}$)|(^\\d{7}$)") && !autoEdit) {
-	 * String last = ictf.getText(ictf.getText().length() - 1,
-	 * ictf.getText().length()); idTemp = ictf.getText(0, ictf.getText().length() -
-	 * 1) + "-" + last; ictf.setText(idTemp); ictf.positionCaret(idTemp.length());
-	 * autoEdit = true; } else if (ictf.getText().matches(
-	 * "(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") &&
-	 * ictf.getText().length() <= 14) { idTemp = ictf.getText(); autoEdit = false; }
-	 * else { ictf.setText(idTemp); ictf.positionCaret(idTemp.length()); autoEdit =
-	 * false; } }
-	 * 
-	 * @FXML void icTextChanged(InputMethodEvent event) { if
-	 * (ictf.getText().matches(
-	 * "(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") &&
-	 * ictf.getText().length() <= 14) { idTemp = ictf.getText(); } else {
-	 * ictf.setText(idTemp); ictf.positionCaret(idTemp.length()); } }
-	 */
 
 	@FXML
 	void icSelected(ActionEvent event) {

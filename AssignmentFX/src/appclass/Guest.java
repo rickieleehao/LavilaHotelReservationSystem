@@ -83,7 +83,7 @@ public class Guest {
 		return guest;
 	}
 
-	public void findIC(ArrayList<Guest> arrGuest, String icno) {
+	public boolean findIC(ArrayList<Guest> arrGuest, String icno) {
 		for (int i = 0; i < arrGuest.size(); i++) {
 			if (arrGuest.get(i).icno.equalsIgnoreCase(icno)) {
 				this.icno = arrGuest.get(i).icno;
@@ -93,8 +93,10 @@ public class Guest {
 				this.add2 = arrGuest.get(i).add2;
 				this.state = arrGuest.get(i).state;
 				this.postcode = arrGuest.get(i).postcode;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void addGuest(String filepath) throws IOException {

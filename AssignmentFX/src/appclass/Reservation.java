@@ -1,10 +1,8 @@
 package appclass;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -248,21 +246,18 @@ public class Reservation extends Date {
 
 	public void updateReservation(ArrayList<Reservation> arrReservation, String filepath) throws IOException {
 		FileWriter update = new FileWriter("temp.txt", true);
-		ArrayList<Reservation> tempArr = new ArrayList<Reservation>();
 
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).getID().equals(resID))
 				arrReservation.set(i, this);
-				tempArr.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate, adultPax, childPax,
-						status, subPrice, otherPrice, totalPrice, paymentType));
-			else
-				tempArr.add(arrReservation.get(i));
-		}
 
-		for (int i = 0; i < tempArr.size(); i++) {
-			update.write(resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode() + ","
-					+ checkinDate + "," + checkoutDate + "," + adultPax + "," + childPax + "," + status + "," + subPrice
-					+ "," + otherPrice + "," + totalPrice + "," + paymentType + "\n");
+			update.write(arrReservation.get(i).getID() + "," + arrReservation.get(i).getGuest().getIC() + ","
+					+ arrReservation.get(i).room.getRoomNumber() + "," + arrReservation.get(i).promo.getCode() + ","
+					+ arrReservation.get(i).checkinDate + "," + arrReservation.get(i).checkoutDate + ","
+					+ arrReservation.get(i).adultPax + "," + arrReservation.get(i).childPax + ","
+					+ arrReservation.get(i).status + "," + arrReservation.get(i).subPrice + ","
+					+ arrReservation.get(i).otherPrice + "," + arrReservation.get(i).totalPrice + ","
+					+ arrReservation.get(i).paymentType + "\n");
 		}
 
 		update.close();
@@ -270,7 +265,6 @@ public class Reservation extends Date {
 		File newFile = new File("temp.txt");
 		if (oldFile.delete())
 			newFile.renameTo(oldFile);
-
 	}
 
 	public double calculateSubPrice() {
@@ -282,4 +276,9 @@ public class Reservation extends Date {
 		adultPax = room.getAdultPaxLimit();
 		childPax = room.getChildPaxLimit();
 	}
+
+//	tempArr.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate, adultPax, childPax,
+//	status, subPrice, otherPrice, totalPrice, paymentType));
+//else
+//tempArr.add(arrReservation.get(i));
 }
