@@ -18,23 +18,29 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 
 //simplify update @3/9 RickiE
 public class GuestController implements Initializable {
 
 	final private ObservableList<String> StateList = FXCollections.observableArrayList("Johor", "Kedah", "Kelantan",
 			"Kuala Lumpur", "Malacca", "Negeri Sembilan", "Pahang", "Pulau Penang", "Perak", "Perlis", "Sabah",
-			"Sarawak", "Selangor", "Terengganu");
+			"Sarawak", "Selangor", "Terengganu", "Others");
 
 	// instance variable
 	private Guest guest = null;
 	private boolean add;
-	private String idTemp = "";
+	private String idUsed = "";
+	private String idTemp1 = "";
+	private String idTemp2 = "";
+	private String idTemp3 = "";
+	private String postTemp = "";
 
 	public Guest getGuest() {
 		return guest;
@@ -46,10 +52,16 @@ public class GuestController implements Initializable {
 	private ChoiceBox<String> stateBox;
 
 	@FXML
-	private TextField ictf, fnametf, lnametf, add1tf, add2tf, postcodetf;
+	private TextField ictf1, ictf2, ictf3, passporttf, fnametf, lnametf, add1tf, add2tf, postcodetf;
 
 	@FXML
 	private Button searchbt, addbt;
+	
+	@FXML
+    private FlowPane ictf;
+    
+    @FXML
+    private RadioButton passportbt, icbt;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -62,7 +74,7 @@ public class GuestController implements Initializable {
 	@FXML
 	void searchIC(ActionEvent event) {
 		guest = new Guest();
-		guest.findIC(arrGuest, ictf.getText());
+		guest.findIC(arrGuest, idUsed);
 		if (guest.getIC() != null) {
 			setDisable(true);
 			fnametf.setText(guest.getFName());
@@ -143,7 +155,7 @@ public class GuestController implements Initializable {
 		Optional<ButtonType> action = alert.showAndWait();
 
 		if (action.get() == ButtonType.OK) {
-			guest = new Guest(ictf.getText(), fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
+			guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
 					stateBox.getValue(), postcodetf.getText());
 			guest.addGuest(Main.GUEST_TXT);
 			return true;
@@ -163,7 +175,7 @@ public class GuestController implements Initializable {
 		// fnametf.setStyle(MenuController.style);
 		// lnametf.setStyle(MenuController.style);
 		// add1tf.setStyle(MenuController.style);
-		// add2tf.setStyle(MenuController.style);
+		// add2tf.setStyle(MenuController.style);5
 		// stateBox.setStyle(MenuController.style);
 		// postcodetf.setStyle(MenuController.style);
 	}
@@ -173,7 +185,7 @@ public class GuestController implements Initializable {
 	//if not, it checks whether it is xxxxxx-xx, with the last 2 digit 
 	//if not, then it checks whether it is xxxxxx, or anything between 0 to 6 digits
 
-	@FXML
+	/*@FXML
 	void icKeyTyped(KeyEvent event) {
 		boolean autoEdit = false;
 		if (ictf.getText().matches("(^\\d{6}-\\d{2}$)|(^\\d{6}$)") && !autoEdit) {
@@ -192,7 +204,7 @@ public class GuestController implements Initializable {
 			ictf.setText(idTemp);
 			ictf.positionCaret(idTemp.length());
 			autoEdit = true;
-		} else if (ictf.getText().matches("(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
+		} else if (ictf.getText().matches("(^\\d{6}-\\d{2}-\\d{0,4}$)|(^\\d{6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
 			idTemp = ictf.getText();
 			autoEdit = false;
 		} else {
@@ -211,5 +223,156 @@ public class GuestController implements Initializable {
 			ictf.setText(idTemp);
 			ictf.positionCaret(idTemp.length());
 		}
+	}*/
+	
+
+	@FXML
+	void icSelected(ActionEvent event) {
+		passporttf.setVisible(false);
+		ictf.setVisible(true);
+	}
+	
+	@FXML
+	void passportSelected(ActionEvent event) {
+		ictf.setVisible(false);
+		passporttf.setVisible(true);
+	}
+
+	@FXML
+	void ictf1Changed(KeyEvent event) {
+		int caretPos = ictf1.getCaretPosition();
+		
+		if(ictf1.getText().matches("^\\d{0,6}$")) {
+			idTemp1 = ictf1.getText();
+		} else {
+			ictf1.setText(idTemp1);
+		}
+		
+		ictf1.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+
+	@FXML
+	void ictf2Changed(KeyEvent event) {
+		int caretPos = ictf2.getCaretPosition();
+		
+		if (ictf2.getText().matches("^\\d{0,2}$")) {
+			idTemp2 = ictf2.getText();
+		} else {
+			ictf2.setText(idTemp2);
+		}
+		
+		ictf2.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+
+	@FXML
+	void ictf3Changed(KeyEvent event) {
+		int caretPos = ictf3.getCaretPosition();
+		
+		if (ictf3.getText().matches("^\\d{0,4}$")) {
+			idTemp3 = ictf3.getText();
+		} else {
+			ictf3.setText(idTemp3);
+		}
+		
+		ictf3.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+	
+	@FXML
+	void passportChanged(KeyEvent event) {
+		int caretPos = passporttf.getCaretPosition();
+		
+		if(passporttf.getText().matches("^\\w{0,16}$")) {
+			idTemp1 = passporttf.getText();
+		} else {
+			passporttf.setText(idTemp1);
+		}
+		
+		passporttf.positionCaret(caretPos);
+		idUsed = passporttf.getText();
+	}
+	
+	@FXML
+	void passportPasted(InputMethodEvent event) {
+int caretPos = passporttf.getCaretPosition();
+		
+		if(passporttf.getText().matches("^\\w{0,16}$")) {
+			idTemp1 = passporttf.getText();
+		} else {
+			passporttf.setText(idTemp1);
+		}
+		
+		passporttf.positionCaret(caretPos);
+		idUsed = passporttf.getText();
+	}
+
+	@FXML
+	void ictf1Pasted(InputMethodEvent event) {
+		int caretPos = ictf1.getCaretPosition();
+		
+		if(ictf1.getText().matches("^\\d{0,6}$")) {
+			idTemp1 = ictf1.getText();
+		} else {
+			ictf1.setText(idTemp1);
+		}
+		
+		ictf1.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+	
+	@FXML
+	void ictf2Pasted(InputMethodEvent event) {
+		int caretPos = ictf2.getCaretPosition();
+		
+		if (ictf2.getText().matches("^\\d{0,2}$")) {
+			idTemp2 = ictf2.getText();
+		} else {
+			ictf2.setText(idTemp2);
+		}
+		
+		ictf2.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+	
+	@FXML
+	void ictf3Pasted(InputMethodEvent event) {
+		int caretPos = ictf3.getCaretPosition();
+		
+		if (ictf3.getText().matches("^\\d{0,4}$")) {
+			idTemp3 = ictf3.getText();
+		} else {
+			ictf3.setText(idTemp3);
+		}
+		
+		ictf3.positionCaret(caretPos);
+		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
+	}
+	
+	@FXML
+	void postcodePasted(InputMethodEvent event) {
+		int caretPos = postcodetf.getCaretPosition();
+		
+		if (postcodetf.getText().matches("^\\d*$")) {
+			postTemp = postcodetf.getText();
+		} else {
+			postcodetf.setText(postTemp);
+		}
+		
+		postcodetf.positionCaret(caretPos);
+	}
+	
+	@FXML
+	void postcodeChanged(KeyEvent event) {
+		int caretPos = postcodetf.getCaretPosition();
+		
+		if (postcodetf.getText().matches("^\\d*$")) {
+			postTemp = postcodetf.getText();
+		} else {
+			postcodetf.setText(postTemp);
+		}
+		
+		postcodetf.positionCaret(caretPos);
 	}
 }
