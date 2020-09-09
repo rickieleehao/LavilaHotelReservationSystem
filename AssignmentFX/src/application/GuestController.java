@@ -93,10 +93,17 @@ public class GuestController implements Initializable {
 	@FXML
 	void addGuest(ActionEvent event) throws IOException {
 		if (validateFields()) {
-			if (alertMsg.confirmation("New guest information", "Adding guest to database?")) {
+			if (add == true) {
+				if (alertMsg.confirmation("New guest information", "Adding guest to database?")) {
+					guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
+							stateBox.getValue(), postcodetf.getText());
+					guest.addGuest(Main.GUEST_TXT);
+					Stage stage = (Stage) addbt.getScene().getWindow();
+					stage.close();
+				}
+			}else {
 				guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
 						stateBox.getValue(), postcodetf.getText());
-				guest.addGuest(Main.GUEST_TXT);
 				Stage stage = (Stage) addbt.getScene().getWindow();
 				stage.close();
 			}

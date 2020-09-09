@@ -144,7 +144,9 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			statelb.setText(guest.getState());
 			postcodelb.setText(guest.getPostcode());
 			reservation.setGuest(guest);
+			initialize(null,null);
 		}
+		
 	}
 
 	@FXML // make a new booking
@@ -166,9 +168,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	@FXML // newRes part1
 	void checkindateField(ActionEvent event) {
 		if (checkindate.getValue() != null) {
-			LocalDate date = checkindate.getValue();
-			reservation.setCheckindate(date.toString());
-
 			// Basically, in this instance, the code is checked,
 			// so that every date on and before the checkindate is disabled and coloured
 			// differently
@@ -189,8 +188,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 					};
 				}
 			};
-
 			checkoutdate.setDayCellFactory(endDateDayCellFactory);
+
 			// if checkoutdate invalid, automatically set a valid one
 			if (checkoutdate.getValue() == null
 					|| checkoutdate.getValue().isBefore(checkindate.getValue().plusDays(1))) {
@@ -203,15 +202,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	@FXML // newRes part2
 	void checkoutdateField(ActionEvent event) {
 		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
-			LocalDate date = checkoutdate.getValue();
-			reservation.setCheckoutdate(date.toString());
-			
 			rTypeBox.setValue(null);
 			rNumberBox.setValue(null);
-			
+
 			rTypeBox.setDisable(false);
 			rNumberBox.setDisable(true);
-			
+
 			bedlb.setText(null);
 			adultBox.setDisable(false);
 			childBox.setDisable(false);
@@ -228,46 +224,43 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		}
 	}
 
-	@FXML // newRes part4
+	@FXML // newRes end
 	void rNumberField(ActionEvent event) {
 		if (rNumberBox.getValue() != null) {
 			Room r = new Room();
 			reservation.setRoom(r.findRoom(arrRoom, rNumberBox.getValue()));
-
-			reservation.setSubPrice(reservation.calculateSubPrice());
-
-			roomClb.setText(Double.toString((reservation.getSubPrice())));
-			serviceClb.setText(Double.toString((reservation.getSubPrice() * SERVICE_CHARGE)));
-
+			bedlb.setText(reservation.getRoom().getNumberOfBeds());
 			calculateTotal();
 			formatSetting();
 			setPaxList();
-			bedlb.setText(reservation.getRoom().getNumberOfBeds());
-		}
-	}
 
-	@FXML // newRes end
-	void paxField(ActionEvent event) {
-		if (adultBox.getValue() != null && childBox.getValue() != null) {
-			reservation.setAdultPax(Integer.parseInt(adultBox.getValue()));
-			reservation.setChildPax(Integer.parseInt(childBox.getValue()));
 		}
 	}
 
 	@FXML
 	void confirmRes(ActionEvent event) throws IOException {
 		if (validateFields()) {
-			if (alertMsg.confirmation("Add new reservation", "Confirm adding this reservation?"))
-				;
-			reservation.addReservation(Main.RESERVATION_TXT);
+			if (alertMsg.confirmation("Add new reservation", "Confirm adding this reservation?")) {
+				if(reservation.getPaymentType() == null)
+					reservation.setPaymentType("NO");
+				reservation.setAdultPax(Integer.parseInt(adultBox.getValue()));
+				reservation.setChildPax(Integer.parseInt(childBox.getValue()));
+				reservation.setCheckindate(checkindate.getValue().toString());
+				reservation.setCheckoutdate(checkoutdate.getValue().toString());
+				reservation.addReservation(Main.RESERVATION_TXT);
+				initialize(null, null);
+				defaultSetting();
+			}
 		} else
 			alertMsg.warning("Missing information", "Fill in reservation information");
 	}
 
 	@FXML
 	void checkIn(ActionEvent event) throws IOException {
-		String text = "Check in";
+		String text = "Checked in";
 		if (alertMsg.confirmation("Check In", "Proceed check in?")) {
+			checkinbt.setVisible(false);
+			editbt.setVisible(false);
 			statuslb.setText(text);
 			reservation.setStatus(text);
 
@@ -277,11 +270,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML
 	void checkOut(ActionEvent event) throws IOException {
-		String text = "Check out";
+		String text = "Checked out";
 		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
-			if (!pmethodBox.getValue().isBlank()) {
+			if (pmethodBox.getValue() != null) {
 				statuslb.setText(text);
 				reservation.setStatus(text);
+				checkoutSetting();
 
 				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 			} else {
@@ -304,43 +298,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		cancelResbt.setVisible(false);
 	}
 
-	// KeyEvent
-	@FXML
-	void resIDtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			searchbt.requestFocus();
-		else if (event.getCode() == KeyCode.ENTER)
-			searchbt.fire();
-	}
-
-	@FXML
-	void searchtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			newbt.requestFocus();
-	}
-
-	@FXML
-	void newtab(KeyEvent event) {
-		if (event.getCode() == KeyCode.TAB)
-			idtf.requestFocus();
-	}
-
-	@FXML
-	void otherCField(KeyEvent event) {
-		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
-			calculateTotal();
-			discountCtf.requestFocus();
-		}
-	}
-
-	@FXML
-	void discountCField(KeyEvent event) {
-		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
-			calculateTotal();
-			pmethodBox.requestFocus();
-		}
-	}
-
 	// method
 	private void setRoomTypeList() {
 		RoomTypeList = FXCollections.observableArrayList();
@@ -361,29 +318,14 @@ public class MenuController extends Date implements Initializable, alertMsg {
 					if (!arrTemp.contains(temp))
 						arrTemp.add(temp);
 				}
-				/*
-				 * for (int x = 0; x <= (checkout.toEpochDay() - checkin.toEpochDay()); x++) {
-				 * if ((checkin.toEpochDay() + x) >= arrCheckin.toEpochDay() &&
-				 * (checkin.toEpochDay() + x) <= arrCheckout.toEpochDay()) {
-				 * arrTemp.add(arrReservation.get(i).getRoom()); break; } }
-				 */
 			}
 		}
-
-		/*
-		 * for (int i = 0; i < arrRoom.size(); i++) { for (int x = 0; x <
-		 * arrTemp.size(); x++) if
-		 * (!arrRoom.get(i).getRoomNumber().equalsIgnoreCase(arrTemp.get(x).
-		 * getRoomNumber())) if (!RoomTypeList.contains(arrRoom.get(i).getRoomType()))
-		 * RoomTypeList.add(arrRoom.get(i).getRoomType()); }
-		 */
 
 		for (Room room : arrRoom) {
 			temp = room.getRoomNumber();
 			if (!arrTemp.contains(temp) && !RoomTypeList.contains(room.getRoomType()))
 				RoomTypeList.add(room.getRoomType());
 		}
-
 		rTypeBox.setItems(RoomTypeList);
 	}
 
@@ -436,12 +378,16 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	}
 
 	private void calculateTotal() {
-		double serviceCharge = Double.parseDouble(serviceClb.getText());
-		double otherCharge;
-		Promotion promo = new Promotion(discountCtf.getText());
-		reservation.setPromo(promo);
+		double checkin = LOCAL_DATE(checkindate.getValue().toString()).toEpochDay();
+		double checkout = LOCAL_DATE(checkoutdate.getValue().toString()).toEpochDay();
+		double stay_day = checkout - checkin;
+		double subPrice = stay_day
+				* reservation.getRoom().getSessionCharge(LOCAL_DATE(checkindate.getValue().toString()).getMonth());
+		double serviceCharge = subPrice * SERVICE_CHARGE;
+		double otherCharge = 0;
+		double totalPrice;
 
-		if (!otherCtf.getText().isBlank())
+		if (otherCtf.getText() != null)
 			try {
 				otherCharge = Double.parseDouble(otherCtf.getText());
 				reservation.setOtherPrice(otherCharge);
@@ -451,27 +397,30 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				alertMsg.warning("Invalid Amount", "Please enter a valid amount");
 			}
 
-		if (!discountCtf.getText().isBlank())
+		if (discountCtf.getText() != null)
 			try {
-				if (!promo.validateCode(arrPromo))
+				Promotion promo = new Promotion(discountCtf.getText());
+				reservation.setPromo(promo);
+				if (reservation.getPromo().validateCode(arrPromo))
 					throw new Exception();
 			} catch (Exception ex) {
 				System.out.print("Promotion code has error");
 			}
+		else {
+			Promotion promo = new Promotion("NOPRO");
+			reservation.setPromo(promo);
+		}
 
-		reservation.setTotalPrice(serviceCharge);
-
-		totalClb.setText(Double.toString(reservation.getTotalPrice()));
-
+		totalPrice = (subPrice + serviceCharge + otherCharge) * reservation.getPromo().getDiscount();
+		roomClb.setText(Double.toString(subPrice));
+		serviceClb.setText(Double.toString(serviceCharge));
+		totalClb.setText(Double.toString(totalPrice));
 	}
 
 	private boolean validateFields() {
-		if (reservation.getID() == null || reservation.getGuest() == null || reservation.getRoom() == null
-				|| reservation.getCheckinDate() == null || reservation.getCheckoutDate() == null
-				|| Integer.toString(reservation.getAdultPax()) == null
-				|| Integer.toString(reservation.getChildPax()) == null || reservation.getStatus() == null
-				|| Double.toString(reservation.getSubPrice()) == null
-				|| Double.toString(reservation.getTotalPrice()) == null || reservation.getPaymentType() == null)
+		if (checkindate.getValue() == null || checkoutdate.getValue() == null || rTypeBox.getValue() == null
+				|| rNumberBox.getValue() == null || adultBox.getValue() == null || childBox.getValue() == null
+				|| iclb.getText() == null)
 			return false;
 		else
 			return true;
@@ -479,6 +428,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	// format method
 	private void newResSetting() {
+		clearText();
+
 		idtf.setEditable(false);
 		searchbt.setVisible(false);
 		newbt.setVisible(false);
@@ -568,25 +519,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		postcodelb.setText(reservation.getGuest().getPostcode());
 
 		// payment section
-		roomClb.setText(Double.toString(reservation.getSubPrice()));
-		serviceClb.setText(Double.toString(reservation.getSubPrice() * SERVICE_CHARGE));
 		otherCtf.setText(Double.toString(reservation.getOtherPrice()));
 		discountCtf.setText(reservation.getPromo().getCode());
-		totalClb.setText(Double.toString(reservation.getTotalPrice()));
-
-		if (reservation.getStatus().matches("Cancelled") || reservation.getStatus().matches("Check out")) {
-			checkinbt.setVisible(false);
-			checkoutbt.setVisible(false);
-			cancelResbt.setVisible(false);
-		} else if (reservation.getStatus().matches("Check in")) {
-			checkinbt.setVisible(false);
-			checkoutbt.setVisible(true);
-			cancelResbt.setVisible(false);
-		} else {
-			checkinbt.setVisible(true);
-			checkoutbt.setVisible(true);
-			cancelResbt.setVisible(true);
-		}
 
 		disableAll(true);
 		otherCtf.setDisable(false);
@@ -594,6 +528,32 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		pmethodBox.setDisable(false);
 		confirmResbt.setVisible(false);
 		editbt.setVisible(true);
+
+		if (reservation.getStatus().matches("Cancelled") || reservation.getStatus().matches("Checked out")) {
+			checkinbt.setVisible(false);
+			checkoutbt.setVisible(false);
+			cancelResbt.setVisible(false);
+			otherCtf.setDisable(true);
+			discountCtf.setDisable(true);
+			pmethodBox.setDisable(true);
+		} else if (reservation.getStatus().matches("Checked in")) {
+			checkinbt.setVisible(false);
+			checkoutbt.setVisible(true);
+			cancelResbt.setVisible(true);
+		} else {
+			checkinbt.setVisible(true);
+			checkoutbt.setVisible(true);
+			cancelResbt.setVisible(true);
+		}
+	}
+
+	private void checkoutSetting() {
+		otherCtf.setDisable(true);
+		discountCtf.setDisable(true);
+		pmethodBox.setDisable(true);
+
+		checkoutbt.setVisible(false);
+		cancelResbt.setVisible(false);
 	}
 
 	private void clearText() {
@@ -649,5 +609,42 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		discountCtf.setDisable(b);
 		totalClb.setDisable(b);
 		pmethodBox.setDisable(b);
+	}
+
+	// KeyEvent
+	@FXML
+	void resIDtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			searchbt.requestFocus();
+		else if (event.getCode() == KeyCode.ENTER)
+			searchbt.fire();
+	}
+
+	@FXML
+	void searchtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			newbt.requestFocus();
+	}
+
+	@FXML
+	void newtab(KeyEvent event) {
+		if (event.getCode() == KeyCode.TAB)
+			idtf.requestFocus();
+	}
+
+	@FXML
+	void otherCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			discountCtf.requestFocus();
+		}
+	}
+
+	@FXML
+	void discountCField(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.TAB) {
+			calculateTotal();
+			pmethodBox.requestFocus();
+		}
 	}
 }

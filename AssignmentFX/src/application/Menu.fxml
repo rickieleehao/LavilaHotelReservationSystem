@@ -143,8 +143,8 @@
       <Label fx:id="add2lb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="422.0" prefHeight="25.0" prefWidth="149.0" />
       <Label fx:id="statelb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="452.0" prefHeight="25.0" prefWidth="149.0" />
       <Label fx:id="postcodelb" alignment="CENTER" disable="true" layoutX="148.0" layoutY="483.0" prefHeight="25.0" prefWidth="149.0" />
-      <ComboBox fx:id="adultBox" disable="true" layoutX="175.0" layoutY="147.0" maxWidth="-Infinity" onAction="#paxField" prefHeight="25.0" prefWidth="50.0" />
-      <ComboBox fx:id="childBox" disable="true" layoutX="252.0" layoutY="147.0" maxWidth="-Infinity" onAction="#paxField" prefHeight="25.0" prefWidth="50.0" />
+      <ComboBox fx:id="adultBox" disable="true" layoutX="175.0" layoutY="147.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" />
+      <ComboBox fx:id="childBox" disable="true" layoutX="252.0" layoutY="147.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" />
       <ComboBox fx:id="pmethodBox" disable="true" layoutX="510.0" layoutY="453.0" maxWidth="-Infinity" prefHeight="25.0" prefWidth="88.0" />
       <ImageView fitHeight="50.0" fitWidth="58.0" layoutX="315.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
          <image>

@@ -16,16 +16,15 @@ public class Reservation extends Date {
 	private int adultPax;
 	private int childPax;
 	private String status;
-	private double subPrice;
+//	private double subPrice;
 	private double otherPrice;
-	private double totalPrice;
+//	private double totalPrice;
 	private String paymentType;
 	private static Scanner x;
 
 	// constructor
 	public Reservation(String resID, Guest guest, Room room, Promotion promo, String checkinDate, String checkoutDate,
-			int adultPax, int childPax, String status, double subPrice, double otherPrice, double totalPrice,
-			String paymentType) {
+			int adultPax, int childPax, String status, double otherPrice, String paymentType) {
 		this.resID = resID;
 		this.guest = guest;
 		this.room = room;
@@ -35,9 +34,9 @@ public class Reservation extends Date {
 		this.adultPax = adultPax;
 		this.childPax = childPax;
 		this.status = status;
-		this.subPrice = subPrice;
+//		this.subPrice = subPrice;
 		this.otherPrice = otherPrice;
-		this.totalPrice = totalPrice;
+//		this.totalPrice = totalPrice;
 		this.paymentType = paymentType;
 	}
 
@@ -77,9 +76,9 @@ public class Reservation extends Date {
 		return status;
 	}
 
-	public double getSubPrice() {
-		return subPrice;
-	}
+//	public double getSubPrice() {
+//		return subPrice;
+//	}
 
 	public double getOtherPrice() {
 		return otherPrice;
@@ -89,9 +88,9 @@ public class Reservation extends Date {
 		return promo;
 	}
 
-	public double getTotalPrice() {
-		return totalPrice;
-	}
+//	public double getTotalPrice() {
+//		return totalPrice;
+//	}
 
 	public String getPaymentType() {
 		return paymentType;
@@ -126,9 +125,9 @@ public class Reservation extends Date {
 		this.status = status;
 	}
 
-	public void setSubPrice(double subPrice) {
-		this.subPrice = subPrice;
-	}
+//	public void setSubPrice(double subPrice) {
+//		this.subPrice = subPrice;
+//	}
 
 	public void setOtherPrice(double otherPrice) {
 		this.otherPrice = otherPrice;
@@ -136,10 +135,6 @@ public class Reservation extends Date {
 
 	public void setPromo(Promotion promo) {
 		this.promo = promo;
-	}
-
-	public void setTotalPrice(double serviceCharge) {
-		totalPrice = (subPrice + otherPrice + serviceCharge) * promo.getDiscount();
 	}
 
 	public void setPaymentType(String paymentType) {
@@ -151,8 +146,8 @@ public class Reservation extends Date {
 			ArrayList<Guest> arrGuest, ArrayList<Promotion> arrPromo) {
 
 		ArrayList<Reservation> reservation = new ArrayList<Reservation>();
-		String resID, icno, roomNumber, checkinDate, checkoutDate, adultPax, childPax, status, subPrice, otherPrice,
-				discountCode, totalPrice, paymentType;
+		String resID, icno, roomNumber, checkinDate, checkoutDate, adultPax, childPax, status, otherPrice, discountCode,
+				paymentType;
 		Guest guest = null;
 		Room room = null;
 		Promotion promo = null;
@@ -171,9 +166,7 @@ public class Reservation extends Date {
 				adultPax = x.next();
 				childPax = x.next();
 				status = x.next();
-				subPrice = x.next();
 				otherPrice = x.next();
-				totalPrice = x.next();
 				paymentType = x.next();
 
 				for (int i = 0; i < arrGuest.size(); i++)
@@ -188,7 +181,6 @@ public class Reservation extends Date {
 						break;
 					}
 
-				promo = new Promotion(discountCode);
 				for (int i = 0; i < arrPromo.size(); i++)
 					if (arrPromo.get(i).getCode().equalsIgnoreCase(discountCode)) {
 						promo = arrPromo.get(i);
@@ -196,8 +188,8 @@ public class Reservation extends Date {
 					}
 
 				reservation.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate,
-						Integer.parseInt(adultPax), Integer.parseInt(childPax), status, Double.parseDouble(subPrice),
-						Double.parseDouble(otherPrice), Double.parseDouble(totalPrice), paymentType));
+						Integer.parseInt(adultPax), Integer.parseInt(childPax), status, Double.parseDouble(otherPrice),
+						paymentType));
 			}
 		} catch (Exception e) {
 			System.out.println("create arrayReservation reservation.txt has error!");
@@ -228,7 +220,7 @@ public class Reservation extends Date {
 		FileWriter newReservation = new FileWriter(filepath, true);
 		newReservation.write("\n" + resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode()
 				+ "," + checkinDate + "," + checkoutDate + "," + adultPax + "," + childPax + "," + status + ","
-				+ subPrice + "," + otherPrice + "," + totalPrice + "," + paymentType);
+				+ otherPrice + "," + paymentType);
 		newReservation.close();
 	}
 
@@ -236,7 +228,7 @@ public class Reservation extends Date {
 		FileWriter old = new FileWriter(filepath);
 		old.write("");
 		old.close();
-		
+
 		FileWriter update = new FileWriter(filepath, true);
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).getID().equals(resID))
@@ -246,8 +238,7 @@ public class Reservation extends Date {
 					+ arrReservation.get(i).room.getRoomNumber() + "," + arrReservation.get(i).promo.getCode() + ","
 					+ arrReservation.get(i).checkinDate + "," + arrReservation.get(i).checkoutDate + ","
 					+ arrReservation.get(i).adultPax + "," + arrReservation.get(i).childPax + ","
-					+ arrReservation.get(i).status + "," + arrReservation.get(i).subPrice + ","
-					+ arrReservation.get(i).otherPrice + "," + arrReservation.get(i).totalPrice + ","
+					+ arrReservation.get(i).status + "," + +arrReservation.get(i).otherPrice + ","
 					+ arrReservation.get(i).paymentType + "\n");
 		}
 
@@ -263,9 +254,4 @@ public class Reservation extends Date {
 		adultPax = room.getAdultPaxLimit();
 		childPax = room.getChildPaxLimit();
 	}
-
-//	tempArr.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate, adultPax, childPax,
-//	status, subPrice, otherPrice, totalPrice, paymentType));
-//else
-//tempArr.add(arrReservation.get(i));
 }
