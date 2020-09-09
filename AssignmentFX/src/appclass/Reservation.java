@@ -1,8 +1,10 @@
 package appclass;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,27 +12,35 @@ public class Reservation extends Date {
 	private String resID;
 	private Guest guest;
 	private Room room;
-	private String roomNumber;
+	private Promotion promo;
 	private String checkinDate;
 	private String checkoutDate;
 	private int adultPax;
 	private int childPax;
 	private String status;
-	private double price;
+	private double subPrice;
+	private double otherPrice;
+	private double totalPrice;
+	private String paymentType;
 	private static Scanner x;
 
 	// constructor
-	public Reservation(String resID, Guest guest, Room room, String roomNumber, String checkinDate, String checkoutDate,
-			int adultPax, int childPax, String status) {
+	public Reservation(String resID, Guest guest, Room room, Promotion promo, String checkinDate, String checkoutDate,
+			int adultPax, int childPax, String status, double subPrice, double otherPrice, double totalPrice,
+			String paymentType) {
 		this.resID = resID;
 		this.guest = guest;
-		this.room = room; // no need
-		this.roomNumber = roomNumber;
+		this.room = room;
+		this.promo = promo;
 		this.checkinDate = checkinDate;
 		this.checkoutDate = checkoutDate;
 		this.adultPax = adultPax;
 		this.childPax = childPax;
 		this.status = status;
+		this.subPrice = subPrice;
+		this.otherPrice = otherPrice;
+		this.totalPrice = totalPrice;
+		this.paymentType = paymentType;
 	}
 
 	public Reservation() {
@@ -47,10 +57,6 @@ public class Reservation extends Date {
 
 	public Room getRoom() {
 		return room;
-	}
-
-	public String getRoomNumber() {
-		return roomNumber;
 	}
 
 	public String getCheckinDate() {
@@ -73,25 +79,33 @@ public class Reservation extends Date {
 		return status;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getSubPrice() {
+		return subPrice;
+	}
+
+	public double getOtherPrice() {
+		return otherPrice;
+	}
+
+	public Promotion getPromo() {
+		return promo;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public String getPaymentType() {
+		return paymentType;
 	}
 
 	// mutators
-	public void setRoom(ArrayList<Room> arrRoom) {
-		for (int i = 0; i < arrRoom.size(); i++)
-			if (arrRoom.get(i).getRoomNumber().equalsIgnoreCase(this.roomNumber)) {
-				room = arrRoom.get(i);
-				break;
-			}
+	public void setRoom(Room room) {
+		this.room = room;
 	}
 
 	public void setGuest(Guest guest) {
 		this.guest = guest;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
 	}
 
 	public void setCheckindate(String checkindate) {
@@ -100,10 +114,6 @@ public class Reservation extends Date {
 
 	public void setCheckoutdate(String checkoutdate) {
 		this.checkoutDate = checkoutdate;
-	}
-
-	public void setRoomNumber(String roomNumber) {
-		this.roomNumber = roomNumber;
 	}
 
 	public void setAdultPax(int adultPax) {
@@ -118,14 +128,36 @@ public class Reservation extends Date {
 		this.status = status;
 	}
 
+	public void setSubPrice(double subPrice) {
+		this.subPrice = subPrice;
+	}
+
+	public void setOtherPrice(double otherPrice) {
+		this.otherPrice = otherPrice;
+	}
+
+	public void setPromo(Promotion promo) {
+		this.promo = promo;
+	}
+
+	public void setTotalPrice(double serviceCharge) {
+		totalPrice = (subPrice + otherPrice + serviceCharge) * promo.getDiscount();
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
+
 	// method
-	public static ArrayList<Reservation> initializeReservation(String filepath, ArrayList<Room> arrroom,
-			ArrayList<Guest> arrguest) {
+	public static ArrayList<Reservation> initializeReservation(String filepath, ArrayList<Room> arrRoom,
+			ArrayList<Guest> arrGuest, ArrayList<Promotion> arrPromo) {
 
 		ArrayList<Reservation> reservation = new ArrayList<Reservation>();
-		String resID, icno, roomNumber, checkinDate, checkoutDate, adultPax, childPax, status;
+		String resID, icno, roomNumber, checkinDate, checkoutDate, adultPax, childPax, status, subPrice, otherPrice,
+				discountCode, totalPrice, paymentType;
 		Guest guest = null;
 		Room room = null;
+		Promotion promo = null;
 
 		try {
 			x = new Scanner(new File(filepath));
@@ -140,21 +172,33 @@ public class Reservation extends Date {
 				adultPax = x.next();
 				childPax = x.next();
 				status = x.next();
+				subPrice = x.next();
+				otherPrice = x.next();
+				discountCode = x.next();
+				totalPrice = x.next();
+				paymentType = x.next();
 
-				for (int i = 0; i < arrguest.size(); i++)
-					if (arrguest.get(i).getIC().equalsIgnoreCase(icno)) {
-						guest = arrguest.get(i);
+				for (int i = 0; i < arrGuest.size(); i++)
+					if (arrGuest.get(i).getIC().equalsIgnoreCase(icno)) {
+						guest = arrGuest.get(i);
 						break;
 					}
 
-				for (int i = 0; i < arrroom.size(); i++)
-					if (arrroom.get(i).getRoomNumber().equalsIgnoreCase(roomNumber)) {
-						room = arrroom.get(i);
+				for (int i = 0; i < arrRoom.size(); i++)
+					if (arrRoom.get(i).getRoomNumber().equalsIgnoreCase(roomNumber)) {
+						room = arrRoom.get(i);
 						break;
 					}
 
-				reservation.add(new Reservation(resID, guest, room, roomNumber, checkinDate, checkoutDate,
-						Integer.parseInt(adultPax), Integer.parseInt(childPax), status));
+				for (int i = 0; i < arrPromo.size(); i++)
+					if (arrPromo.get(i).getCode().equalsIgnoreCase(discountCode)) {
+						promo = arrPromo.get(i);
+						break;
+					}
+
+				reservation.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate,
+						Integer.parseInt(adultPax), Integer.parseInt(childPax), status, Double.parseDouble(subPrice),
+						Double.parseDouble(otherPrice), Double.parseDouble(totalPrice), paymentType));
 			}
 		} catch (Exception e) {
 			System.out.println("create arrayReservation reservation.txt has error!");
@@ -163,25 +207,26 @@ public class Reservation extends Date {
 		return reservation;
 	}
 
-	public int searchReservation(ArrayList<Reservation> arrReservation, String resID) {
-		int index = 0;
-
+	public Reservation searchReservation(ArrayList<Reservation> arrReservation, String resID) {
 		for (int i = 0; i < arrReservation.size(); i++) {
 			if (arrReservation.get(i).resID.equalsIgnoreCase(resID)) {
-				this.resID = resID;
-				this.guest = arrReservation.get(i).getGuest();
-				this.room = arrReservation.get(i).getRoom();
-				this.roomNumber = arrReservation.get(i).getRoomNumber();
-				this.checkinDate = arrReservation.get(i).getCheckinDate();
-				this.checkoutDate = arrReservation.get(i).getCheckoutDate();
-				this.adultPax = arrReservation.get(i).getAdultPax();
-				this.childPax = arrReservation.get(i).getChildPax();
-				this.status = arrReservation.get(i).getStatus();
-				index = i;
-				break;
+//				this.resID = resID;
+//				this.guest = arrReservation.get(i).getGuest();
+//				this.room = arrReservation.get(i).getRoom();
+//				this.promo = arrReservation.get(i).getPromo();
+//				this.checkinDate = arrReservation.get(i).getCheckinDate();
+//				this.checkoutDate = arrReservation.get(i).getCheckoutDate();
+//				this.adultPax = arrReservation.get(i).getAdultPax();
+//				this.childPax = arrReservation.get(i).getChildPax();
+//				this.status = arrReservation.get(i).getStatus();
+//				this.subPrice = arrReservation.get(i).getSubPrice();
+//				this.otherPrice = arrReservation.get(i).getOtherPrice();
+//				this.totalPrice = arrReservation.get(i).getTotalPrice();
+
+				return arrReservation.get(i);
 			}
 		}
-		return index;
+		return null;
 	}
 
 	public void newReservation(ArrayList<Reservation> arrReservation) {
@@ -189,26 +234,52 @@ public class Reservation extends Date {
 		int newID = Integer.parseInt(lastID.substring(1)) + 1;
 		String ID = "R" + Integer.toString(newID);
 
-		this.resID = ID;
-		this.status = "Process";
+		resID = ID;
+		status = "Process";
 	}
 
 	public void addReservation(String filepath) throws IOException {
 		FileWriter newReservation = new FileWriter(filepath, true);
-		newReservation
-				.write("\n" + this.resID + "," + this.guest.getIC() + "," + this.roomNumber + "," + this.checkinDate
-						+ "," + this.checkoutDate + "," + this.adultPax + "," + this.childPax + "," + this.status);
+		newReservation.write("\n" + resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode()
+				+ "," + checkinDate + "," + checkoutDate + "," + adultPax + "," + childPax + "," + status + ","
+				+ subPrice + "," + otherPrice + "," + totalPrice + "," + paymentType);
 		newReservation.close();
 	}
 
-	public double calculatePrice() {
-		double stay_day = (LOCAL_DATE(this.checkoutDate).toEpochDay() - LOCAL_DATE(this.checkinDate).toEpochDay());
+	public void updateReservation(ArrayList<Reservation> arrReservation, String filepath) throws IOException {
+		FileWriter update = new FileWriter("temp.txt", true);
+		ArrayList<Reservation> tempArr = new ArrayList<Reservation>();
 
-		return stay_day * this.room.getSessionCharge(LOCAL_DATE(this.checkinDate).getMonth());
+		for (int i = 0; i < arrReservation.size(); i++) {
+			if (arrReservation.get(i).getID().equals(resID))
+				arrReservation.set(i, this);
+				tempArr.add(new Reservation(resID, guest, room, promo, checkinDate, checkoutDate, adultPax, childPax,
+						status, subPrice, otherPrice, totalPrice, paymentType));
+			else
+				tempArr.add(arrReservation.get(i));
+		}
+
+		for (int i = 0; i < tempArr.size(); i++) {
+			update.write(resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode() + ","
+					+ checkinDate + "," + checkoutDate + "," + adultPax + "," + childPax + "," + status + "," + subPrice
+					+ "," + otherPrice + "," + totalPrice + "," + paymentType + "\n");
+		}
+
+		update.close();
+		File oldFile = new File(filepath);
+		File newFile = new File("temp.txt");
+		if (oldFile.delete())
+			newFile.renameTo(oldFile);
+
+	}
+
+	public double calculateSubPrice() {
+		double stay_day = (LOCAL_DATE(checkoutDate).toEpochDay() - LOCAL_DATE(checkinDate).toEpochDay());
+		return stay_day * room.getSessionCharge(LOCAL_DATE(checkinDate).getMonth());
 	}
 
 	public void generatePaxList() {
-		this.adultPax = this.room.getAdultPaxLimit();
-		this.childPax = this.room.getChildPaxLimit();
+		adultPax = room.getAdultPaxLimit();
+		childPax = room.getChildPaxLimit();
 	}
 }

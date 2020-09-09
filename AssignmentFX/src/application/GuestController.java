@@ -26,14 +26,12 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 
-//simplify update @3/9 RickiE
 public class GuestController implements Initializable {
 
 	final private ObservableList<String> StateList = FXCollections.observableArrayList("Johor", "Kedah", "Kelantan",
 			"Kuala Lumpur", "Malacca", "Negeri Sembilan", "Pahang", "Pulau Penang", "Perak", "Perlis", "Sabah",
 			"Sarawak", "Selangor", "Terengganu", "Others");
 
-	// instance variable
 	private Guest guest = null;
 	private boolean add;
 	private String idUsed = "";
@@ -56,12 +54,12 @@ public class GuestController implements Initializable {
 
 	@FXML
 	private Button searchbt, addbt;
-	
+
 	@FXML
-    private FlowPane ictf;
-    
-    @FXML
-    private RadioButton passportbt, icbt;
+	private FlowPane ictf;
+
+	@FXML
+	private RadioButton passportbt, icbt;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -171,67 +169,39 @@ public class GuestController implements Initializable {
 		stateBox.setDisable(b);
 		postcodetf.setDisable(b);
 		addbt.setDisable(b);
-
-		// fnametf.setStyle(MenuController.style);
-		// lnametf.setStyle(MenuController.style);
-		// add1tf.setStyle(MenuController.style);
-		// add2tf.setStyle(MenuController.style);5
-		// stateBox.setStyle(MenuController.style);
-		// postcodetf.setStyle(MenuController.style);
-	}
-	
-	//the following regex is quite literally a pain, the following comment will attempt to explain what it does 
-	//first it checks whether the whole string is xxxxxx-xx-xxxx, with the last 4 digit being of variable length (it can be there or not)
-	//if not, it checks whether it is xxxxxx-xx, with the last 2 digit 
-	//if not, then it checks whether it is xxxxxx, or anything between 0 to 6 digits
-
-	/*@FXML
-	void icKeyTyped(KeyEvent event) {
-		boolean autoEdit = false;
-		if (ictf.getText().matches("(^\\d{6}-\\d{2}$)|(^\\d{6}$)") && !autoEdit) {
-			idTemp = ictf.getText() + "-";
-			ictf.setText(idTemp);
-			ictf.positionCaret(idTemp.length());
-			autoEdit = true;
-		} else if (ictf.getText().matches("(^\\d{6}-\\d{2}-$)|(^\\d{6}-$)") && !autoEdit) {
-			idTemp = ictf.getText(0,ictf.getText().length() - 1);
-			ictf.setText(idTemp);
-			ictf.positionCaret(idTemp.length());
-			autoEdit = true;
-		} else if (ictf.getText().matches("(^\\d{6}-\\d{3}$)|(^\\d{7}$)") && !autoEdit) {
-			String last = ictf.getText(ictf.getText().length() - 1, ictf.getText().length());
-			idTemp = ictf.getText(0,ictf.getText().length() - 1) + "-" + last;
-			ictf.setText(idTemp);
-			ictf.positionCaret(idTemp.length());
-			autoEdit = true;
-		} else if (ictf.getText().matches("(^\\d{6}-\\d{2}-\\d{0,4}$)|(^\\d{6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
-			idTemp = ictf.getText();
-			autoEdit = false;
-		} else {
-			ictf.setText(idTemp);
-			ictf.positionCaret(idTemp.length());
-			autoEdit = false;
-		}
 	}
 
-	@FXML // this is intended if the user pastes
-	// so far I have no idea how to show error messages, tooltip is a semi-deadend (?) So I'll need more info there.
-	void icTextChanged(InputMethodEvent event) {
-		 if (ictf.getText().matches("(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") && ictf.getText().length() <= 14) {
-			idTemp = ictf.getText();
-		} else {
-			ictf.setText(idTemp);
-			ictf.positionCaret(idTemp.length());
-		}
-	}*/
-	
+	/*
+	 * @FXML void icKeyTyped(KeyEvent event) { boolean autoEdit = false; //1 if
+	 * (ictf.getText().matches("(^\\d{6}-\\d{2}$)|(^\\d{6}$)") && !autoEdit) {
+	 * idTemp = ictf.getText() + "-"; ictf.setText(idTemp);
+	 * ictf.positionCaret(idTemp.length()); autoEdit = true; } else if
+	 * (ictf.getText().matches("(^\\d{6}-\\d{2}-$)|(^\\d{6}-$)") && !autoEdit) {
+	 * idTemp = ictf.getText(0, ictf.getText().length() - 1); ictf.setText(idTemp);
+	 * ictf.positionCaret(idTemp.length()); autoEdit = true; } else if
+	 * (ictf.getText().matches("(^\\d{6}-\\d{3}$)|(^\\d{7}$)") && !autoEdit) {
+	 * String last = ictf.getText(ictf.getText().length() - 1,
+	 * ictf.getText().length()); idTemp = ictf.getText(0, ictf.getText().length() -
+	 * 1) + "-" + last; ictf.setText(idTemp); ictf.positionCaret(idTemp.length());
+	 * autoEdit = true; } else if (ictf.getText().matches(
+	 * "(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") &&
+	 * ictf.getText().length() <= 14) { idTemp = ictf.getText(); autoEdit = false; }
+	 * else { ictf.setText(idTemp); ictf.positionCaret(idTemp.length()); autoEdit =
+	 * false; } }
+	 * 
+	 * @FXML void icTextChanged(InputMethodEvent event) { if
+	 * (ictf.getText().matches(
+	 * "(^\\d{0,6}-\\d{0,2}-\\d{0,4}$)|(^\\d{0,6}-\\d{0,2}$)|(^\\d{0,6}$)") &&
+	 * ictf.getText().length() <= 14) { idTemp = ictf.getText(); } else {
+	 * ictf.setText(idTemp); ictf.positionCaret(idTemp.length()); } }
+	 */
 
 	@FXML
 	void icSelected(ActionEvent event) {
 		passporttf.setVisible(false);
 		ictf.setVisible(true);
 	}
-	
+
 	@FXML
 	void passportSelected(ActionEvent event) {
 		ictf.setVisible(false);
@@ -241,13 +211,13 @@ public class GuestController implements Initializable {
 	@FXML
 	void ictf1Changed(KeyEvent event) {
 		int caretPos = ictf1.getCaretPosition();
-		
-		if(ictf1.getText().matches("^\\d{0,6}$")) {
+
+		if (ictf1.getText().matches("^\\d{0,6}$")) {
 			idTemp1 = ictf1.getText();
 		} else {
 			ictf1.setText(idTemp1);
 		}
-		
+
 		ictf1.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
@@ -255,13 +225,13 @@ public class GuestController implements Initializable {
 	@FXML
 	void ictf2Changed(KeyEvent event) {
 		int caretPos = ictf2.getCaretPosition();
-		
+
 		if (ictf2.getText().matches("^\\d{0,2}$")) {
 			idTemp2 = ictf2.getText();
 		} else {
 			ictf2.setText(idTemp2);
 		}
-		
+
 		ictf2.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
@@ -269,41 +239,41 @@ public class GuestController implements Initializable {
 	@FXML
 	void ictf3Changed(KeyEvent event) {
 		int caretPos = ictf3.getCaretPosition();
-		
+
 		if (ictf3.getText().matches("^\\d{0,4}$")) {
 			idTemp3 = ictf3.getText();
 		} else {
 			ictf3.setText(idTemp3);
 		}
-		
+
 		ictf3.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
-	
+
 	@FXML
 	void passportChanged(KeyEvent event) {
 		int caretPos = passporttf.getCaretPosition();
-		
-		if(passporttf.getText().matches("^\\w{0,16}$")) {
+
+		if (passporttf.getText().matches("^\\w{0,16}$")) {
 			idTemp1 = passporttf.getText();
 		} else {
 			passporttf.setText(idTemp1);
 		}
-		
+
 		passporttf.positionCaret(caretPos);
 		idUsed = passporttf.getText();
 	}
-	
+
 	@FXML
 	void passportPasted(InputMethodEvent event) {
-int caretPos = passporttf.getCaretPosition();
-		
-		if(passporttf.getText().matches("^\\w{0,16}$")) {
+		int caretPos = passporttf.getCaretPosition();
+
+		if (passporttf.getText().matches("^\\w{0,16}$")) {
 			idTemp1 = passporttf.getText();
 		} else {
 			passporttf.setText(idTemp1);
 		}
-		
+
 		passporttf.positionCaret(caretPos);
 		idUsed = passporttf.getText();
 	}
@@ -311,68 +281,68 @@ int caretPos = passporttf.getCaretPosition();
 	@FXML
 	void ictf1Pasted(InputMethodEvent event) {
 		int caretPos = ictf1.getCaretPosition();
-		
-		if(ictf1.getText().matches("^\\d{0,6}$")) {
+
+		if (ictf1.getText().matches("^\\d{0,6}$")) {
 			idTemp1 = ictf1.getText();
 		} else {
 			ictf1.setText(idTemp1);
 		}
-		
+
 		ictf1.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
-	
+
 	@FXML
 	void ictf2Pasted(InputMethodEvent event) {
 		int caretPos = ictf2.getCaretPosition();
-		
+
 		if (ictf2.getText().matches("^\\d{0,2}$")) {
 			idTemp2 = ictf2.getText();
 		} else {
 			ictf2.setText(idTemp2);
 		}
-		
+
 		ictf2.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
-	
+
 	@FXML
 	void ictf3Pasted(InputMethodEvent event) {
 		int caretPos = ictf3.getCaretPosition();
-		
+
 		if (ictf3.getText().matches("^\\d{0,4}$")) {
 			idTemp3 = ictf3.getText();
 		} else {
 			ictf3.setText(idTemp3);
 		}
-		
+
 		ictf3.positionCaret(caretPos);
 		idUsed = ictf1.getText() + "-" + ictf2.getText() + "-" + ictf3.getText();
 	}
-	
+
 	@FXML
 	void postcodePasted(InputMethodEvent event) {
 		int caretPos = postcodetf.getCaretPosition();
-		
+
 		if (postcodetf.getText().matches("^\\d*$")) {
 			postTemp = postcodetf.getText();
 		} else {
 			postcodetf.setText(postTemp);
 		}
-		
+
 		postcodetf.positionCaret(caretPos);
 	}
-	
+
 	@FXML
 	void postcodeChanged(KeyEvent event) {
 		int caretPos = postcodetf.getCaretPosition();
-		
+
 		if (postcodetf.getText().matches("^\\d*$")) {
 			postTemp = postcodetf.getText();
 		} else {
 			postcodetf.setText(postTemp);
 		}
-		
+
 		postcodetf.positionCaret(caretPos);
 	}
 }

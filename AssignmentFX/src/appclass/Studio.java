@@ -8,21 +8,17 @@ public class Studio extends Room {
 	private static int childPax = 1;
 
 	public Studio(String roomNumber, String numberOfBeds) {
-		super(roomNumber, numberOfBeds);
+		super(roomNumber, numberOfBeds, price, adultPax, childPax);
 		super.setRoomType(this.getClass().getSimpleName());
-		super.setPrice(price);
-		super.setAdultPaxLimit(adultPax);
-		super.setChildPaxLimit(childPax);
-
 	}
 
 	@Override
 	public double getSessionCharge(Month m) {
-		if (m.getValue() == 1 && m.getValue() ==2) 
-			return 1.2*price;
-		else if (m.getValue() == 11 && m.getValue() ==12) 
-			return 1.4*price;
+		if (m.getValue() == 1 && m.getValue() == 2)
+			return 1.2 * price;
+		else if (m.getValue() == 11 && m.getValue() == 12)
+			return 1.4 * price;
 		else
-			return 1.0*price;
+			return 1.0 * price;
 	}
 }

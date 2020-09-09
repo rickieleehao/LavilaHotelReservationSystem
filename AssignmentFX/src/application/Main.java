@@ -16,6 +16,8 @@ public class Main extends Application {
 	final static protected String style = "-fx-opacity: 1";
 	final static protected String RESERVATION_TXT = "reservation.txt";
 	final static protected String GUEST_TXT = "guest.txt";
+	final static protected String PROMO_TXT = "promotion.txt";
+	final static protected String ROOM_TXT = "room.txt";
 	protected static Login n;
 
 	@Override
