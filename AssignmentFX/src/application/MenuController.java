@@ -99,7 +99,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML // edit a reservation record
 	void editRes(ActionEvent event) {
-		if(alertMsg.confirmation("Editing", "Edit this reservation?"))
+		if (alertMsg.confirmation("Editing", "Edit this reservation?"))
 			editingSetting();
 	}
 
@@ -107,11 +107,11 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	void updateRes(ActionEvent event) throws IOException {
 		if (validateFields()) {
 			if (alertMsg.confirmation("Update reservation", "Confirm changing this reservation?"))
-			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 		} else
 			alertMsg.warning("Missing information", "Fill in reservation information");
 	}
-	
+
 	@FXML // cancel
 	void cancel(ActionEvent event) {
 		if (alertMsg.confirmation("Cancellation", "Discard changes?"))
@@ -192,13 +192,15 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 			checkoutdate.setDayCellFactory(endDateDayCellFactory);
 			// if checkoutdate invalid, automatically set a valid one
-			if (checkoutdate.getValue() == null || checkoutdate.getValue().isBefore(checkindate.getValue())) {
+			if (checkoutdate.getValue() == null
+					|| checkoutdate.getValue().isBefore(checkindate.getValue().plusDays(1))) {
 				checkoutdate.setValue(checkindate.getValue().plusDays(1));
 				checkoutdate.setDisable(false);
 			}
-			
+
 			rTypeBox.setValue(null);
 			rNumberBox.setValue(null);
+			rTypeBox.setDisable(true);
 			rNumberBox.setDisable(true);
 			adultBox.setDisable(false);
 			childBox.setDisable(false);
@@ -210,12 +212,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		if (checkindate.getValue() != null && checkoutdate.getValue() != null) {
 			LocalDate date = checkoutdate.getValue();
 			reservation.setCheckoutdate(date.toString());
-			
+	
 			rTypeBox.setValue(null);
 			rNumberBox.setValue(null);
 			rTypeBox.setDisable(false);
 			rNumberBox.setDisable(true);
-			
+
 			setRoomTypeList();
 		}
 	}
@@ -230,7 +232,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML // newRes part4
 	void rNumberField(ActionEvent event) {
-		if (rNumberBox.getValue()!= null) {
+		if (rNumberBox.getValue() != null) {
 			Room r = new Room();
 			reservation.setRoom(r.findRoom(arrRoom, rNumberBox.getValue()));
 
@@ -270,7 +272,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		if (alertMsg.confirmation("Check In", "Proceed check in?")) {
 			statuslb.setText(text);
 			reservation.setStatus(text);
-	
+
 			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 		}
 	}
@@ -282,12 +284,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			if (!pmethodBox.getValue().isBlank()) {
 				statuslb.setText(text);
 				reservation.setStatus(text);
-	
+
 				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 			} else {
 				alertMsg.warning("Check out denied", "Please select payment before checking out");
 			}
-	
+
 	}
 
 	@FXML
@@ -298,7 +300,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			reservation.setStatus(text);
 			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 		}
-	
+
 		checkinbt.setVisible(false);
 		checkoutbt.setVisible(false);
 		cancelResbt.setVisible(false);
@@ -347,6 +349,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		ChronoLocalDate arrCheckin, arrCheckout;
 		ChronoLocalDate checkin = checkindate.getValue(), checkout = checkoutdate.getValue();
 		String temp = "";
+		ArrayList<String> arrTemp = new ArrayList<String>(); // unavailable roomNumber
 
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
@@ -354,11 +357,33 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
-				if (checkin.toEpochDay() > arrCheckout.toEpochDay() || checkout.toEpochDay() < arrCheckin.toEpochDay())				
-					temp = arrReservation.get(i).getRoom().getRoomType();
-					if (!RoomTypeList.contains(temp))
-						RoomTypeList.add(temp);
+				if (!(checkin.toEpochDay() > arrCheckout.toEpochDay()
+						|| checkout.toEpochDay() < arrCheckin.toEpochDay())) {
+					temp = arrReservation.get(i).getRoom().getRoomNumber();
+					if (!arrTemp.contains(temp))
+						arrTemp.add(temp);
+				}
+				/*
+				 * for (int x = 0; x <= (checkout.toEpochDay() - checkin.toEpochDay()); x++) {
+				 * if ((checkin.toEpochDay() + x) >= arrCheckin.toEpochDay() &&
+				 * (checkin.toEpochDay() + x) <= arrCheckout.toEpochDay()) {
+				 * arrTemp.add(arrReservation.get(i).getRoom()); break; } }
+				 */
 			}
+		}
+
+		/*
+		 * for (int i = 0; i < arrRoom.size(); i++) { for (int x = 0; x <
+		 * arrTemp.size(); x++) if
+		 * (!arrRoom.get(i).getRoomNumber().equalsIgnoreCase(arrTemp.get(x).
+		 * getRoomNumber())) if (!RoomTypeList.contains(arrRoom.get(i).getRoomType()))
+		 * RoomTypeList.add(arrRoom.get(i).getRoomType()); }
+		 */
+
+		for (Room room : arrRoom) {
+			temp = room.getRoomNumber();
+			if (!arrTemp.contains(temp) && !RoomTypeList.contains(room.getRoomType()))
+				RoomTypeList.add(room.getRoomType());
 		}
 
 		rTypeBox.setItems(RoomTypeList);
@@ -377,17 +402,19 @@ public class MenuController extends Date implements Initializable, alertMsg {
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Check in")) {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
-				
-				if (!(checkin.toEpochDay() > arrCheckout.toEpochDay() || checkout.toEpochDay() < arrCheckin.toEpochDay()))
+
+				if (!(checkin.toEpochDay() > arrCheckout.toEpochDay()
+						|| checkout.toEpochDay() < arrCheckin.toEpochDay())) {
 					temp = arrReservation.get(i).getRoom().getRoomNumber();
 					if (!tempNumber.contains(temp))
 						tempNumber.add(temp);
+				}
 			}
 		}
-		
+
 		for (Room room : arrRoom) {
 			temp = room.getRoomNumber();
-			if(!tempNumber.contains(room.getRoomNumber()) && room.getRoomType().equalsIgnoreCase(rTypeBox.getValue()))
+			if (!tempNumber.contains(temp) && room.getRoomType().equalsIgnoreCase(rTypeBox.getValue()))
 				RoomNumberList.add(temp);
 		}
 
@@ -476,15 +503,15 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		newbt.setVisible(false);
 		editbt.setVisible(false);
 		cancelbt.setVisible(true);
-		
+
 		disableAll(false);
-		
+
 		checkinbt.setVisible(false);
 		checkoutbt.setVisible(false);
 		cancelResbt.setVisible(false);
 		updatebt.setVisible(true);
 	}
-	
+
 	private void defaultSetting() {
 		clearText();
 		disableAll(true);
