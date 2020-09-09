@@ -8,7 +8,6 @@ public class Promotion {
 
 	private String code;
 	private double discount;
-	private static Scanner x;
 
 	// constructor
 	public Promotion(String code, double discount) {
@@ -37,7 +36,7 @@ public class Promotion {
 		String code, discount;
 
 		try {
-			x = new Scanner(new File(filepath));
+			Scanner x = new Scanner(new File(filepath));
 			x.useDelimiter("[,\n]");
 
 			while (x.hasNext()) {

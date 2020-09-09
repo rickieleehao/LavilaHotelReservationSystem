@@ -12,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 public class Guest {
 
 	private String icno, fname, lname, add1, add2, state, postcode;
-	private static Scanner x;
 
 	// constructor
 	public Guest(String icno, String fname, String lname, String add1, String add2, String state, String postcode) {
@@ -63,7 +62,7 @@ public class Guest {
 		String icno, fname, lname, add1, add2, state, postcode;
 
 		try {
-			x = new Scanner(new File(filepath));
+			Scanner x = new Scanner(new File(filepath));
 			x.useDelimiter("[,\n]");
 
 			while (x.hasNext()) {

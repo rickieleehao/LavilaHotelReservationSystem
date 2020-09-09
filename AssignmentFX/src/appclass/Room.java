@@ -12,7 +12,6 @@ public class Room {
 	private int adultPaxLimit;
 	private int childPaxLimit;
 	private String numberOfBeds;
-	private static Scanner x;
 
 	// constructor
 	public Room(String roomNumber, String numberOfBeds, double price, int adultPaxLimit, int childPaxLimit) {
@@ -24,12 +23,8 @@ public class Room {
 	}
 
 	public Room() {
-		
+
 	}
-	
-	public double getSessionCharge(Month m) {
-		return 0;
-	};
 
 	// method
 	public static ArrayList<Room> initializeRoom(String filepath) {
@@ -37,7 +32,7 @@ public class Room {
 		String roomType, roomNumber, numberOfBeds;
 
 		try {
-			x = new Scanner(new File(filepath));
+			Scanner x = new Scanner(new File(filepath));
 			x.useDelimiter("[,\n]");
 
 			while (x.hasNext()) {
@@ -57,7 +52,6 @@ public class Room {
 		} catch (Exception e) {
 			System.out.println("create arrayRoom room.txt has error!" + e.getMessage());
 		}
-
 		return room;
 	}
 
@@ -69,6 +63,10 @@ public class Room {
 		return null;
 	}
 
+	public double getSessionCharge(Month m) {
+		return 0;
+	};
+	
 	// accessor
 	public String getRoomNumber() {
 		return roomNumber;

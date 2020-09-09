@@ -272,17 +272,19 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	void checkOut(ActionEvent event) throws IOException {
 		String text = "Checked out";
 		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
-			if (pmethodBox.getValue() != null) {
-				statuslb.setText(text);
-				reservation.setStatus(text);
-				reservation.setPaymentType(pmethodBox.getValue().toString());
-				checkoutSetting();
+			if (statuslb.getText() == "Checked in")
+				if (pmethodBox.getValue() != null) {
+					statuslb.setText(text);
+					reservation.setStatus(text);
+					reservation.setPaymentType(pmethodBox.getValue().toString());
+					checkoutSetting();
 
-				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
-			} else {
-				alertMsg.warning("Check out denied", "Please select payment before checking out");
-			}
-
+					reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+				} else {
+					alertMsg.warning("Check out denied", "Please select payment before checking out");
+				}
+			else
+				alertMsg.warning("Check out denied", "Please check in before checking out.");
 	}
 
 	@FXML
@@ -511,11 +513,12 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	}
 
 	private void foundResSetting() {
-		
+
 		// payment section
 		otherCtf.setText(Double.toString(reservation.getOtherPrice()));
 		discountCtf.setText(reservation.getPromo().getCode());
-		
+		pmethodBox.setValue(reservation.getPaymentType());
+
 		// reservation section
 		checkindate.setValue(LOCAL_DATE(reservation.getCheckinDate()));
 		checkoutdate.setValue(LOCAL_DATE(reservation.getCheckoutDate()));
@@ -540,7 +543,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		discountCtf.setDisable(false);
 		pmethodBox.setDisable(false);
 		confirmResbt.setVisible(false);
-		editbt.setVisible(true);
 
 		if (reservation.getStatus().matches("Cancelled") || reservation.getStatus().matches("Checked out")) {
 			checkinbt.setVisible(false);
@@ -549,14 +551,17 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			otherCtf.setDisable(true);
 			discountCtf.setDisable(true);
 			pmethodBox.setDisable(true);
+			editbt.setVisible(false);
 		} else if (reservation.getStatus().matches("Checked in")) {
 			checkinbt.setVisible(false);
 			checkoutbt.setVisible(true);
 			cancelResbt.setVisible(true);
+			editbt.setVisible(true);
 		} else {
 			checkinbt.setVisible(true);
 			checkoutbt.setVisible(true);
 			cancelResbt.setVisible(true);
+			editbt.setVisible(true);
 		}
 	}
 

@@ -7,7 +7,6 @@ public class Login {
 
 	private String username;
 	private String password;
-	private static Scanner x;
 
 	public String getUsername() {
 		return this.username;
@@ -19,8 +18,10 @@ public class Login {
 
 	// retrieve username & password from .txt file
 	public void initialAccount(String filepath) {
+		
+		
 		try {
-			x = new Scanner(new File(filepath));
+			Scanner x = new Scanner(new File(filepath));
 			x.useDelimiter("[,\n]");
 
 			while (x.hasNext()) {

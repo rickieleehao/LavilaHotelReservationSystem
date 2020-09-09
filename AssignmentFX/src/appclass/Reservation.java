@@ -16,11 +16,8 @@ public class Reservation extends Date {
 	private int adultPax;
 	private int childPax;
 	private String status;
-//	private double subPrice;
 	private double otherPrice;
-//	private double totalPrice;
 	private String paymentType;
-	private static Scanner x;
 
 	// constructor
 	public Reservation(String resID, Guest guest, Room room, Promotion promo, String checkinDate, String checkoutDate,
@@ -34,9 +31,7 @@ public class Reservation extends Date {
 		this.adultPax = adultPax;
 		this.childPax = childPax;
 		this.status = status;
-//		this.subPrice = subPrice;
 		this.otherPrice = otherPrice;
-//		this.totalPrice = totalPrice;
 		this.paymentType = paymentType;
 	}
 
@@ -76,10 +71,6 @@ public class Reservation extends Date {
 		return status;
 	}
 
-//	public double getSubPrice() {
-//		return subPrice;
-//	}
-
 	public double getOtherPrice() {
 		return otherPrice;
 	}
@@ -87,10 +78,6 @@ public class Reservation extends Date {
 	public Promotion getPromo() {
 		return promo;
 	}
-
-//	public double getTotalPrice() {
-//		return totalPrice;
-//	}
 
 	public String getPaymentType() {
 		return paymentType;
@@ -125,10 +112,6 @@ public class Reservation extends Date {
 		this.status = status;
 	}
 
-//	public void setSubPrice(double subPrice) {
-//		this.subPrice = subPrice;
-//	}
-
 	public void setOtherPrice(double otherPrice) {
 		this.otherPrice = otherPrice;
 	}
@@ -153,7 +136,7 @@ public class Reservation extends Date {
 		Promotion promo = null;
 
 		try {
-			x = new Scanner(new File(filepath));
+			Scanner x = new Scanner(new File(filepath));
 			x.useDelimiter("[,\n]");
 
 			while (x.hasNext()) {
