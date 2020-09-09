@@ -144,9 +144,9 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			statelb.setText(guest.getState());
 			postcodelb.setText(guest.getPostcode());
 			reservation.setGuest(guest);
-			initialize(null,null);
+			initialize(null, null);
 		}
-		
+
 	}
 
 	@FXML // make a new booking
@@ -241,7 +241,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	void confirmRes(ActionEvent event) throws IOException {
 		if (validateFields()) {
 			if (alertMsg.confirmation("Add new reservation", "Confirm adding this reservation?")) {
-				if(reservation.getPaymentType() == null)
+				if (reservation.getPaymentType() == null)
 					reservation.setPaymentType("NO");
 				reservation.setAdultPax(Integer.parseInt(adultBox.getValue()));
 				reservation.setChildPax(Integer.parseInt(childBox.getValue()));
@@ -275,6 +275,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			if (pmethodBox.getValue() != null) {
 				statuslb.setText(text);
 				reservation.setStatus(text);
+				reservation.setPaymentType(pmethodBox.getValue().toString());
 				checkoutSetting();
 
 				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
@@ -291,11 +292,14 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			statuslb.setText(text);
 			reservation.setStatus(text);
 			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+			checkinbt.setVisible(false);
+			checkoutbt.setVisible(false);
+			cancelResbt.setVisible(false);
+			otherCtf.setDisable(true);
+			discountCtf.setDisable(true);
+			pmethodBox.setDisable(true);
+			editbt.setVisible(false);
 		}
-
-		checkinbt.setVisible(false);
-		checkoutbt.setVisible(false);
-		cancelResbt.setVisible(false);
 	}
 
 	// method
@@ -308,7 +312,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
-					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Check in")) {
+					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
@@ -339,7 +343,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 		for (int i = 0; i < arrReservation.size(); i++) { // find unavailable roomNumber
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
-					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Check in")) {
+					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
@@ -387,29 +391,33 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		double otherCharge = 0;
 		double totalPrice;
 
-		if (otherCtf.getText() != null)
+		if (otherCtf.getText() == null)
+			otherCtf.setText("0.0");
+		else
 			try {
 				otherCharge = Double.parseDouble(otherCtf.getText());
 				reservation.setOtherPrice(otherCharge);
 			} catch (Exception ex) {
-				otherCharge = 0;
+				otherCharge = 0.0;
+				otherCtf.setText("0.0");
 				reservation.setOtherPrice(otherCharge);
 				alertMsg.warning("Invalid Amount", "Please enter a valid amount");
 			}
 
-		if (discountCtf.getText() != null)
+		if (discountCtf.getText() == null) {
+			Promotion promo = new Promotion("NOPRO");
+			reservation.setPromo(promo);
+		} else
 			try {
 				Promotion promo = new Promotion(discountCtf.getText());
 				reservation.setPromo(promo);
-				if (reservation.getPromo().validateCode(arrPromo))
+				if (!reservation.getPromo().validateCode(arrPromo))
 					throw new Exception();
 			} catch (Exception ex) {
+				Promotion promo = new Promotion("NOPRO");
+				reservation.setPromo(promo);
 				System.out.print("Promotion code has error");
 			}
-		else {
-			Promotion promo = new Promotion("NOPRO");
-			reservation.setPromo(promo);
-		}
 
 		totalPrice = (subPrice + serviceCharge + otherCharge) * reservation.getPromo().getDiscount();
 		roomClb.setText(Double.toString(subPrice));
@@ -444,6 +452,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		addbt.setDisable(false);
 		statuslb.setDisable(false);
 		checkindate.setDisable(false);
+
+		otherCtf.setDisable(false);
+		discountCtf.setDisable(false);
+		pmethodBox.setDisable(false);
 	}
 
 	private void editingSetting() {
@@ -499,6 +511,11 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	}
 
 	private void foundResSetting() {
+		
+		// payment section
+		otherCtf.setText(Double.toString(reservation.getOtherPrice()));
+		discountCtf.setText(reservation.getPromo().getCode());
+		
 		// reservation section
 		checkindate.setValue(LOCAL_DATE(reservation.getCheckinDate()));
 		checkoutdate.setValue(LOCAL_DATE(reservation.getCheckoutDate()));
@@ -517,10 +534,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		add2lb.setText(reservation.getGuest().getAdd2());
 		statelb.setText(reservation.getGuest().getState());
 		postcodelb.setText(reservation.getGuest().getPostcode());
-
-		// payment section
-		otherCtf.setText(Double.toString(reservation.getOtherPrice()));
-		discountCtf.setText(reservation.getPromo().getCode());
 
 		disableAll(true);
 		otherCtf.setDisable(false);
@@ -558,8 +571,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	private void clearText() {
 		idtf.setText(null);
-		checkindate.setValue(null);
 		checkoutdate.setValue(null);
+		checkindate.setValue(null);
 		rTypeBox.setValue(null);
 		rNumberBox.setValue(null);
 		adultBox.setValue(null);

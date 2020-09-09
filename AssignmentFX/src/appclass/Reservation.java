@@ -244,14 +244,4 @@ public class Reservation extends Date {
 
 		update.close();
 	}
-
-	public double calculateSubPrice() {
-		double stay_day = (LOCAL_DATE(checkoutDate).toEpochDay() - LOCAL_DATE(checkinDate).toEpochDay());
-		return stay_day * room.getSessionCharge(LOCAL_DATE(checkinDate).getMonth());
-	}
-
-	public void generatePaxList() {
-		adultPax = room.getAdultPaxLimit();
-		childPax = room.getChildPaxLimit();
-	}
 }
