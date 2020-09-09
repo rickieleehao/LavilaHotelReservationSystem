@@ -5,7 +5,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class Room {
+public class Room {
 	private String roomType;
 	private String roomNumber;
 	private double price;
@@ -23,8 +23,13 @@ public abstract class Room {
 		this.childPaxLimit = childPaxLimit;
 	}
 
-	// abstract method
-	public abstract double getSessionCharge(Month m);
+	public Room() {
+		
+	}
+	
+	public double getSessionCharge(Month m) {
+		return 0;
+	};
 
 	// method
 	public static ArrayList<Room> initializeRoom(String filepath) {
