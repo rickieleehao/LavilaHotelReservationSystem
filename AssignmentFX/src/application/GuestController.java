@@ -314,6 +314,20 @@ public class GuestController implements Initializable {
     }
 	
 	@FXML
+    void ictf1Submit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			searchbt.fire();
+		}
+    }
+	
+	@FXML
+    void ictf2Submit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			searchbt.fire();
+		}
+    }
+	
+	@FXML
     void ictf3Submit(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
 			searchbt.fire();
