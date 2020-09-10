@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="CENTER" hgap="10.0" prefHeight="377.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GuestController">
+   <columnConstraints>
+      <ColumnConstraints minWidth="0.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="64.0" minHeight="57.0" prefHeight="64.0" />
+      <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="18.0" />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <GridPane alignment="CENTER" hgap="10.0" minHeight="200.0" minWidth="0.0" prefHeight="273.0" prefWidth="21.0" GridPane.rowIndex="2">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="231.0" minWidth="0.0" prefWidth="80.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="329.0" minWidth="0.0" prefWidth="250.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="First Name">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Last Name" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Address 1" GridPane.rowIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Address 2" GridPane.rowIndex="3">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Postcode" GridPane.rowIndex="5">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="State" GridPane.rowIndex="4">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fnametf" disable="true" prefHeight="25.0" prefWidth="373.0" promptText="Ex: Hong Hui" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="lnametf" disable="true" prefHeight="25.0" prefWidth="336.0" promptText="Ex: Lee" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="add1tf" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="25.0" prefWidth="236.0" promptText="Street Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="add2tf" disable="true" prefHeight="25.0" prefWidth="225.0" promptText="Apt., Suite, Unit, Building, Floor" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ChoiceBox fx:id="stateBox" disable="true" prefHeight="26.0" prefWidth="435.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="postcodetf" disable="true" minWidth="7.0" onInputMethodTextChanged="#postcodePasted" onKeyTyped="#postcodeChanged" prefHeight="26.0" prefWidth="163.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+            <Button fx:id="addbt" disable="true" mnemonicParsing="false" onAction="#addGuest" text="Add Guest" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+               <padding>
+                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+               </padding>
+            </Button>
+            <Label prefHeight="18.0" prefWidth="88.0" GridPane.rowIndex="6">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <GridPane prefHeight="0.0" prefWidth="434.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane prefHeight="13.0" prefWidth="424.0" GridPane.rowIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.0" minWidth="10.0" prefWidth="267.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="125.0" prefWidth="167.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="passporttf" onInputMethodTextChanged="#passportPasted" onKeyPressed="#passportSubmit" onKeyTyped="#passportChanged" prefHeight="25.0" prefWidth="201.0" visible="false" />
+                  <FlowPane fx:id="ictf" alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="20.0" prefWidth="267.0">
+                     <children>
+                        <TextField fx:id="ictf1" onInputMethodTextChanged="#ictf1Pasted" onKeyPressed="#ictf1Submit" onKeyTyped="#ictf1Changed" prefHeight="25.0" prefWidth="68.0" promptText="123456" />
+                        <Label text="-">
+                           <padding>
+                              <Insets left="8.0" right="8.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="ictf2" onInputMethodTextChanged="#ictf2Pasted" onKeyPressed="#ictf2Submit" onKeyTyped="#ictf2Changed" prefHeight="25.0" prefWidth="38.0" promptText="12" />
+                        <Label text="-">
+                           <padding>
+                              <Insets left="8.0" right="8.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="ictf3" onInputMethodTextChanged="#ictf3Pasted" onKeyPressed="#ictf3Submit" onKeyTyped="#ictf3Changed" prefHeight="25.0" prefWidth="54.0" promptText="1234" />
+                     </children>
+                  </FlowPane>
+                  <Button fx:id="searchbt" mnemonicParsing="false" onAction="#searchIC" text="Search" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                     <padding>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                     </padding>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </GridPane>
+            <GridPane prefHeight="213.0" prefWidth="434.0" GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="248.0" minWidth="75.0" prefWidth="97.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="255.0" minWidth="48.0" prefWidth="201.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="74.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <RadioButton fx:id="passportbt" mnemonicParsing="false" onAction="#passportSelected" text="Passport" GridPane.columnIndex="1">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="IDType1" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="icbt" mnemonicParsing="false" onAction="#icSelected" prefHeight="17.0" prefWidth="99.0" selected="true" text="IC Number" toggleGroup="$IDType1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </RadioButton>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </GridPane>
+      <Line endX="241.0" startX="-100.0" stroke="#b5b5b5" GridPane.rowIndex="1" />
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</GridPane>
