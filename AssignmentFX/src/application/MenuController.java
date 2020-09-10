@@ -162,9 +162,6 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 			idtf.setText(reservation.getID());
 			statuslb.setText("Processing");
-		} else {
-			idtf.setText(null);
-			statuslb.setText(null);
 		}
 	}
 
@@ -321,6 +318,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
+				
+				if (arrReservation.get(i).getID().matches(reservation.getID()))
+					continue;
+				
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
@@ -352,6 +353,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		for (int i = 0; i < arrReservation.size(); i++) { // find unavailable roomNumber
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
+				
+				if (arrReservation.get(i).getID().matches(reservation.getID()))
+						continue;
+				
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
