@@ -199,6 +199,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				checkoutdate.setDisable(false);
 			}
 		}
+		setRoomTypeList();
+		setRoomNumberList("");
 	}
 
 	@FXML // newRes part2
