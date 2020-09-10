@@ -37,7 +37,7 @@ public class Login {
 	public boolean validateLogin(String username, String password) {
 
 		try {
-			if (username.trim().equals(this.username) && password.trim().equals(this.password))
+			if (username.trim().equals(this.username) && password.trim().equalsIgnoreCase(this.password))
 				return true;
 		} catch (Exception e) {
 			System.out.println("verifyLogin has error.");

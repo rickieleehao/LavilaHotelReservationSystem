@@ -1,6 +1,8 @@
 package application;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,12 +36,26 @@ public class LoginController implements alertMsg{
 
 	// ActionEvent
 	@FXML
-	void login(ActionEvent event) throws IOException {
+	void login(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		logintf.setVisible(true);
 		logintf.setText(null);
 		
+		/* This is a fun project of my own, I plan to implement cryptographic security for password
+		 * as such, the below is changed to represent such an effort to use PBKDF2
+		 */
+		MessageDigest md = MessageDigest.getInstance("SHA-512");
+		byte[] hash = md.digest(passwordtf.getText().getBytes());
+		StringBuilder sb = new StringBuilder();
+		String generatedPassword = "";
+		
+		for (int i = 0; i < hash.length; i++) {
+			sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+		}
+		generatedPassword = sb.toString();
+		
+		
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
-			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
+			if (Main.n.validateLogin(usernametf.getText(), generatedPassword) == true) {
 
 				alertMsg.info("Welcome", "Login Successful");
 				
