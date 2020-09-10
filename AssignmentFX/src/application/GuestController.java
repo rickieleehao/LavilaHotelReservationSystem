@@ -67,27 +67,32 @@ public class GuestController implements Initializable {
 	@FXML
 	void searchIC(ActionEvent event) {
 		guest = new Guest();
-		if (guest.findIC(arrGuest, idUsed)) {
-			setDisable(true);
-			fnametf.setText(guest.getFName());
-			lnametf.setText(guest.getLName());
-			add1tf.setText(guest.getAdd1());
-			add2tf.setText(guest.getAdd2());
-			stateBox.setValue(guest.getState());
-			postcodetf.setText(guest.getPostcode());
-
-			addbt.setDisable(false);
-			add = false;
-		} else if (alertMsg.confirmation("IC not found", "Adding new guest?")) {
-			setDisable(false);
-			addbt.setDisable(false);
-			add = true;
-		} else {
-			setDisable(true);
-			addbt.setDisable(true);
-			add = false;
+		
+		if (icbt.isSelected() && !idUsed.matches("^\\d{6}-\\d{2}-\\d{4}$")) {
+			alertMsg.warning("Search not completed", "IC must be in the format of xxxxxx-xx-xxxx");
+		}else{
+		
+			if (guest.findIC(arrGuest, idUsed)) {
+				setDisable(true);
+				fnametf.setText(guest.getFName());
+				lnametf.setText(guest.getLName());
+				add1tf.setText(guest.getAdd1());
+				add2tf.setText(guest.getAdd2());
+				stateBox.setValue(guest.getState());
+				postcodetf.setText(guest.getPostcode());
+			
+				addbt.setDisable(false);
+				add = false;
+			} else if (alertMsg.confirmation("IC not found", "Adding new guest?")) {
+				setDisable(false);
+				addbt.setDisable(false);
+				add = true;
+			} else {
+				setDisable(true);
+				addbt.setDisable(true);
+				add = false;
+			}
 		}
-
 	}
 
 	@FXML
