@@ -137,7 +137,7 @@ public class Reservation extends Date {
 
 		try {
 			Scanner x = new Scanner(new File(filepath));
-			x.useDelimiter("[,\n]");
+			x.useDelimiter("(,|\r\n|\r|\n)");
 
 			while (x.hasNext()) {
 				resID = x.next();
