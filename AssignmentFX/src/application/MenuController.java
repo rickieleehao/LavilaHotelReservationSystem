@@ -101,6 +101,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	void editRes(ActionEvent event) {
 		if (alertMsg.confirmation("Editing", "Edit this reservation?"))
 			editingSetting();
+			statuslb.setText("Processing");
 	}
 
 	@FXML
@@ -160,7 +161,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			reservation.newReservation(arrReservation); // generate a new Reservation ID
 
 			idtf.setText(reservation.getID());
-			statuslb.setText(reservation.getStatus());
+			statuslb.setText("Processing");
 		} else {
 			idtf.setText(null);
 			statuslb.setText(null);
@@ -198,9 +199,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				checkoutdate.setValue(checkindate.getValue().plusDays(1));
 				checkoutdate.setDisable(false);
 			}
+			
+			setRoomTypeList();
+			setRoomNumberList("");
 		}
-		setRoomTypeList();
-		setRoomNumberList("");
 	}
 
 	@FXML // newRes part2
