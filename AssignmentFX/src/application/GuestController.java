@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 
@@ -164,6 +165,8 @@ public class GuestController implements Initializable {
 
 		if (ictf1.getText().matches("^\\d{0,6}$")) {
 			idTemp1 = ictf1.getText();
+			if (ictf1.getLength() == 6) 
+				ictf2.requestFocus();
 		} else {
 			ictf1.setText(idTemp1);
 		}
@@ -178,6 +181,8 @@ public class GuestController implements Initializable {
 
 		if (ictf2.getText().matches("^\\d{0,2}$")) {
 			idTemp2 = ictf2.getText();
+			if (ictf2.getLength() == 2) 
+				ictf3.requestFocus();
 		} else {
 			ictf2.setText(idTemp2);
 		}
@@ -234,6 +239,8 @@ public class GuestController implements Initializable {
 
 		if (ictf1.getText().matches("^\\d{0,6}$")) {
 			idTemp1 = ictf1.getText();
+			if (ictf1.getLength() == 6) 
+				ictf2.requestFocus();
 		} else {
 			ictf1.setText(idTemp1);
 		}
@@ -248,6 +255,8 @@ public class GuestController implements Initializable {
 
 		if (ictf2.getText().matches("^\\d{0,2}$")) {
 			idTemp2 = ictf2.getText();
+			if (ictf2.getLength() == 2) 
+				ictf3.requestFocus();
 		} else {
 			ictf2.setText(idTemp2);
 		}
@@ -285,6 +294,7 @@ public class GuestController implements Initializable {
 
 	@FXML
 	void postcodeChanged(KeyEvent event) {
+		
 		int caretPos = postcodetf.getCaretPosition();
 
 		if (postcodetf.getText().matches("^\\d*$")) {
@@ -295,4 +305,18 @@ public class GuestController implements Initializable {
 
 		postcodetf.positionCaret(caretPos);
 	}
+	
+	@FXML
+    void passportSubmit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			searchbt.fire();
+		}
+    }
+	
+	@FXML
+    void ictf3Submit(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			searchbt.fire();
+		}
+    }
 }

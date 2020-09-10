@@ -122,7 +122,7 @@
                   <RowConstraints vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="passporttf" onInputMethodTextChanged="#passportPasted" onKeyTyped="#passportChanged" prefHeight="25.0" prefWidth="201.0" visible="false" />
+                  <TextField fx:id="passporttf" onInputMethodTextChanged="#passportPasted" onKeyPressed="#passportSubmit" onKeyTyped="#passportChanged" prefHeight="25.0" prefWidth="201.0" visible="false" />
                   <Button fx:id="searchbt" mnemonicParsing="false" onAction="#searchIC" text="Search" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                      <padding>
                         <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
@@ -142,7 +142,7 @@
                               <Insets left="8.0" right="8.0" />
                            </padding>
                         </Label>
-                        <TextField fx:id="ictf3" onInputMethodTextChanged="#ictf3Pasted" onKeyTyped="#ictf3Changed" prefHeight="25.0" prefWidth="54.0" promptText="1234" />
+                        <TextField fx:id="ictf3" onInputMethodTextChanged="#ictf3Pasted" onKeyPressed="#ictf3Submit" onKeyTyped="#ictf3Changed" prefHeight="25.0" prefWidth="54.0" promptText="1234" />
                      </children>
                   </FlowPane>
                </children>
