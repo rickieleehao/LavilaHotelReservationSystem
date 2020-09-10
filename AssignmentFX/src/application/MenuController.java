@@ -99,8 +99,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML // edit a reservation record
 	void editRes(ActionEvent event) {
-		if (alertMsg.confirmation("Editing", "Edit this reservation?"))
+		if (alertMsg.confirmation("Editing", "Edit this reservation?")) {
 			editingSetting();
+			statuslb.setText("Processing");
+		}
 	}
 
 	@FXML
@@ -160,10 +162,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			reservation.newReservation(arrReservation); // generate a new Reservation ID
 
 			idtf.setText(reservation.getID());
-			statuslb.setText(reservation.getStatus());
-		} else {
-			idtf.setText(null);
-			statuslb.setText(null);
+			statuslb.setText("Processing");
 		}
 	}
 
@@ -198,6 +197,9 @@ public class MenuController extends Date implements Initializable, alertMsg {
 				checkoutdate.setValue(checkindate.getValue().plusDays(1));
 				checkoutdate.setDisable(false);
 			}
+			
+			setRoomTypeList();
+			setRoomNumberList("");
 		}
 	}
 
@@ -317,6 +319,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
+				
+				if (arrReservation.get(i).getID().matches(reservation.getID()))
+					continue;
+				
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 
@@ -348,6 +354,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		for (int i = 0; i < arrReservation.size(); i++) { // find unavailable roomNumber
 			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
+				
+				if (arrReservation.get(i).getID().matches(reservation.getID()))
+						continue;
+				
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
 

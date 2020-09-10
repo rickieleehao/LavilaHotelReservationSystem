@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.fxml.FXMLLoader;
 
+// *******Kindly read the ReadMe file if it is unable to launch*******
+
 public class Main extends Application {
 
 	final static protected String titleIcon = "TitleIcon.png";

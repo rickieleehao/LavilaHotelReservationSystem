@@ -104,6 +104,7 @@ public class GuestController implements Initializable {
 					guest = new Guest(idUsed, fnametf.getText(), lnametf.getText(), add1tf.getText(), add2tf.getText(),
 							stateBox.getValue(), postcodetf.getText());
 					guest.addGuest(Main.GUEST_TXT);
+					alertMsg.info("New Guest Information", "Update successful");
 					Stage stage = (Stage) addbt.getScene().getWindow();
 					stage.close();
 				}
