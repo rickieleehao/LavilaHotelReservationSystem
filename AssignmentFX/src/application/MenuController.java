@@ -81,8 +81,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	// button
 	@FXML // searching for a booking
 	void searchRes(ActionEvent event) {
-		if (idtf.getText().isBlank()) {
-			alertMsg.warning("Mising reservation ID", "Please enter reservation ID");
+		if (idtf.getText() == null) {
+			alertMsg.warning("Missing reservation ID", "Please enter reservation ID");
 			defaultSetting();
 		} else {
 			reservation = new Reservation();
@@ -106,8 +106,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	@FXML
 	void updateRes(ActionEvent event) throws IOException {
 		if (validateFields()) {
-			if (alertMsg.confirmation("Update reservation", "Confirm changing this reservation?"))
+			if (alertMsg.confirmation("Update reservation", "Confirm changing this reservation?")) {
 				reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
+				defaultSetting();
+			}
 		} else
 			alertMsg.warning("Missing information", "Fill in reservation information");
 	}
