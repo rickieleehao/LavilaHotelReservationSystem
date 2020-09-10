@@ -3,4 +3,5 @@
 991005-14-5879,Sen Fong,Goh,Suria Mutiara Block 6,Taman Continental,Pulau Pinang,11600
 861115-10-5369,Shu Ying,Wong,232 Jalan Seri Timah 1,Taman Seri Timah,Selangor,43300
 951001-14-5162,Kunugi,Asuka,3 Jalan Jagong 13,Bandar Baru Uda,Johor,81200
-96123,1,1,1,1,Sabah,1
+960325-56-5623,Rickie,Lee Hao,Ampang 1,Ampang 2,Pulau Penang,68000
+960325-56-5624,123,123,123,123,Perak,123

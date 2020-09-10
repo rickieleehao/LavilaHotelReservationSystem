@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-// Done by RickiE @9/9
 public class LoginController implements alertMsg{
 
 	@FXML

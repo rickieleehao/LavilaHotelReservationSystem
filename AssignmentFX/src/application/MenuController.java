@@ -267,6 +267,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			editbt.setVisible(false);
 			statuslb.setText(text);
 			reservation.setStatus(text);
+			reservation.setPaymentType(pmethodBox.getValue().toString());
 
 			reservation.updateReservation(arrReservation, Main.RESERVATION_TXT);
 		}
@@ -276,8 +277,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 	void checkOut(ActionEvent event) throws IOException {
 		String text = "Checked out";
 		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
-			if (statuslb.getText() == "Checked in")
-				if (pmethodBox.getValue() != null || pmethodBox.getValue() != "NO") {
+			if (statuslb.getText().equalsIgnoreCase("Checked in"))
+				if (pmethodBox.getValue() != null && !pmethodBox.getValue().equalsIgnoreCase("NO")) {
 					statuslb.setText(text);
 					reservation.setStatus(text);
 					reservation.setPaymentType(pmethodBox.getValue().toString());

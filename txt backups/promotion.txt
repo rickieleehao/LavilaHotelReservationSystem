@@ -1,2 +1,3 @@
-OFF15,0.85,true
-CYNPC,0.80,false
+NOPRO,1
+OFF15,0.85
+CYNPC,0.80
