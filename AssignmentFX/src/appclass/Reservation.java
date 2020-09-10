@@ -137,7 +137,7 @@ public class Reservation extends Date {
 
 		try {
 			Scanner x = new Scanner(new File(filepath));
-			x.useDelimiter("(,|\r\n|\r|\n)");
+			x.useDelimiter(",");
 
 			while (x.hasNext()) {
 				resID = x.next();
@@ -150,6 +150,7 @@ public class Reservation extends Date {
 				childPax = x.next();
 				status = x.next();
 				otherPrice = x.next();
+				x.useDelimiter("(,|\r\n|\r|\n)");
 				paymentType = x.next();
 
 				for (int i = 0; i < arrGuest.size(); i++)
@@ -175,6 +176,7 @@ public class Reservation extends Date {
 						paymentType));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("create arrayReservation reservation.txt has error!");
 		}
 
