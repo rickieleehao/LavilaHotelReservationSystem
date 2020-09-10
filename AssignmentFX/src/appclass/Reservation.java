@@ -196,14 +196,14 @@ public class Reservation extends Date {
 		String ID = "R" + Integer.toString(newID);
 
 		resID = ID;
-		status = "Process";
+		status = "Processed";
 	}
 
 	public void addReservation(String filepath) throws IOException {
 		FileWriter newReservation = new FileWriter(filepath, true);
-		newReservation.write("\n" + resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode()
+		newReservation.write(resID + "," + guest.getIC() + "," + room.getRoomNumber() + "," + promo.getCode()
 				+ "," + checkinDate + "," + checkoutDate + "," + adultPax + "," + childPax + "," + status + ","
-				+ otherPrice + "," + paymentType);
+				+ otherPrice + "," + paymentType + "\n");
 		newReservation.close();
 	}
 

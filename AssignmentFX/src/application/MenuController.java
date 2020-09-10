@@ -275,7 +275,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		String text = "Checked out";
 		if (alertMsg.confirmation("Check Out", "Proceed check out?"))
 			if (statuslb.getText() == "Checked in")
-				if (pmethodBox.getValue() != null) {
+				if (pmethodBox.getValue() != null || pmethodBox.getValue() != "NO") {
 					statuslb.setText(text);
 					reservation.setStatus(text);
 					reservation.setPaymentType(pmethodBox.getValue().toString());
@@ -315,7 +315,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		ArrayList<String> arrTemp = new ArrayList<String>(); // unavailable roomNumber
 
 		for (int i = 0; i < arrReservation.size(); i++) { // to find available roomType within the booking
-			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
+			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
@@ -346,7 +346,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		ArrayList<String> tempNumber = new ArrayList<String>();
 
 		for (int i = 0; i < arrReservation.size(); i++) { // find unavailable roomNumber
-			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Process")
+			if (arrReservation.get(i).getStatus().equalsIgnoreCase("Processed")
 					|| arrReservation.get(i).getStatus().equalsIgnoreCase("Checked in")) {
 				arrCheckin = LocalDate.parse(arrReservation.get(i).getCheckinDate(), formatter);
 				arrCheckout = LocalDate.parse(arrReservation.get(i).getCheckoutDate(), formatter);
