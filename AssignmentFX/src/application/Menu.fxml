@@ -157,5 +157,15 @@
       <Button fx:id="confirmResbt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#confirmRes" prefHeight="57.0" prefWidth="80.0" text="Confirm Reservation" textAlignment="CENTER" visible="false" wrapText="true" />
       <Button fx:id="cancelbt" layoutX="318.0" layoutY="23.0" mnemonicParsing="false" onAction="#cancel" onKeyPressed="#searchtab" prefHeight="25.0" prefWidth="95.0" text="Cancel" visible="false" />
       <Button fx:id="updatebt" alignment="CENTER" layoutX="515.0" layoutY="530.0" mnemonicParsing="false" onAction="#updateRes" prefHeight="57.0" prefWidth="80.0" text="Update" textAlignment="CENTER" visible="false" wrapText="true" />
+      <Label alignment="CENTER" layoutX="110.0" layoutY="189.0" prefHeight="36.0" prefWidth="120.0" text="Lavila" textFill="#394c3a">
+         <font>
+            <Font name="Berlin Sans FB" size="40.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="75.0" layoutY="217.0" prefHeight="40.0" prefWidth="190.0" text="Hotel Reservation System" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Candara Light Italic" size="15.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
