@@ -88,7 +88,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			reservation = new Reservation();
 			reservation = reservation.searchReservation(arrReservation, idtf.getText());
 			if (reservation != null) {
-				alertMsg.warning("Reservation ID", reservation.getID() + " result found");
+				alertMsg.info("Reservation ID", reservation.getID() + " result found");
 				foundResSetting();
 			} else {
 				alertMsg.warning("Invalid reservation ID", "Result not found");

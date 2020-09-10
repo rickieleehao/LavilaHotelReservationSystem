@@ -41,7 +41,7 @@ public class LoginController implements alertMsg{
 		if (usernametf.getText().isBlank() == false && passwordtf.getText().isBlank() == false) {
 			if (Main.n.validateLogin(usernametf.getText(), passwordtf.getText()) == true) {
 
-				alertMsg.warning("Welcome", "Login Successful");
+				alertMsg.info("Welcome", "Login Successful");
 				
 				Parent menuViewParent = FXMLLoader.load(getClass().getResource("Menu.fxml"));
 				Scene menuViewScene = new Scene(menuViewParent);
@@ -53,6 +53,7 @@ public class LoginController implements alertMsg{
 				stage.show();
 			} else
 				logintf.setText("invalid username or password");
+				passwordtf.setText("");
 		} else
 			logintf.setText("Enter username & password");
 	}

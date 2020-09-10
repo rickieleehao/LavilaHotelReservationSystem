@@ -16,6 +16,14 @@ public interface alertMsg {
 		alert.showAndWait();
 	}
 	
+	public static void info(String title, String context) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(context);
+		alert.showAndWait();
+	}
+	
 	public static boolean confirmation(String title, String context) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);
