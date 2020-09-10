@@ -409,6 +409,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		if (discountCtf.getText() == null) {
 			Promotion promo = new Promotion("NOPRO");
 			reservation.setPromo(promo);
+			discountCtf.setDisable(false);
 		} else
 			try {
 				Promotion promo = new Promotion(discountCtf.getText());
@@ -418,7 +419,8 @@ public class MenuController extends Date implements Initializable, alertMsg {
 			} catch (Exception ex) {
 				Promotion promo = new Promotion("NOPRO");
 				reservation.setPromo(promo);
-				System.out.print("Promotion code has error");
+				discountCtf.setText(null);
+				alertMsg.warning("Promotion code has error", "This promotion code is invalid");
 			}
 
 		totalPrice = (subPrice + serviceCharge + otherCharge) * reservation.getPromo().getDiscount();
@@ -456,7 +458,7 @@ public class MenuController extends Date implements Initializable, alertMsg {
 		checkindate.setDisable(false);
 
 		otherCtf.setDisable(false);
-		discountCtf.setDisable(false);
+		discountCtf.setDisable(true);
 		pmethodBox.setDisable(false);
 	}
 

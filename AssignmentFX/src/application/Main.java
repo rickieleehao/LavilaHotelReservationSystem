@@ -13,7 +13,6 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 
 	final static protected String titleIcon = "TitleIcon.png";
-	final static protected String style = "-fx-opacity: 1";
 	final static protected String RESERVATION_TXT = "reservation.txt";
 	final static protected String GUEST_TXT = "guest.txt";
 	final static protected String PROMO_TXT = "promotion.txt";
