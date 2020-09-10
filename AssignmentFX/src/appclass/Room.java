@@ -33,11 +33,12 @@ public class Room {
 
 		try {
 			Scanner x = new Scanner(new File(filepath));
-			x.useDelimiter("[,\n]");
+			x.useDelimiter(",");
 
 			while (x.hasNext()) {
 				roomType = x.next();
 				roomNumber = x.next();
+				x.useDelimiter("(,|\r\n|\r|\n)");
 				numberOfBeds = x.next();
 
 				if (roomType.equalsIgnoreCase("SuperiorSuite"))

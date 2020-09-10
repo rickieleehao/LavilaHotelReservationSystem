@@ -60,7 +60,7 @@ public class Guest {
 
 		try {
 			Scanner x = new Scanner(new File(filepath));
-			x.useDelimiter("[,\n]");
+			x.useDelimiter(",");
 
 			while (x.hasNext()) {
 				icno = x.next();
@@ -69,6 +69,7 @@ public class Guest {
 				add1 = x.next();
 				add2 = x.next();
 				state = x.next();
+				x.useDelimiter("(,|\r\n|\r|\n)");
 				postcode = x.next();
 
 				guest.add(new Guest(icno, fname, lname, add1, add2, state, postcode));
@@ -97,8 +98,8 @@ public class Guest {
 
 	public void addGuest(String filepath) throws IOException {
 		FileWriter newGuest = new FileWriter("guest.txt", true);
-		newGuest.write("\n" + this.icno + "," + this.fname + "," + this.lname + "," + this.add1 + "," + this.add2 + ","
-				+ this.state + "," + this.postcode);
+		newGuest.write(this.icno + "," + this.fname + "," + this.lname + "," + this.add1 + "," + this.add2 + ","
+				+ this.state + "," + this.postcode + "\n");
 		newGuest.close();
 	}
 
