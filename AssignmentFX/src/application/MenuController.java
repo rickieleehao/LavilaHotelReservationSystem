@@ -99,9 +99,10 @@ public class MenuController extends Date implements Initializable, alertMsg {
 
 	@FXML // edit a reservation record
 	void editRes(ActionEvent event) {
-		if (alertMsg.confirmation("Editing", "Edit this reservation?"))
+		if (alertMsg.confirmation("Editing", "Edit this reservation?")) {
 			editingSetting();
 			statuslb.setText("Processing");
+		}
 	}
 
 	@FXML
